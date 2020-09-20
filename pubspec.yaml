@@ -22,6 +22,7 @@ dependencies:
   flutter_mobx: ^1.1.0
   mobx: ^1.2.1
   flutter_modular: ^1.2.5+1
+  intl: any
   flutter:
     sdk: flutter
 

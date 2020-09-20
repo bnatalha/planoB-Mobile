@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plano_b/app/shared/utils/routes_names_utils.dart';
 import 'transactions_controller.dart';
+import '../../shared/widgets/transaction_card.dart';
 
 class TransactionsPage extends StatefulWidget {
   final String title;
@@ -12,7 +13,8 @@ class TransactionsPage extends StatefulWidget {
   _TransactionsPageState createState() => _TransactionsPageState();
 }
 
-class _TransactionsPageState extends ModularState<TransactionsPage, TransactionsController> {
+class _TransactionsPageState
+    extends ModularState<TransactionsPage, TransactionsController> {
   //use 'controller' variable to access controller
 
   @override
@@ -22,32 +24,34 @@ class _TransactionsPageState extends ModularState<TransactionsPage, Transactions
         title: Text("Transações"),
       ),
       body: Center(
-        child: Observer(builder: (_) {
-          if (controller.transactions.value == null) {
-            return CircularProgressIndicator();
-          }
-          return ListView.separated(
+        child: Observer(
+          builder: (_) {
+            if (controller.transactions.value == null) {
+              return CircularProgressIndicator();
+            }
+            return ListView.separated(
               itemCount: controller.transactionsLength,
-              separatorBuilder: (_, i) => Divider(),
+              separatorBuilder: (_, i) => const SizedBox(height: 4),
               itemBuilder: (_, i) {
                 final t = controller.transactions.value[i];
-                return ListTile(
-                  title: Text(t.date.toString()),
-                  subtitle: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('From: ' + t.source.name),
-                      Text('To: ' + t.destination.name),
-                    ],
-                  ),
+                return TransactionCard(
+                  description: t.description,
+                  category: t.category.toString(),
+                  value: t.value,
+                  date: t.date,
+                  onTap: () => print("Clicado na transacao ${t.description}"),
                 );
-              });
-        }),
+              },
+            );
+          },
+        ),
       ),
       // TODO form for modifying transaction
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Modular.link.pushNamed(RouteNamesUtils.TRANSACTION_PAGE);
-      }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Modular.link.pushNamed(RouteNamesUtils.TRANSACTION_PAGE);
+        },
+      ),
     );
   }
 }
