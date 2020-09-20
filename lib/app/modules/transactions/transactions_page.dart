@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:plano_b/app/modules/home/components/transaction_details/transaction_details_controller.dart';
+import 'package:plano_b/app/shared/utils/routes_names_utils.dart';
+import 'transactions_controller.dart';
 
-import 'components/add_floating_button_widget.dart';
+class TransactionsPage extends StatefulWidget {
+  final String title;
+  const TransactionsPage({Key key, this.title = "Home"}) : super(key: key);
 
-class TransactionDetailsPage extends StatefulWidget {
-  const TransactionDetailsPage();
   @override
-  _TransactionDetailsPageState createState() => _TransactionDetailsPageState();
+  _TransactionsPageState createState() => _TransactionsPageState();
 }
 
-class _TransactionDetailsPageState
-    extends ModularState<TransactionDetailsPage, TransactionDetailsController> {
+class _TransactionsPageState extends ModularState<TransactionsPage, TransactionsController> {
+  //use 'controller' variable to access controller
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +27,7 @@ class _TransactionDetailsPageState
             return CircularProgressIndicator();
           }
           return ListView.separated(
-              itemCount: controller.transactionsCount,
+              itemCount: controller.transactionsLength,
               separatorBuilder: (_, i) => Divider(),
               itemBuilder: (_, i) {
                 final t = controller.transactions.value[i];
@@ -43,8 +45,9 @@ class _TransactionDetailsPageState
         }),
       ),
       // TODO form for modifying transaction
-      floatingActionButton: AddFloatingButton(),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        Modular.link.pushNamed(RouteNamesUtils.TRANSACTION_PAGE);
+      }),
     );
   }
 }
-

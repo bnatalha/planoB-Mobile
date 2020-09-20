@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-
-import '../../../lib/app/shared/repositories/session_repository.dart';
-
+import 'package:plano_b/app/shared/repositories/session/session_repository.dart';
 
 class MockClient extends Mock implements Dio {}
 

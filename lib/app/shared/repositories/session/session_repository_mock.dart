@@ -1,10 +1,9 @@
-import 'package:flutter_modular/flutter_modular.dart';
+import '../../models/user_model.dart';
+import 'session_repository_interface.dart';
 
-import '../models/user_model.dart';
-
-class SessionRepository extends Disposable {
-
+class SessionRepositoryMock implements ISessionRepository {
   UserModel _currentLoggedUser;
+  
   UserModel get currentLoggedUser => _currentLoggedUser;
 
   void setLoggedUser(UserModel user) {
@@ -16,7 +15,5 @@ class SessionRepository extends Disposable {
   }
 
   @override
-  void dispose() {
-    // TODO(felipe): implement dispose
-  }
+  void dispose() {}
 }

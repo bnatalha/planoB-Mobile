@@ -1,13 +1,12 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter_modular/flutter_modular.dart';
-import 'package:plano_b/app/modules/home/components/transaction_details/transaction_details_controller.dart';
 import 'package:plano_b/app/shared/models/account_model.dart';
 import 'package:plano_b/app/shared/models/category_model.dart';
 import 'package:plano_b/app/shared/models/transaction_model.dart';
 import 'package:plano_b/app/shared/models/user_model.dart';
 
+import 'transaction_repository_interface.dart';
+
 /// Mock Version
-class TransactionRepository extends Disposable {
+class TransactionRepositoryMock implements ITransactionRepository {
   UserModel mockUser;
   CategoryModel mockCategory1;
   CategoryModel mockCategory2;
@@ -16,7 +15,7 @@ class TransactionRepository extends Disposable {
 
   List<TransactionModel> mockTransactions = [];
 
-  TransactionRepository() {
+  TransactionRepositoryMock() {
     mockUser =
         UserModel(login: 'default', name: 'Meu nome Aqui', password: '123123');
     mockCategory1 = CategoryModel(user: mockUser, name: "Cat 1");
@@ -27,6 +26,7 @@ class TransactionRepository extends Disposable {
         AccountModel(user: mockUser, name: "seu Nome", balance: 100000.0);
     mockTransactions.addAll([
       TransactionModel(
+        id: 1231,
         user: mockUser,
         source: mockAccountSource,
         destination: mockAccountDestination,
@@ -36,6 +36,7 @@ class TransactionRepository extends Disposable {
         description: "um exemplo",
       ),
       TransactionModel(
+        id: 32123,
         user: mockUser,
         source: mockAccountSource,
         destination: mockAccountDestination,
@@ -46,7 +47,6 @@ class TransactionRepository extends Disposable {
       )
     ]);
   }
-
 
   Future<List<TransactionModel>> fetchTransactionsForCurrentUser() async {
     await Future.delayed(Duration(milliseconds: 200));

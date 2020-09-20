@@ -5,6 +5,7 @@ import 'account_model.dart';
 import 'category_model.dart';
 
 class TransactionModel {
+  final int id;
   final UserModel user;
   final AccountModel source;
   final AccountModel destination;
@@ -16,6 +17,7 @@ class TransactionModel {
   // final List<String> tags;   // TODO pra q?
 
   const TransactionModel({
+    this.id, 
     this.user,
     this.source,
     this.destination,

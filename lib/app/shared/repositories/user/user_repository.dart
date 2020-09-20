@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
-import '../models/user_model.dart';
+import '../../models/user_model.dart';
+import 'user_repository_interface.dart';
 
-class UserRepository extends Disposable {
+class UserRepository implements IUserRepository {
   final Map<String, UserModel> users = <String, UserModel>{
     'admin': UserModel(login: 'admin', password: 'admin'), // Default user
   };

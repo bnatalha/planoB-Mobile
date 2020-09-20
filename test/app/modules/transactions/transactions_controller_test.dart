@@ -1,11 +1,9 @@
 import 'package:flutter_modular/flutter_modular_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import '../../../../lib/app/modules/home/home_module.dart';
-
+import 'package:plano_b/app/modules/transactions/transactions_module.dart';
 
 void main() {
-  initModule(HomeModule());
+  initModule(TransactionsModule());
   // HomeController home;
   //
   setUp(() {
