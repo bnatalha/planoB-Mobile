@@ -1,0 +1,27 @@
+Idealização do App:
+
+## Modelos back-end:
+. Person
+    . User
+        . username
+        . firstName
+        . lastName
+        . password
+    . <Bank>
+        . balance
+        . savingBalance
+        . <Card>
+            . creditLimit
+            . expireDay
+            . <Bill>
+                . value
+                . description
+                . tag
+                . installment
+                . dateAdded
+                . dateModified
+
+## Telas:
+> login
+    > inicio
+    > configurações

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
-import './app.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
-void main() => runApp(App());
+import 'app/app_module.dart';
+
+void main() => runApp(ModularApp(module: AppModule()));
