@@ -24,8 +24,9 @@ class AppModule extends MainModule {
 
   @override
   List<Router<dynamic>> get routers => <Router<dynamic>>[
-        Router<LoginModule>(Modular.initialRoute, module: LoginModule()),
-        Router<HomeModule>('/home', module: HomeModule()),
+        // Router<LoginModule>(Modular.initialRoute, module: LoginModule()),
+        // Router<HomeModule>('/home', module: HomeModule()),
+        Router<HomeModule>(Modular.initialRoute, module: HomeModule()),
       ];
 
   @override
