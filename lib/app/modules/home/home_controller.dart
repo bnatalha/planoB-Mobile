@@ -12,8 +12,8 @@ abstract class _HomeControllerBase with Store {
   SessionRepository _sessionRepository = Modular.get();
 
   @computed
-  String get firstName => _sessionRepository.currentLoggedUser.firstName;
+  String get firstName => _sessionRepository.currentLoggedUser.name;
 
   @computed
-  String get lastName => _sessionRepository.currentLoggedUser.firstName;
+  String get lastName => _sessionRepository.currentLoggedUser.name;
 }

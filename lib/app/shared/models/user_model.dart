@@ -3,15 +3,16 @@ import 'package:flutter/foundation.dart';
 
 class UserModel {
   UserModel({
-    @required this.username,
-    this.firstName,
-    this.lastName,
+    @required this.login,
+    this.name,
+    // this.lastName,
     this.password,
   });
 
-  final String username;
-  String firstName;
-  String lastName;
+  final String login;
+  // String firstName;
+  String name;
+  // String lastName;
   String password;
 
   /// Will only update password if is a match

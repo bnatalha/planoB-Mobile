@@ -1,4 +1,4 @@
-import './user_model.dart';
+import '../user_model.dart';
 import './bank_model.dart';
 
 class PersonModel {

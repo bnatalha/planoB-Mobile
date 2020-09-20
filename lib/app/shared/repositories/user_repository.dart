@@ -5,7 +5,7 @@ import '../models/user_model.dart';
 
 class UserRepository extends Disposable {
   final Map<String, UserModel> users = <String, UserModel>{
-    'admin': UserModel(username: 'admin', password: 'admin'), // Default user
+    'admin': UserModel(login: 'admin', password: 'admin'), // Default user
   };
 
   // Dispose will be called automatically
@@ -17,7 +17,7 @@ class UserRepository extends Disposable {
     @required String password,
   }) async {
     if (users.containsKey(username)) {
-      users[username] = UserModel(username: username, password: password);
+      users[username] = UserModel(login: username, password: password);
       return true;
     } else {
       // Username already taken
@@ -41,24 +41,24 @@ class UserRepository extends Disposable {
     @required String toName,
   }) async {
     if (users.containsKey(username) && toName.isNotEmpty) {
-      users[username].firstName = toName;
+      users[username].name = toName;
       return true;
     } else {
       return false;
     }
   }
 
-  Future<bool> changeUserLastName({
-    @required String username,
-    @required String toName,
-  }) async {
-    if (users.containsKey(username) && toName.isNotEmpty) {
-      users[username].lastName = toName;
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // Future<bool> changeUserLastName({
+  //   @required String username,
+  //   @required String toName,
+  // }) async {
+  //   if (users.containsKey(username) && toName.isNotEmpty) {
+  //     users[username].lastName = toName;
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   Future<bool> changeUserPassword({
     @required String username,

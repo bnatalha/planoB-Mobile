@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:plano_b/app/shared/repositories/transaction_repository.dart';
 
 import 'app_controller.dart';
 import 'app_widget.dart';
@@ -15,6 +16,7 @@ class AppModule extends MainModule {
         // Repositories
         Bind<SessionRepository>((Inject<dynamic> i) => SessionRepository()),
         Bind<UserRepository>((Inject<dynamic> i) => UserRepository()),
+        Bind<TransactionRepository>((i) => TransactionRepository()),
 
         // Controllers
         Bind<AppController>((Inject<dynamic> i) => AppController()),
