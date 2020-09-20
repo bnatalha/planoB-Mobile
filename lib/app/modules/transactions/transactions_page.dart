@@ -23,6 +23,25 @@ class _TransactionsPageState
       appBar: AppBar(
         title: Text("Transações"),
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
+              child: Text(
+                'Finances App',
+                style: Theme.of(context).textTheme.headline6.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+              ),
+            ),
+            ..._getAccounts(controller),
+          ],
+        ),
+      ),
       body: Center(
         child: Observer(
           builder: (_) {
@@ -46,12 +65,28 @@ class _TransactionsPageState
           },
         ),
       ),
-      // TODO form for modifying transaction
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Modular.link.pushNamed(RouteNamesUtils.TRANSACTION_PAGE);
         },
+        child: Icon(Icons.add),
       ),
     );
+  }
+
+  List<Widget> _getAccounts(TransactionsController controller) {
+    List<String> bankNames = ['Nubank', 'Inter', 'Banco do Brasil'];
+
+    return bankNames
+        .map(
+          (String name) => InkWell(
+            onTap: () => print('Clicando na conta $name'),
+            child: ListTile(
+              leading: Icon(Icons.account_balance),
+              title: Text(name),
+            ),
+          ),
+        )
+        .toList();
   }
 }
