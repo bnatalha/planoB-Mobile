@@ -24,20 +24,6 @@ mixin _$TransactionStore on _TransactionStoreBase, Store {
     });
   }
 
-  final _$_TransactionStoreBaseActionController =
-      ActionController(name: '_TransactionStoreBase');
-
-  @override
-  dynamic updateTransaction(TransactionModel model) {
-    final _$actionInfo = _$_TransactionStoreBaseActionController.startAction(
-        name: '_TransactionStoreBase.updateTransaction');
-    try {
-      return super.updateTransaction(model);
-    } finally {
-      _$_TransactionStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
   @override
   String toString() {
     return '''

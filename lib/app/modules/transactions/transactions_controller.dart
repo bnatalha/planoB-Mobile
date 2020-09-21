@@ -1,9 +1,9 @@
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:plano_b/app/modules/transactions/stores/transaction_store.dart';
 import 'package:plano_b/app/shared/models/transaction_model.dart';
 import 'package:plano_b/app/shared/repositories/session/session_repository_interface.dart';
 import 'package:plano_b/app/shared/repositories/transaction/transaction_repository_interface.dart';
-
 
 part 'transactions_controller.g.dart';
 
@@ -12,7 +12,8 @@ class TransactionsController = _TransactionsControllerBase
 
 abstract class _TransactionsControllerBase with Store {
   final ISessionRepository _sessionRepository;
-  final ITransactionRepository _transactionRepository;
+  final ITransactionRepository _transactionRepository =
+      Modular.get<ITransactionRepository>();
   final TransactionStore _transactionStore;
 
   @observable
@@ -21,12 +22,17 @@ abstract class _TransactionsControllerBase with Store {
   @computed
   int get transactionsLength => transactions.value.length;
 
-  _TransactionsControllerBase(
-      this._sessionRepository, this._transactionRepository, this._transactionStore) {
+  // _TransactionsControllerBase(
+  //     this._sessionRepository, this._transactionRepository, this._transactionStore) {
+  //   fetchTransactions();
+  // }
+
+  _TransactionsControllerBase(this._sessionRepository, this._transactionStore) {
     fetchTransactions();
   }
 
-  @action selectTransaction(TransactionModel model) {
+  @action
+  selectTransaction(TransactionModel model) {
     _transactionStore.transaction = model;
   }
 

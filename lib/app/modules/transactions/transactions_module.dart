@@ -15,19 +15,19 @@ class TransactionsModule extends ChildModule {
   List<Bind<dynamic>> get binds => <Bind<dynamic>>[
         // Store
         Bind<TransactionStore>(
-          (i) => TransactionStore(i.get<ITransactionRepository>()),
+          (i) => TransactionStore(),
         ),
         // Controllers
         Bind<TransactionsController>(
           (i) => TransactionsController(
             i.get<ISessionRepository>(),
-            i.get<ITransactionRepository>(),
+            // i.get<ITransactionRepository>(),
             i.get<TransactionStore>(),
           ),
         ),
         Bind<TransactionDetailsController>(
           (i) => TransactionDetailsController(
-            i.get<ITransactionRepository>(),
+            // i.get<ITransactionRepository>(),
             i.get<TransactionStore>(),
           ),
         ),

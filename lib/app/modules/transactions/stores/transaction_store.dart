@@ -7,16 +7,13 @@ part 'transaction_store.g.dart';
 class TransactionStore = _TransactionStoreBase with _$TransactionStore;
 
 abstract class _TransactionStoreBase with Store {
-  final ITransactionRepository _transactionRepository;
   @observable
   TransactionModel transaction = TransactionModel();
 
-  _TransactionStoreBase(this._transactionRepository);
-
-  @action
-  updateTransaction(TransactionModel model){
-    transaction = model;
-    _transactionRepository.updateTransaction(model);
-  }
+  // @action
+  // updateTransaction(TransactionModel model){
+  //   transaction = model;
+  //   _transactionRepository.updateTransaction(model);
+  // }
 
 }
