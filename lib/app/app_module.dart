@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:plano_b/app/modules/login/login_module.dart';
+import 'package:plano_b/app/modules/login/login_page.dart';
 import 'package:plano_b/app/shared/repositories/transaction/transaction_repository.dart';
 
 import 'app_controller.dart';
@@ -69,6 +71,7 @@ class AppModule extends MainModule {
   @override
   // TODO: implement routers
   List<ModularRouter> get routers => [
+        ModularRouter<LoginModule>(Modular.initialRoute, module: LoginModule()),
         ModularRouter<TransactionsModule>(Modular.initialRoute,
             module: TransactionsModule()),
       ];

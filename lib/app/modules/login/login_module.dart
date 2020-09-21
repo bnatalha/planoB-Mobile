@@ -1,4 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:plano_b/app/shared/utils/routes_names_utils.dart';
 
 import 'login_controller.dart';
 import 'login_page.dart';
@@ -25,7 +26,7 @@ class LoginModule extends ChildModule {
 
   @override
   List<ModularRouter> get routers => [
-        ModularRouter<LoginPage>(Modular.initialRoute,
+        ModularRouter<LoginPage>(RouteNamesUtils.LOGIN,
             child: (_, __) => const LoginPage()),
       ];
 }

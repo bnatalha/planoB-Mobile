@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:plano_b/app/shared/utils/routes_names_utils.dart';
 import 'login_controller.dart';
 
 class LoginPage extends StatefulWidget {
@@ -124,7 +125,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
     );
 
     if (result) {
-      Modular.link.pushNamed('/home');
+      Modular.link.pushNamed(RouteNamesUtils.HOME_PAGE);
     }
     print("Login $result");
   }
