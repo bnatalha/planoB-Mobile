@@ -12,7 +12,8 @@ class TransactionsPage extends StatefulWidget {
   _TransactionsPageState createState() => _TransactionsPageState();
 }
 
-class _TransactionsPageState extends ModularState<TransactionsPage, TransactionsController> {
+class _TransactionsPageState
+    extends ModularState<TransactionsPage, TransactionsController> {
   //use 'controller' variable to access controller
 
   @override
@@ -32,6 +33,10 @@ class _TransactionsPageState extends ModularState<TransactionsPage, Transactions
               itemBuilder: (_, i) {
                 final t = controller.transactions.value[i];
                 return ListTile(
+                  onTap: () {
+                    controller.selectTransaction(t);
+                    Modular.link.pushNamed(RouteNamesUtils.TRANSACTION_PAGE);
+                  },
                   title: Text(t.date.toString()),
                   subtitle: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

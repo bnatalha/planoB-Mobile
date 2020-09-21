@@ -16,11 +16,12 @@ class TransactionsModule extends ChildModule {
         Bind<TransactionsController>((i) => TransactionsController(
               i.get<ISessionRepository>(),
               i.get<ITransactionRepository>(),
+              i.get<TransactionStore>(),
             )),
         Bind<TransactionDetailsController>(
           (i) => TransactionDetailsController(
             i.get<ITransactionRepository>(),
-            i.get<TransactionStore>()
+            i.get<TransactionStore>(),
           ),
         ),
 
