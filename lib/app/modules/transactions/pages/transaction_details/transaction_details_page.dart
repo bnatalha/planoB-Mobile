@@ -205,15 +205,15 @@ class _TransactionDetailsPageState
     controller.transaction = controller.transaction.copyWith(
       value: double.parse(_valueController.value.text),
       source: controller.transaction.source.copyWith(
-        name: _srcUserController.value.text,
+        name: _srcBankController.value.text,
         user: controller.transaction.source.user.copyWith(
-          name: _srcBankController.value.text,
+          name: _srcUserController.value.text,
         ),
       ),
       destination: controller.transaction.destination.copyWith(
-        name: _destUserController.value.text,
+        name: _destBankController.value.text,
         user: controller.transaction.destination.user.copyWith(
-          name: _destBankController.value.text,
+          name: _destUserController.value.text,
         ),
       ),
     );
