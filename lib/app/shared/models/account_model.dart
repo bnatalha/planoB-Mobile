@@ -10,4 +10,16 @@ class AccountModel {
     this.name,
     this.balance,
   });
+
+  copyWith({
+    UserModel user,
+    String name,
+    double balance,
+  }) {
+    return AccountModel(
+      user: user ?? this.user,
+      name: name ?? this.name,
+      balance: balance ?? this.balance,
+    );
+  }
 }

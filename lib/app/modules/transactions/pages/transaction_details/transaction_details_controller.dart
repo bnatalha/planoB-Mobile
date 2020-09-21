@@ -11,9 +11,22 @@ abstract class _TransacionDetailsControllerBase with Store {
   final ITransactionRepository _transactionRepository;
   final TransactionStore _transactionStore;
 
-  _TransacionDetailsControllerBase(
-      this._transactionRepository, this._transactionStore);
+  @observable
+  bool enableEdit;
 
+  @action
+  toggleEditMode() {
+    enableEdit = !enableEdit;
+  }
+
+  _TransacionDetailsControllerBase(
+      this._transactionRepository, this._transactionStore) {
+    enableEdit = false;
+  }
+
+  @computed
   TransactionModel get transaction => _transactionStore.transaction;
-  
+
+  set transaction(TransactionModel model) =>
+      _transactionStore.updateTransaction(model);
 }

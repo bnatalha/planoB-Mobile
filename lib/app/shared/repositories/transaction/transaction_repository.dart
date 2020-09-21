@@ -20,4 +20,10 @@ class TransactionRepository implements ITransactionRepository {
     // TODO: implement fetchTransactionsForCurrentUser
     throw UnimplementedError();
   }
+
+  @override
+  Future<String> updateTransaction(TransactionModel model) {
+    // TODO: implement updateTransaction
+    throw UnimplementedError();
+  }
 }

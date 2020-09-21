@@ -5,6 +5,7 @@ import 'package:plano_b/app/shared/repositories/session/session_repository_inter
 import 'package:plano_b/app/shared/repositories/transaction/transaction_repository_interface.dart';
 import 'package:plano_b/app/shared/utils/routes_names_utils.dart';
 
+import '../../shared/repositories/transaction/transaction_repository.dart';
 import 'pages/transaction_details/transaction_details_page.dart';
 import 'transactions_controller.dart';
 import 'transactions_page.dart';
@@ -12,21 +13,24 @@ import 'transactions_page.dart';
 class TransactionsModule extends ChildModule {
   @override
   List<Bind<dynamic>> get binds => <Bind<dynamic>>[
+        // Store
+        Bind<TransactionStore>(
+          (i) => TransactionStore(i.get<ITransactionRepository>()),
+        ),
         // Controllers
-        Bind<TransactionsController>((i) => TransactionsController(
-              i.get<ISessionRepository>(),
-              i.get<ITransactionRepository>(),
-              i.get<TransactionStore>(),
-            )),
+        Bind<TransactionsController>(
+          (i) => TransactionsController(
+            i.get<ISessionRepository>(),
+            i.get<ITransactionRepository>(),
+            i.get<TransactionStore>(),
+          ),
+        ),
         Bind<TransactionDetailsController>(
           (i) => TransactionDetailsController(
             i.get<ITransactionRepository>(),
             i.get<TransactionStore>(),
           ),
         ),
-
-        // Stores
-        Bind<TransactionStore>((i) => TransactionStore()),
       ];
 
   @override

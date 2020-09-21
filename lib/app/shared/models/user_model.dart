@@ -9,21 +9,33 @@ class UserModel {
     this.password,
   });
 
-  final String login;
   // String firstName;
-  String name;
   // String lastName;
+  final String login;
+  String name;
   String password;
 
   /// Will only update password if is a match
   Future<bool> updatePass({
     @required String oldPass,
     @required String newPass,
-    }) async {
-    if(oldPass == password) {
+  }) async {
+    if (oldPass == password) {
       password = newPass;
       return true;
     }
     return false;
+  }
+
+  copyWith({
+    String login,
+    String name,
+    String password,
+  }) {
+    return UserModel(
+      login: login ?? this.login,
+      name: name ?? this.name,
+      password: password ?? this.password,
+    );
   }
 }
