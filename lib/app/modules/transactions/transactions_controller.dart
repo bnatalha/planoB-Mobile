@@ -34,8 +34,16 @@ abstract class _TransactionsControllerBase with Store {
   @action
   selectTransaction(TransactionModel model) {
     _transactionStore.transaction = model;
+    _transactionStore.setViewTransactionMode();
+
   }
 
+  @action
+  setAddTransactionMode() {
+    _transactionStore.transaction = TransactionModel();
+    _transactionStore.setAddTransactionMode();
+  }
+  
   @action
   removeTransaction(TransactionModel model) {
     _transactionRepository.removeTransaction(model);

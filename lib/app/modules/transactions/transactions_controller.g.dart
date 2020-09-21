@@ -62,6 +62,17 @@ mixin _$TransactionsController on _TransactionsControllerBase, Store {
   }
 
   @override
+  dynamic setAddTransactionMode() {
+    final _$actionInfo = _$_TransactionsControllerBaseActionController
+        .startAction(name: '_TransactionsControllerBase.setAddTransactionMode');
+    try {
+      return super.setAddTransactionMode();
+    } finally {
+      _$_TransactionsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic removeTransaction(TransactionModel model) {
     final _$actionInfo = _$_TransactionsControllerBaseActionController
         .startAction(name: '_TransactionsControllerBase.removeTransaction');

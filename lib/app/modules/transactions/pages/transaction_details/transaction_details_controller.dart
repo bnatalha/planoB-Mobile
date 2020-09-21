@@ -16,11 +16,22 @@ abstract class _TransacionDetailsControllerBase with Store {
   final TransactionStore _transactionStore;
 
   @observable
-  bool enableEdit;
+  bool editMode;
+
+  @observable
+  bool addTransactionMode;
+
+  @action
+  verifyMode(){
+    addTransactionMode = _transactionStore.isAddingNewTransaction;
+    if(addTransactionMode) {
+      editMode = true;
+    }
+  }
 
   @action
   toggleEditMode() {
-    enableEdit = !enableEdit;
+    editMode = !editMode;
   }
 
   // _TransacionDetailsControllerBase(
@@ -29,8 +40,15 @@ abstract class _TransacionDetailsControllerBase with Store {
   // }
 
   _TransacionDetailsControllerBase(this._transactionStore) {
-    enableEdit = false;
+    editMode = false;
   }
+
+  @action
+  addTransaction(TransactionModel model) {
+    _transactionStore.transaction = model;
+    _transactionRepository.addTransaction(model);
+  }
+  
 
   @computed
   TransactionModel get transaction => _transactionStore.transaction;

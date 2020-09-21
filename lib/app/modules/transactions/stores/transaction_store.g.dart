@@ -24,10 +24,42 @@ mixin _$TransactionStore on _TransactionStoreBase, Store {
     });
   }
 
+  final _$isAddingNewTransactionAtom =
+      Atom(name: '_TransactionStoreBase.isAddingNewTransaction');
+
+  @override
+  bool get isAddingNewTransaction {
+    _$isAddingNewTransactionAtom.reportRead();
+    return super.isAddingNewTransaction;
+  }
+
+  @override
+  set isAddingNewTransaction(bool value) {
+    _$isAddingNewTransactionAtom
+        .reportWrite(value, super.isAddingNewTransaction, () {
+      super.isAddingNewTransaction = value;
+    });
+  }
+
+  final _$_TransactionStoreBaseActionController =
+      ActionController(name: '_TransactionStoreBase');
+
+  @override
+  dynamic setAddTransactionMode() {
+    final _$actionInfo = _$_TransactionStoreBaseActionController.startAction(
+        name: '_TransactionStoreBase.setAddTransactionMode');
+    try {
+      return super.setAddTransactionMode();
+    } finally {
+      _$_TransactionStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
-transaction: ${transaction}
+transaction: ${transaction},
+isAddingNewTransaction: ${isAddingNewTransaction}
     ''';
   }
 }

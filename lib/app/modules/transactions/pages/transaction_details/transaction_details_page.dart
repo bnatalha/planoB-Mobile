@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
+import 'package:plano_b/app/shared/models/category_model.dart';
+import 'package:plano_b/app/shared/models/user_model.dart';
 
 import '../../../../shared/models/account_model.dart';
 import '../../../../shared/models/transaction_model.dart';
@@ -25,20 +27,25 @@ class _TransactionDetailsPageState
   @override
   void initState() {
     _valueController = TextEditingController();
-    _valueController.value =
-        TextEditingValue(text: controller.transaction.value.toString());
     _srcUserController = TextEditingController();
-    _srcUserController.value = TextEditingValue(
-        text: controller.transaction.source.user.name.toString());
     _srcBankController = TextEditingController();
-    _srcBankController.value =
-        TextEditingValue(text: controller.transaction.source.name.toString());
     _destUserController = TextEditingController();
-    _destUserController.value = TextEditingValue(
-        text: controller.transaction.destination.user.name.toString());
     _destBankController = TextEditingController();
-    _destBankController.value = TextEditingValue(
-        text: controller.transaction.destination.name.toString());
+
+    if (controller.transaction.id != null) {
+      _valueController.value =
+          TextEditingValue(text: controller.transaction.value.toString());
+      _srcUserController.value = TextEditingValue(
+          text: controller.transaction.source.user.name.toString());
+      _srcBankController.value =
+          TextEditingValue(text: controller.transaction.source.name.toString());
+      _destUserController.value = TextEditingValue(
+          text: controller.transaction.destination.user.name.toString());
+      _destBankController.value = TextEditingValue(
+          text: controller.transaction.destination.name.toString());
+    }
+
+    controller.verifyMode();
 
     super.initState();
   }
@@ -58,33 +65,43 @@ class _TransactionDetailsPageState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("${controller.transaction.id}"),
+        title: Text("${idString()}"),
         actions: [
-          Observer(
-            builder: (_) => Row(
+          Observer(builder: (_) {
+            if (controller.addTransactionMode) {
+              return IconButton(
+                onPressed: _addTransaction,
+                icon: Icon(
+                  Icons.save,
+                  color: Colors.lightBlueAccent[200],
+                ),
+              );
+            }
+
+            return Row(
               children: [
                 Icon(
                   Icons.mode_edit,
                   color: Colors.amber[200],
                 ),
                 SizedBox(width: 5),
-                Text(controller.enableEdit
+                Text(controller.editMode
                     ? ''
                     : 'Modo Edição'), // TODO animar in-out
                 Switch(
-                  value: controller.enableEdit,
+                  value: controller.editMode,
                   activeColor: Colors.amber[200],
                   onChanged: (isExitingEditMode) {
                     controller.toggleEditMode();
-                    print('edit_mode: ${controller.enableEdit}');
-                    if (!controller.enableEdit) {
+                    print('edit_mode: ${controller.editMode}');
+                    if (!controller.editMode) {
                       _saveTransaction();
                     }
                   },
                 ),
               ],
-            ),
-          )
+            );
+          })
         ],
       ),
       body: Container(
@@ -98,8 +115,7 @@ class _TransactionDetailsPageState
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                        'Realizada em ${DateFormat('yMd').format(controller.transaction.date)}',
+                    child: Text(formattedDate(),
                         style: Theme.of(context).textTheme.subtitle1),
                   ),
                   Padding(
@@ -107,7 +123,10 @@ class _TransactionDetailsPageState
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text('#${controller.transaction.id}',
+                        Text(
+                            controller.addTransactionMode
+                                ? ""
+                                : "#${idString()}",
                             style: Theme.of(context).textTheme.headline4),
                         Spacer(),
                         Expanded(
@@ -117,7 +136,7 @@ class _TransactionDetailsPageState
                                   color: Colors.indigo,
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold),
-                              enabled: controller.enableEdit,
+                              enabled: controller.editMode,
                               keyboardType: TextInputType.numberWithOptions(
                                   decimal: true),
                               controller: _valueController,
@@ -155,6 +174,17 @@ class _TransactionDetailsPageState
     );
   }
 
+  String idString() =>
+      "${!controller.addTransactionMode ? controller.transaction.id : "Nova Transação"}";
+
+  String formattedDate() {
+    if (controller.transaction.date != null) {
+      return ' Realizada em ${DateFormat('yMd').format(controller.transaction.date)}';
+    }
+
+    return ' Nova transação (${DateFormat('yMd').format(DateTime.now())})';
+  }
+
   // TODO show account balance
   Widget buildaAccDescription({
     String lead,
@@ -180,7 +210,7 @@ class _TransactionDetailsPageState
           // SizedBox(width: 5),
           Observer(
             builder: (_) => TextField(
-              enabled: controller.enableEdit,
+              enabled: controller.editMode,
               style: inputTextStyle,
               controller: userController,
               decoration: InputDecoration(
@@ -189,7 +219,7 @@ class _TransactionDetailsPageState
           ),
           Observer(
             builder: (_) => TextField(
-              enabled: controller.enableEdit,
+              enabled: controller.editMode,
               style: inputTextStyle,
               controller: bankController,
               decoration: InputDecoration(
@@ -201,8 +231,46 @@ class _TransactionDetailsPageState
     );
   }
 
+  void _addTransaction() {
+    UserModel muser = UserModel(
+      name: _srcUserController.value.text,
+      login: 'qlqr coisa',
+      password: 'meudeus',
+    );
+
+    AccountModel srcAcc = AccountModel(
+      name: _srcBankController.value.text,
+      user: muser,
+      balance: 2000,
+    );
+
+    AccountModel destAcc = AccountModel(
+      name: _destBankController.value.text,
+      user:
+          UserModel(login: 'outra coisa', name: _destUserController.value.text),
+      balance: 2000,
+    );
+
+    controller.addTransaction(TransactionModel(
+      user: muser,
+      source: srcAcc,
+      destination: destAcc,
+      category: CategoryModel(description: "", name: "novo", user: muser),
+      date: controller.transaction.date ?? DateTime.now(),
+      value: double.parse(_valueController.value.text),
+      description: "Nova transacao",
+    ));
+
+    Modular.link.pop();
+  }
+
   void _saveTransaction() {
-    controller.transaction = controller.transaction.copyWith(
+    controller.transaction = _buildNewTransaction();
+  }
+
+  TransactionModel _buildNewTransaction() {
+    return controller.transaction.copyWith(
+      date: controller.transaction.date ?? DateTime.now(),
       value: double.parse(_valueController.value.text),
       source: controller.transaction.source.copyWith(
         name: _srcBankController.value.text,

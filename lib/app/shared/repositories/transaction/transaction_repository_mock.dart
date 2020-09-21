@@ -12,6 +12,7 @@ class TransactionRepositoryMock implements ITransactionRepository {
   CategoryModel mockCategory2;
   AccountModel mockAccountSource;
   AccountModel mockAccountDestination;
+  int idCount = 1;
 
   List<TransactionModel> mockTransactions = [];
 
@@ -32,7 +33,7 @@ class TransactionRepositoryMock implements ITransactionRepository {
 
     mockTransactions.addAll([
       TransactionModel(
-        id: 1231,
+        id: idCount++,
         user: mockUser,
         source: mockAccountSource,
         destination: mockAccountDestination,
@@ -42,7 +43,7 @@ class TransactionRepositoryMock implements ITransactionRepository {
         description: "um exemplo",
       ),
       TransactionModel(
-        id: 32123,
+        id: idCount++,
         user: mockUser,
         source: mockAccountSource,
         destination: mockAccountDestination,
@@ -60,7 +61,7 @@ class TransactionRepositoryMock implements ITransactionRepository {
   }
 
   Future<String> addTransaction(TransactionModel model) async {
-    mockTransactions.add(model);
+    mockTransactions.add(model.copyWith(id: idCount++));
     await Future.delayed(Duration(milliseconds: 200));
     return 'success';
   }

@@ -79,6 +79,7 @@ class _TransactionsPageState
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          controller.setAddTransactionMode();
           Modular.link.pushNamed(RouteNamesUtils.TRANSACTION_PAGE);
         },
         child: Icon(Icons.add),

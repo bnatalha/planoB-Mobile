@@ -18,24 +18,52 @@ mixin _$TransactionDetailsController
               name: '_TransacionDetailsControllerBase.transaction'))
       .value;
 
-  final _$enableEditAtom =
-      Atom(name: '_TransacionDetailsControllerBase.enableEdit');
+  final _$editModeAtom =
+      Atom(name: '_TransacionDetailsControllerBase.editMode');
 
   @override
-  bool get enableEdit {
-    _$enableEditAtom.reportRead();
-    return super.enableEdit;
+  bool get editMode {
+    _$editModeAtom.reportRead();
+    return super.editMode;
   }
 
   @override
-  set enableEdit(bool value) {
-    _$enableEditAtom.reportWrite(value, super.enableEdit, () {
-      super.enableEdit = value;
+  set editMode(bool value) {
+    _$editModeAtom.reportWrite(value, super.editMode, () {
+      super.editMode = value;
+    });
+  }
+
+  final _$addTransactionModeAtom =
+      Atom(name: '_TransacionDetailsControllerBase.addTransactionMode');
+
+  @override
+  bool get addTransactionMode {
+    _$addTransactionModeAtom.reportRead();
+    return super.addTransactionMode;
+  }
+
+  @override
+  set addTransactionMode(bool value) {
+    _$addTransactionModeAtom.reportWrite(value, super.addTransactionMode, () {
+      super.addTransactionMode = value;
     });
   }
 
   final _$_TransacionDetailsControllerBaseActionController =
       ActionController(name: '_TransacionDetailsControllerBase');
+
+  @override
+  dynamic verifyMode() {
+    final _$actionInfo = _$_TransacionDetailsControllerBaseActionController
+        .startAction(name: '_TransacionDetailsControllerBase.verifyMode');
+    try {
+      return super.verifyMode();
+    } finally {
+      _$_TransacionDetailsControllerBaseActionController
+          .endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic toggleEditMode() {
@@ -50,9 +78,22 @@ mixin _$TransactionDetailsController
   }
 
   @override
+  dynamic addTransaction(TransactionModel model) {
+    final _$actionInfo = _$_TransacionDetailsControllerBaseActionController
+        .startAction(name: '_TransacionDetailsControllerBase.addTransaction');
+    try {
+      return super.addTransaction(model);
+    } finally {
+      _$_TransacionDetailsControllerBaseActionController
+          .endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-enableEdit: ${enableEdit},
+editMode: ${editMode},
+addTransactionMode: ${addTransactionMode},
 transaction: ${transaction}
     ''';
   }
