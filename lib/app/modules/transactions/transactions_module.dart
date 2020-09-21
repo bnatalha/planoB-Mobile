@@ -10,9 +10,43 @@ import 'pages/transaction_details/transaction_details_page.dart';
 import 'transactions_controller.dart';
 import 'transactions_page.dart';
 
+// class TransactionsModule extends ChildModule {
+//   @override
+//   List<Bind<dynamic>> get binds => <Bind<dynamic>>[
+//         // Store
+//         Bind<TransactionStore>(
+//           (i) => TransactionStore(),
+//         ),
+//         // Controllers
+//         Bind<TransactionsController>(
+//           (i) => TransactionsController(
+//             i.get<ISessionRepository>(),
+//             // i.get<ITransactionRepository>(),
+//             i.get<TransactionStore>(),
+//           ),
+//         ),
+//         Bind<TransactionDetailsController>(
+//           (i) => TransactionDetailsController(
+//             // i.get<ITransactionRepository>(),
+//             i.get<TransactionStore>(),
+//           ),
+//         ),
+//       ];
+
+//   @override
+//   List<Router<dynamic>> get routers => [
+//         Router<TransactionsPage>(RouteNamesUtils.HOME_PAGE,
+//             child: (_, __) => const TransactionsPage()),
+//         Router<TransactionDetailsPage>(RouteNamesUtils.TRANSACTION_PAGE,
+//             child: (_, __) => const TransactionDetailsPage()),
+//       ];
+
+//   static Inject<TransactionsModule> get to => Inject<TransactionsModule>.of();
+// }
+
 class TransactionsModule extends ChildModule {
   @override
-  List<Bind<dynamic>> get binds => <Bind<dynamic>>[
+  List<Bind> get binds => [
         // Store
         Bind<TransactionStore>(
           (i) => TransactionStore(),
@@ -34,12 +68,10 @@ class TransactionsModule extends ChildModule {
       ];
 
   @override
-  List<Router<dynamic>> get routers => [
-        Router<TransactionsPage>(RouteNamesUtils.HOME_PAGE,
+  List<ModularRouter> get routers => [
+        ModularRouter<TransactionsPage>(RouteNamesUtils.HOME_PAGE,
             child: (_, __) => const TransactionsPage()),
-        Router<TransactionDetailsPage>(RouteNamesUtils.TRANSACTION_PAGE,
+        ModularRouter<TransactionDetailsPage>(RouteNamesUtils.TRANSACTION_PAGE,
             child: (_, __) => const TransactionDetailsPage()),
       ];
-
-  static Inject<TransactionsModule> get to => Inject<TransactionsModule>.of();
 }

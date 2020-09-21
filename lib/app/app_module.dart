@@ -15,11 +15,42 @@ import 'shared/repositories/user/user_repository.dart';
 import 'shared/repositories/user/user_repository_interface.dart';
 import 'shared/repositories/user/user_repository_mock.dart';
 
+// class AppModule extends MainModule {
+//   static const bool IS_MOCK = true;
+
+//   @override
+//   List<Bind<dynamic>> get binds => <Bind<dynamic>>[
+//         // Repositories
+//         Bind<ISessionRepository>((Inject<dynamic> i) =>
+//             IS_MOCK ? SessionRepositoryMock() : SessionRepository()),
+//         Bind<IUserRepository>((Inject<dynamic> i) =>
+//             IS_MOCK ? UserRepositoryMock() : UserRepository()),
+//         Bind<ITransactionRepository>((i) =>
+//             IS_MOCK ? TransactionRepositoryMock() : TransactionRepository()),
+
+//         // Controllers
+//         Bind<AppController>((Inject<dynamic> i) => AppController()),
+//       ];
+
+//   @override
+//   List<Router<dynamic>> get routers => <Router<dynamic>>[
+//         // Router<LoginModule>(Modular.initialRoute, module: LoginModule()),
+//         // Router<HomeModule>('/home', module: HomeModule()),
+//         Router<TransactionsModule>(Modular.initialRoute,
+//             module: TransactionsModule()),
+//       ];
+
+//   @override
+//   Widget get bootstrap => AppWidget();
+
+//   static Inject<AppModule> get to => Inject<AppModule>.of();
+// }
+
 class AppModule extends MainModule {
   static const bool IS_MOCK = true;
 
   @override
-  List<Bind<dynamic>> get binds => <Bind<dynamic>>[
+  List<Bind> get binds => [
         // Repositories
         Bind<ISessionRepository>((Inject<dynamic> i) =>
             IS_MOCK ? SessionRepositoryMock() : SessionRepository()),
@@ -33,15 +64,12 @@ class AppModule extends MainModule {
       ];
 
   @override
-  List<Router<dynamic>> get routers => <Router<dynamic>>[
-        // Router<LoginModule>(Modular.initialRoute, module: LoginModule()),
-        // Router<HomeModule>('/home', module: HomeModule()),
-        Router<TransactionsModule>(Modular.initialRoute,
-            module: TransactionsModule()),
-      ];
-
-  @override
   Widget get bootstrap => AppWidget();
 
-  static Inject<AppModule> get to => Inject<AppModule>.of();
+  @override
+  // TODO: implement routers
+  List<ModularRouter> get routers => [
+        ModularRouter<TransactionsModule>(Modular.initialRoute,
+            module: TransactionsModule()),
+      ];
 }
