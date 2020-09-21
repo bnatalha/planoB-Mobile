@@ -6,5 +6,5 @@ class TransactionStore = _TransactionStoreBase with _$TransactionStore;
 
 abstract class _TransactionStoreBase with Store {
   @observable
-  TransactionModel transaction;
+  TransactionModel transaction = TransactionModel();
 }

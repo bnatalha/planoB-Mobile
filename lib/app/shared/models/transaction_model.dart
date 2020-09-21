@@ -17,7 +17,7 @@ class TransactionModel {
   // final List<String> tags;   // TODO pra q?
 
   const TransactionModel({
-    this.id, 
+    this.id,
     this.user,
     this.source,
     this.destination,
@@ -28,4 +28,30 @@ class TransactionModel {
     this.description = "",
     // this.tags,
   });
+
+  copyWith({
+    int id,
+    UserModel user,
+    AccountModel source,
+    AccountModel destination,
+    // final String paymentType,
+    CategoryModel category,
+    double value,
+    String description,
+    DateTime date,
+    // final List<String> tags;,
+  }) {
+    return TransactionModel(
+      id: id ?? this.id,
+      user: user ?? this.user,
+      source: source ?? this.source,
+      destination: destination ?? this.destination,
+      // this: this ?? // this.paymentType,
+      category: category ?? this.category,
+      date: date ?? this.date,
+      value: value ?? this.value,
+      description: description ?? this.description,
+      // this: this ?? // this.tags,
+    );
+  }
 }

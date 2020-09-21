@@ -16,14 +16,20 @@ class TransactionRepositoryMock implements ITransactionRepository {
   List<TransactionModel> mockTransactions = [];
 
   TransactionRepositoryMock() {
-    mockUser =
-        UserModel(login: 'default', name: 'Meu nome Aqui', password: '123123');
-    mockCategory1 = CategoryModel(user: mockUser, name: "Cat 1");
-    mockCategory1 = CategoryModel(user: mockUser, name: "Cat 2");
+    mockUser = UserModel(login: 'admin', name: 'Dan', password: 'admin');
+
+    mockCategory1 = CategoryModel(
+        user: mockUser, name: "Cat 1", description: "Categoria de numero 1");
+
+    mockCategory2 = CategoryModel(
+        user: mockUser, name: "Cat 2", description: "Categoria de numero 2");
+
     mockAccountSource =
-        AccountModel(user: mockUser, name: "meu Nome", balance: 100000.0);
-    mockAccountDestination =
-        AccountModel(user: mockUser, name: "seu Nome", balance: 100000.0);
+        AccountModel(user: mockUser, name: "Nubank", balance: 100000.0);
+
+    mockAccountDestination = AccountModel(
+        user: mockUser, name: "Banco do Brasil", balance: 100000.0);
+
     mockTransactions.addAll([
       TransactionModel(
         id: 1231,

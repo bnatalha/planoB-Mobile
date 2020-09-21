@@ -22,6 +22,13 @@ class _TransactionsPageState
     return Scaffold(
       appBar: AppBar(
         title: Text("Transações"),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.sync),
+              onPressed: () {
+                controller.fetchTransactions();
+              })
+        ],
       ),
       drawer: Drawer(
         child: ListView(
@@ -55,10 +62,13 @@ class _TransactionsPageState
                 final t = controller.transactions.value[i];
                 return TransactionCard(
                   description: t.description,
-                  category: t.category.toString(),
+                  category: t.category.name,
                   value: t.value,
                   date: t.date,
-                  onTap: () => print("Clicado na transacao ${t.description}"),
+                  onTap: () {
+                    controller.selectTransaction(t);
+                    Modular.link.pushNamed(RouteNamesUtils.TRANSACTION_PAGE);
+                  },
                 );
               },
             );

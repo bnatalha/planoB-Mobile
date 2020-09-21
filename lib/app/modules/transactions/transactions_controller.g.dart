@@ -51,6 +51,17 @@ mixin _$TransactionsController on _TransactionsControllerBase, Store {
       ActionController(name: '_TransactionsControllerBase');
 
   @override
+  dynamic selectTransaction(TransactionModel model) {
+    final _$actionInfo = _$_TransactionsControllerBaseActionController
+        .startAction(name: '_TransactionsControllerBase.selectTransaction');
+    try {
+      return super.selectTransaction(model);
+    } finally {
+      _$_TransactionsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic fetchTransactions() {
     final _$actionInfo = _$_TransactionsControllerBaseActionController
         .startAction(name: '_TransactionsControllerBase.fetchTransactions');
