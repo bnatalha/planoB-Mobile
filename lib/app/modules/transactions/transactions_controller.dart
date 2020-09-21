@@ -37,6 +37,14 @@ abstract class _TransactionsControllerBase with Store {
   }
 
   @action
+  removeTransaction(TransactionModel model) {
+    _transactionRepository.removeTransaction(model);
+    // fetchTransactions();
+    // transactions =
+    //     _transactionRepository.fetchTransactionsForCurrentUser().asObservable();
+  }
+
+  @action
   fetchTransactions() {
     transactions =
         _transactionRepository.fetchTransactionsForCurrentUser().asObservable();

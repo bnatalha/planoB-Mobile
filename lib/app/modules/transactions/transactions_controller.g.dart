@@ -62,6 +62,17 @@ mixin _$TransactionsController on _TransactionsControllerBase, Store {
   }
 
   @override
+  dynamic removeTransaction(TransactionModel model) {
+    final _$actionInfo = _$_TransactionsControllerBaseActionController
+        .startAction(name: '_TransactionsControllerBase.removeTransaction');
+    try {
+      return super.removeTransaction(model);
+    } finally {
+      _$_TransactionsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic fetchTransactions() {
     final _$actionInfo = _$_TransactionsControllerBaseActionController
         .startAction(name: '_TransactionsControllerBase.fetchTransactions');

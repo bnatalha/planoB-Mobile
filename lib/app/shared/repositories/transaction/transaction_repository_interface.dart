@@ -7,4 +7,6 @@ abstract class ITransactionRepository extends Disposable {
   Future<String> addTransaction(TransactionModel model);
 
   Future<String> updateTransaction(TransactionModel model);
+
+  Future<String> removeTransaction(TransactionModel model);
 }

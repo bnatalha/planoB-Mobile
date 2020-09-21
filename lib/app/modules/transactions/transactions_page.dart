@@ -61,6 +61,7 @@ class _TransactionsPageState
               itemBuilder: (_, i) {
                 final t = controller.transactions.value[i];
                 return TransactionCard(
+                  key: ValueKey(t.id),
                   description: t.description,
                   category: t.category.name,
                   value: t.value,
@@ -69,6 +70,7 @@ class _TransactionsPageState
                     controller.selectTransaction(t);
                     Modular.link.pushNamed(RouteNamesUtils.TRANSACTION_PAGE);
                   },
+                  onDismissed: (_) => controller.removeTransaction(t),
                 );
               },
             );

@@ -73,6 +73,15 @@ class TransactionRepositoryMock implements ITransactionRepository {
   }
 
   @override
+  Future<String> removeTransaction(TransactionModel model) async {
+    int i = mockTransactions.indexWhere((e) => e.id == model.id);
+    mockTransactions.removeAt(i);
+    await Future.delayed(Duration(milliseconds: 200));
+    return 'success';
+  }
+  
+
+  @override
   void dispose() {
     // TODO: implement dispose
   }
