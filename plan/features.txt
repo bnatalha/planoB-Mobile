@@ -17,7 +17,9 @@ Idealização do App:
                 . value
                 . description
                 . tag
-                . installment
+                . <installment>
+                    this.payed,
+                    this.toPay,
                 . dateAdded
                 . dateModified
 
