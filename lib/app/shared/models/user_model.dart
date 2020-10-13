@@ -1,12 +1,15 @@
 import 'package:flutter/foundation.dart';
+import 'package:hive/hive.dart';
 
 import 'model.dart';
 
+part 'user_model.g.dart';
+
+@HiveType(adapterName: 'UserModel', typeId: 1)
 class UserModel implements Model {
   UserModel({
     @required this.login,
     this.name,
-    // this.lastName,
     this.password,
   });
 
@@ -23,11 +26,14 @@ class UserModel implements Model {
         'password': password,
       };
 
-  // String firstName;
-  // String lastName;
+  @HiveField(0)
   final String login;
-  String name;
+
+  @HiveField(1)
   String password;
+
+  @HiveField(2)
+  String name;
 
   /// Will only update password if is a match
   Future<bool> updatePass({

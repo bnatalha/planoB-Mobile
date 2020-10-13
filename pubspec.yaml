@@ -26,6 +26,9 @@ dependencies:
   mobx: ^1.2.1
   flutter_modular: ^2.0.0+1
 
+  # Storage
+  hive: ^1.4.4+1
+
   # Http request
   dio: ^3.0.9
 
