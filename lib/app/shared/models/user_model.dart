@@ -1,13 +1,27 @@
 import 'package:flutter/foundation.dart';
-// import 'package:equatable/equatable.dart';
 
-class UserModel {
+import 'model.dart';
+
+class UserModel implements Model {
   UserModel({
     @required this.login,
     this.name,
     // this.lastName,
     this.password,
   });
+
+  @override
+  UserModel.fromJson(Map<String, dynamic> json)
+      : login = json['login'],
+        name = json['name'],
+        password = json['password'];
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'login': login,
+        'name': name,
+        'password': password,
+      };
 
   // String firstName;
   // String lastName;

@@ -1,10 +1,9 @@
-import 'package:flutter/foundation.dart';
-
-import 'user_model.dart';
 import 'account_model.dart';
 import 'category_model.dart';
+import 'model.dart';
+import 'user_model.dart';
 
-class TransactionModel {
+class TransactionModel implements Model {
   final int id;
   final UserModel user;
   final AccountModel source;
@@ -28,6 +27,29 @@ class TransactionModel {
     this.description = "",
     // this.tags,
   });
+
+  @override
+  TransactionModel.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        user = UserModel.fromJson(json['user']),
+        source = json['source'],
+        destination = AccountModel.fromJson(json['destination']),
+        category = CategoryModel.fromJson(json['category']),
+        date = DateTime.parse(json['date']),
+        value = json['value'],
+        description = json['description'];
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'user': user.toJson,
+        'source': source,
+        'destination': destination.toJson(),
+        'category': category.toJson(),
+        'date': date.toString(),
+        'value': value,
+        'description': description,
+      };
 
   copyWith({
     int id,

@@ -1,17 +1,19 @@
 import 'package:plano_b/app/shared/models/user_model.dart';
 
-class AccountModel {
+import 'model.dart';
+
+class AccountModel implements Model {
   final UserModel user;
   final String name;
   final double balance;
 
-  AccountModel({
+  const AccountModel({
     this.user,
     this.name,
     this.balance,
   });
 
-  copyWith({
+  AccountModel copyWith({
     UserModel user,
     String name,
     double balance,
@@ -22,4 +24,17 @@ class AccountModel {
       balance: balance ?? this.balance,
     );
   }
+
+  @override
+  AccountModel.fromJson(Map<String, dynamic> json)
+      : user = UserModel.fromJson(json['user']),
+        name = json['name'],
+        balance = json['balance'];
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'user': user.toJson(),
+        'name': name,
+        'balance': balance,
+      };
 }
