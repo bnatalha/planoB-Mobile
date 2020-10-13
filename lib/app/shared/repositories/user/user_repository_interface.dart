@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plano_b/app/shared/models/user_model.dart';
 
-abstract class IUserRepository extends Disposable {
+import '../repository.dart';
+
+abstract class IUserRepository extends Repository {
   Future<bool> addUser({
     @required String username,
     @required String password,

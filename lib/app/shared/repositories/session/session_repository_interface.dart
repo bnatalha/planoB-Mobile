@@ -1,8 +1,7 @@
-import 'package:flutter_modular/flutter_modular.dart';
-
 import '../../models/user_model.dart';
+import '../repository.dart';
 
-abstract class ISessionRepository extends Disposable {
+abstract class ISessionRepository extends Repository {
   UserModel get currentLoggedUser;
   void setLoggedUser(UserModel user);
   void logout();
