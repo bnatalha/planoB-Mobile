@@ -33,4 +33,16 @@ class TransactionRepositoryHive implements TransactionRepositoryAbstract {
     // TODO: implement getTransactionsFromAccountWithTag
     throw UnimplementedError();
   }
+
+  @override
+  Future<bool> addTransaction({int userId, int toUserId, int accountId, double value, String description, List<String> tags, CategoryModel category}) {
+    // TODO: implement addTransaction
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> removeTransaction({int transactionId}) {
+    // TODO: implement removeTransaction
+    throw UnimplementedError();
+  }
 }
