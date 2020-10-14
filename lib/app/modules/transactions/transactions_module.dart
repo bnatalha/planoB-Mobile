@@ -69,9 +69,9 @@ class TransactionsModule extends ChildModule {
 
   @override
   List<ModularRouter> get routers => [
-        ModularRouter<TransactionsPage>(RouteNamesUtils.HOME_PAGE,
+        ModularRouter<TransactionsPage>(Modular.initialRoute,
             child: (_, __) => const TransactionsPage()),
-        ModularRouter<TransactionDetailsPage>(RouteNamesUtils.TRANSACTION_PAGE,
+        ModularRouter<TransactionDetailsPage>(RouteNamesUtils.DETAIL_ROUTE,
             child: (_, __) => const TransactionDetailsPage()),
       ];
 }

@@ -1,3 +1,4 @@
+
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:plano_b/app/modules/transactions/stores/transaction_store.dart';
@@ -63,4 +64,6 @@ abstract class _TransactionsControllerBase with Store {
 
   @computed
   String get lastName => _sessionRepository.currentLoggedUser.name;
+
+  
 }
