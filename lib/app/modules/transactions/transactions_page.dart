@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plano_b/app/shared/utils/routes_names_utils.dart';
+import 'package:plano_b/app/shared/widgets/app_main_drawer.dart';
 import 'transactions_controller.dart';
 import '../../shared/widgets/transaction_card.dart';
 
@@ -30,25 +31,7 @@ class _TransactionsPageState
               })
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-              ),
-              child: Text(
-                'Finances App',
-                style: Theme.of(context).textTheme.headline6.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-              ),
-            ),
-            ..._getAccounts(controller),
-          ],
-        ),
-      ),
+      drawer: AppMainDrawer(),
       body: Center(
         child: Observer(
           builder: (_) {
@@ -85,21 +68,5 @@ class _TransactionsPageState
         child: Icon(Icons.add),
       ),
     );
-  }
-
-  List<Widget> _getAccounts(TransactionsController controller) {
-    List<String> bankNames = ['Nubank', 'Inter', 'Banco do Brasil'];
-
-    return bankNames
-        .map(
-          (String name) => InkWell(
-            onTap: () => print('Clicando na conta $name'),
-            child: ListTile(
-              leading: Icon(Icons.account_balance),
-              title: Text(name),
-            ),
-          ),
-        )
-        .toList();
   }
 }
