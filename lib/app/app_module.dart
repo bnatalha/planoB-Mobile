@@ -75,9 +75,9 @@ class AppModule extends MainModule {
   // TODO: implement routers
   List<ModularRouter> get routers => [
         ModularRouter<LoginModule>(Modular.initialRoute, module: LoginModule()),
-        ModularRouter<TransactionsModule>(Modular.initialRoute,
+        ModularRouter<TransactionsModule>(RouteNamesUtils.TRANSACTION_PAGE,
             module: TransactionsModule()),
-        ModularRouter<AccountModule>(Modular.initialRoute,
+        ModularRouter<AccountModule>(RouteNamesUtils.ACCOUNT_PAGE,
             module: AccountModule()),
       ];
 }

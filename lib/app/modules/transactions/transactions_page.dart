@@ -51,7 +51,7 @@ class _TransactionsPageState
                   date: t.date,
                   onTap: () {
                     controller.selectTransaction(t);
-                    Modular.link.pushNamed(RouteNamesUtils.TRANSACTION_PAGE);
+                    Modular.link.pushNamed(RouteNamesUtils.DETAIL_ROUTE);
                   },
                   onDismissed: (_) => controller.removeTransaction(t),
                 );
@@ -63,7 +63,7 @@ class _TransactionsPageState
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           controller.setAddTransactionMode();
-          Modular.link.pushNamed(RouteNamesUtils.TRANSACTION_PAGE);
+          Modular.link.pushNamed(RouteNamesUtils.DETAIL_ROUTE);
         },
         child: Icon(Icons.add),
       ),

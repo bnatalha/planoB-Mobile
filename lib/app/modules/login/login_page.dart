@@ -125,7 +125,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
     );
 
     if (result) {
-      Modular.link.pushNamed(RouteNamesUtils.HOME_PAGE);
+      Modular.to.pushNamed(RouteNamesUtils.HOME_PAGE);
     }
     print("Login $result");
   }

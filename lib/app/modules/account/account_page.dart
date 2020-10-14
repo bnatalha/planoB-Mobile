@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plano_b/app/modules/account/account_controller.dart';
+import 'package:plano_b/app/shared/utils/routes_names_utils.dart';
 import 'package:plano_b/app/shared/widgets/app_main_drawer.dart';
 
 class AccountPage extends StatefulWidget {
@@ -30,7 +31,10 @@ class _AccountPageState extends ModularState<AccountPage, AccountController> {
                 return ListTile(
                   title: Text(item.name),
                   subtitle: Text('R\$${item.balance.toStringAsFixed(2)}'),
-                  onTap: () {},
+                  onTap: () {
+                    controller.account.setAccount(item);
+                    Modular.link.pushNamed(RouteNamesUtils.DETAIL_ROUTE);
+                  },
                 );
               },
             ),
