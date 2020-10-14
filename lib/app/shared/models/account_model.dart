@@ -1,40 +1,23 @@
-import 'package:plano_b/app/shared/models/user_model.dart';
+import 'package:hive/hive.dart';
 
 import 'model.dart';
 
-class AccountModel implements Model {
-  final UserModel user;
-  final String name;
-  final double balance;
 
-  const AccountModel({
-    this.user,
-    this.name,
-    this.balance,
-  });
+@HiveType(typeId: 12)
+class AccountModel extends Model {
 
-  AccountModel copyWith({
-    UserModel user,
-    String name,
-    double balance,
-  }) {
-    return AccountModel(
-      user: user ?? this.user,
-      name: name ?? this.name,
-      balance: balance ?? this.balance,
-    );
+  @HiveField(0)
+  final int id;
+
+  @HiveField(1)
+  final int userId;
+
+  @HiveField(2)
+  final String bankName;
+
+  @override
+  Map<String, dynamic> toJson() {
+    // TODO: implement toJson
+    throw UnimplementedError();
   }
-
-  @override
-  AccountModel.fromJson(Map<String, dynamic> json)
-      : user = UserModel.fromJson(json['user']),
-        name = json['name'],
-        balance = json['balance'];
-
-  @override
-  Map<String, dynamic> toJson() => {
-        'user': user.toJson(),
-        'name': name,
-        'balance': balance,
-      };
 }
