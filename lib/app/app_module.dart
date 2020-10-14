@@ -13,6 +13,7 @@ import 'shared/repositories/session/session_repository_interface.dart';
 import 'shared/repositories/session/session_repository_mock.dart';
 import 'shared/repositories/transaction/transaction_repository_interface.dart';
 import 'shared/repositories/transaction/transaction_repository_mock.dart';
+import 'shared/repositories/user/hive_user_repository.dart';
 import 'shared/repositories/user/user_repository.dart';
 import 'shared/repositories/user/user_repository_interface.dart';
 import 'shared/repositories/user/user_repository_mock.dart';
@@ -56,8 +57,7 @@ class AppModule extends MainModule {
         // Repositories
         Bind<ISessionRepository>((Inject<dynamic> i) =>
             IS_MOCK ? SessionRepositoryMock() : SessionRepository()),
-        Bind<IUserRepository>((Inject<dynamic> i) =>
-            IS_MOCK ? UserRepositoryMock() : UserRepository()),
+        Bind<IUserRepository>((Inject<dynamic> i) => HiveUserRepository()),
         Bind<ITransactionRepository>((i) =>
             IS_MOCK ? TransactionRepositoryMock() : TransactionRepository()),
 

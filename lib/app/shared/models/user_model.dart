@@ -5,7 +5,7 @@ import 'model.dart';
 
 part 'user_model.g.dart';
 
-@HiveType(adapterName: 'UserModel', typeId: 1)
+@HiveType(typeId: 1)
 class UserModel implements Model {
   UserModel({
     @required this.login,
