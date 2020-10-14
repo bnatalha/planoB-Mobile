@@ -255,7 +255,7 @@ class _TransactionDetailsPageState
       user: muser,
       source: srcAcc,
       destination: destAcc,
-      category: CategoryModel(description: "", name: "novo", user: muser),
+      category: CategoryModel.deposit,
       date: controller.transaction.date ?? DateTime.now(),
       value: double.parse(_valueController.value.text),
       description: "Nova transacao",

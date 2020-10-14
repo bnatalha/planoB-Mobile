@@ -1,9 +1,21 @@
-import 'package:plano_b/app/shared/models/user_model.dart';
+enum CategoryModel {
+  deposit,
+  transaction,
+  // ... TODO
+}
 
-class CategoryModel {
-  final UserModel user;
-  final String name;
-  final String description;
-
-  CategoryModel({this.user, this.name, this.description});
+extension CategoryParsing on CategoryModel {
+  String asString() {
+    switch (this) {
+      case CategoryModel.deposit:
+        return 'Depósito';
+        break;
+      case CategoryModel.transaction:
+        return 'Transação';
+        break;
+      default:
+        return '';
+        break;
+    }
+  }
 }

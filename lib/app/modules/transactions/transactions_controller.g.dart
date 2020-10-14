@@ -16,20 +16,6 @@ mixin _$TransactionsController on _TransactionsControllerBase, Store {
           () => super.transactionsLength,
           name: '_TransactionsControllerBase.transactionsLength'))
       .value;
-  Computed<String> _$firstNameComputed;
-
-  @override
-  String get firstName =>
-      (_$firstNameComputed ??= Computed<String>(() => super.firstName,
-              name: '_TransactionsControllerBase.firstName'))
-          .value;
-  Computed<String> _$lastNameComputed;
-
-  @override
-  String get lastName =>
-      (_$lastNameComputed ??= Computed<String>(() => super.lastName,
-              name: '_TransactionsControllerBase.lastName'))
-          .value;
 
   final _$transactionsAtom =
       Atom(name: '_TransactionsControllerBase.transactions');
@@ -98,9 +84,7 @@ mixin _$TransactionsController on _TransactionsControllerBase, Store {
   String toString() {
     return '''
 transactions: ${transactions},
-transactionsLength: ${transactionsLength},
-firstName: ${firstName},
-lastName: ${lastName}
+transactionsLength: ${transactionsLength}
     ''';
   }
 }

@@ -5,6 +5,8 @@ import 'package:plano_b/app/shared/utils/routes_names_utils.dart';
 import 'package:plano_b/app/shared/widgets/app_main_drawer.dart';
 import 'transactions_controller.dart';
 import '../../shared/widgets/transaction_card.dart';
+import 'package:plano_b/app/shared/models/category_model.dart';
+
 
 class TransactionsPage extends StatefulWidget {
   final String title;
@@ -46,7 +48,7 @@ class _TransactionsPageState
                 return TransactionCard(
                   key: ValueKey(t.id),
                   description: t.description,
-                  category: t.category.name,
+                  category: t.category.asString(),
                   value: t.value,
                   date: t.date,
                   onTap: () {
