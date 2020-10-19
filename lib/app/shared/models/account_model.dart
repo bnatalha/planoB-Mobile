@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:plano_b/app/shared/models/user_model.dart';
 
 class AccountModel {
@@ -16,17 +18,16 @@ class AccountModel {
   factory AccountModel.fromJson(Map<String, dynamic> json) {
     return AccountModel(
       id: json['id'] as int,
-      user: json['user'] as UserModel,
+      user: UserModel.fromJson(jsonDecode(json['user'])),
       name: json['name'] as String,
       balance: json['balance'] as double,
     );
   }
   
-  @override
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
-      'user': user,
+      'user': jsonEncode(user.toJson()),
       'name': name,
       'balance': balance,
     };
