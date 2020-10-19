@@ -36,7 +36,7 @@ class _AppMainDrawerState extends State<AppMainDrawer> {
   ListTile buildListTile(String title, String namedRoute) => ListTile(
         title: Text(title),
         onTap: () {
-          Modular.link.pushNamed(namedRoute);
+          Modular.to.pushReplacementNamed(namedRoute);
         },
       );
 

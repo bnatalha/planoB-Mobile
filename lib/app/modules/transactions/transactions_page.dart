@@ -38,7 +38,7 @@ class _TransactionsPageState
           builder: (_) {
             if (controller.isLoading.value) {
               return CircularProgressIndicator();
-            } else if (controller.transactions.isEmpty) {
+            } else if (controller.transactions == null || controller.transactions.isEmpty) {
               return Container(
                 child: Text('Nenhuma transação cadastrada.'),
               );
