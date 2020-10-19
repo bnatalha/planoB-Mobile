@@ -17,6 +17,15 @@ class UserService {
   /// Will delete the user with [userId]
   Future<bool> deleteUser({int userId}) async {}
 
+  /// Will create a user
+  Future<bool> createUser({
+    String username,
+    String password,
+    String displayName,
+  }) async {
+    userRepository.createUser(username, password, displayName);
+  }
+
   /// Will change username of the user with [userId] to [newUsername]
   Future<bool> changeUsername({int userId, String newUsername}) {}
 

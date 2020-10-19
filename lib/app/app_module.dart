@@ -11,14 +11,21 @@ import 'modules/transactions/transactions_module.dart';
 import 'shared/repositories/abstract/transaction_repository_abstract.dart';
 import 'shared/repositories/hive/transaction_repository_hive.dart';
 import 'shared/repositories/hive/user_repository_hive.dart';
+import 'shared/services/user_service.dart';
 
 class AppModule extends MainModule {
   @override
   List<Bind> get binds => [
         // Repositories
-        Bind<UserRepositoryAbstract>(
-            (Inject<dynamic> i) => UserRepositoryHive()),
-        Bind<TransactionRepositoryAbstract>((i) => TransactionRepositoryHive()),
+        // Bind<UserRepositoryAbstract>(
+        // (Inject<dynamic> i) => UserRepositoryHive(),
+        // ),
+        // Bind<TransactionRepositoryAbstract>(
+        // (i) => TransactionRepositoryHive(),
+        // ),
+        Bind<UserService>(
+          (i) => UserService(userRepository: UserRepositoryHive()),
+        ),
 
         // Controllers
         Bind<AppController>((Inject<dynamic> i) => AppController()),

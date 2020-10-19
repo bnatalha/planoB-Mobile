@@ -2,8 +2,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:plano_b/app/modules/transactions/stores/transaction_store.dart';
 import 'package:plano_b/app/shared/models/transaction_model.dart';
-import 'package:plano_b/app/shared/repositories/session/session_repository_interface.dart';
-import 'package:plano_b/app/shared/repositories/transaction/transaction_repository_interface.dart';
+import 'package:plano_b/app/shared/repositories/abstract/transaction_repository_abstract.dart';
+// import 'package:plano_b/app/shared/repositories/session/session_repository_interface.dart';
+// import 'package:plano_b/app/shared/repositories/transaction/transaction_repository_interface.dart';
 
 part 'transactions_controller.g.dart';
 
@@ -11,9 +12,8 @@ class TransactionsController = _TransactionsControllerBase
     with _$TransactionsController;
 
 abstract class _TransactionsControllerBase with Store {
-  final ISessionRepository _sessionRepository;
-  final ITransactionRepository _transactionRepository =
-      Modular.get<ITransactionRepository>();
+  final TransactionRepositoryAbstract transactionService =
+      Modular.get<TransactionRepositoryAbstract>();
   final TransactionStore _transactionStore;
 
   @observable
@@ -27,7 +27,7 @@ abstract class _TransactionsControllerBase with Store {
   //   fetchTransactions();
   // }
 
-  _TransactionsControllerBase(this._sessionRepository, this._transactionStore) {
+  _TransactionsControllerBase(this._transactionStore) {
     fetchTransactions();
   }
 
@@ -46,7 +46,8 @@ abstract class _TransactionsControllerBase with Store {
   
   @action
   removeTransaction(TransactionModel model) {
-    _transactionRepository.removeTransaction(model);
+    // TODO: Adapt to new model
+    // transactionService.removeTransaction(model);
     // fetchTransactions();
     // transactions =
     //     _transactionRepository.fetchTransactionsForCurrentUser().asObservable();
@@ -54,13 +55,16 @@ abstract class _TransactionsControllerBase with Store {
 
   @action
   fetchTransactions() {
+    // TODO: Adapt to new model
+    /*
     transactions =
-        _transactionRepository.fetchTransactionsForCurrentUser().asObservable();
+        transactionService.fetchTransactionsForCurrentUser().asObservable();
+        */
   }
 
   @computed
-  String get firstName => _sessionRepository.currentLoggedUser.name;
+  String get firstName => null; // TODO: ADAPT to new model _sessionRepository.currentLoggedUser.name;
 
   @computed
-  String get lastName => _sessionRepository.currentLoggedUser.name;
+  String get lastName => null; // TODO: Adapt to new model _sessionRepository.currentLoggedUser.name;
 }

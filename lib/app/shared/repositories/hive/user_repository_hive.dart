@@ -1,17 +1,46 @@
+import 'package:hive/hive.dart';
 import 'package:plano_b/app/shared/models/user_model.dart';
+import 'package:plano_b/app/shared/utils/box_names.dart';
 
 import '../abstract/user_repository_abstract.dart';
 
 class UserRepositoryHive implements UserRepositoryAbstract {
+  Box hive;
+
+  UserRepositoryHive() {
+    _initBox();
+  }
+
+  Future<void> _initBox() async {
+    // hive = Hive.box(BoxNames.userRepositoryBoxName);
+    hive = BoxNames.userRepositoryBox;
+    Hive.registerAdapter(UserModelAdapter());
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
   }
 
   @override
-  Future<bool> createUser(String username, String password, String displayName) {
-    // TODO: implement createUser
-    throw UnimplementedError();
+  Future<bool> createUser(
+    String username,
+    String password,
+    String displayName,
+  ) {
+    // UserModel userRetrieved = hive.get(username.hashCode);
+    // print(userRetrieved);
+
+    final UserModel user = UserModel(
+      id: username.hashCode,
+      username: username,
+      password: password,
+      displayName: displayName,
+    );
+
+    hive.put(username.hashCode, user);
+    print(hive.keys.toList());
+    print(hive.values.toList());
   }
 
   @override

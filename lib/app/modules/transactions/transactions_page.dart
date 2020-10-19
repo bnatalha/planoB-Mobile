@@ -63,9 +63,9 @@ class _TransactionsPageState
                 return TransactionCard(
                   key: ValueKey(t.id),
                   description: t.description,
-                  category: t.category.name,
+                  category: null, // TODO: Adapt to new model ::  t.category.name,
                   value: t.value,
-                  date: t.date,
+                  date: null, // TODO: Adapt to new model :: t.date,
                   onTap: () {
                     controller.selectTransaction(t);
                     Modular.link.pushNamed(RouteNamesUtils.TRANSACTION_PAGE);

@@ -1,13 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:dio/dio.dart';
-import 'package:plano_b/app/shared/repositories/user/user_repository.dart';
+// import 'package:plano_b/app/shared/repositories/user/user_repository.dart';
 
 
 class MockClient extends Mock implements Dio {}
 
 void main() {
-  UserRepository repository;
+  // UserRepository repository;
   // MockClient client;
 
   setUp(() {

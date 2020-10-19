@@ -32,6 +32,8 @@ class _TransactionDetailsPageState
     _destUserController = TextEditingController();
     _destBankController = TextEditingController();
 
+    // TODO: Adapt to consume from new model
+    /*
     if (controller.transaction.id != null) {
       _valueController.value =
           TextEditingValue(text: controller.transaction.value.toString());
@@ -44,6 +46,7 @@ class _TransactionDetailsPageState
       _destBankController.value = TextEditingValue(
           text: controller.transaction.destination.name.toString());
     }
+    */
 
     controller.verifyMode();
 
@@ -151,14 +154,14 @@ class _TransactionDetailsPageState
                   ),
                   SizedBox(height: 10),
                   buildaAccDescription(
-                    acc: controller.transaction.source,
+                    acc: null, // TODO: Change to new model :: controller.transaction.source,
                     lead: 'Origem',
                     userController: _srcUserController,
                     bankController: _srcBankController,
                   ),
                   SizedBox(height: 10),
                   buildaAccDescription(
-                    acc: controller.transaction.destination,
+                    acc: null, // TODO: Change to new model :: controller.transaction.destination,
                     lead: 'Destino',
                     userController: _destUserController,
                     bankController: _destBankController,
@@ -178,11 +181,15 @@ class _TransactionDetailsPageState
       "${!controller.addTransactionMode ? controller.transaction.id : "Nova Transação"}";
 
   String formattedDate() {
+    // TODO: Change to new format
+    return 'NULL';
+    /*
     if (controller.transaction.date != null) {
       return ' Realizada em ${DateFormat('yMd').format(controller.transaction.date)}';
     }
 
     return ' Nova transação (${DateFormat('yMd').format(DateTime.now())})';
+    */
   }
 
   // TODO show account balance
@@ -232,6 +239,7 @@ class _TransactionDetailsPageState
   }
 
   void _addTransaction() {
+    /*
     UserModel muser = UserModel(
       name: _srcUserController.value.text,
       login: 'qlqr coisa',
@@ -262,6 +270,7 @@ class _TransactionDetailsPageState
     ));
 
     Modular.link.pop();
+    */
   }
 
   void _saveTransaction() {
@@ -269,6 +278,7 @@ class _TransactionDetailsPageState
   }
 
   TransactionModel _buildNewTransaction() {
+    /*
     return controller.transaction.copyWith(
       date: controller.transaction.date ?? DateTime.now(),
       value: double.parse(_valueController.value.text),
@@ -285,5 +295,6 @@ class _TransactionDetailsPageState
         ),
       ),
     );
+    */
   }
 }

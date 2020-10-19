@@ -2,17 +2,16 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:plano_b/app/modules/transactions/stores/transaction_store.dart';
 import 'package:plano_b/app/shared/models/transaction_model.dart';
-import 'package:plano_b/app/shared/repositories/transaction/transaction_repository_interface.dart';
+import 'package:plano_b/app/shared/repositories/abstract/transaction_repository_abstract.dart';
 
-import '../../../../shared/repositories/transaction/transaction_repository_interface.dart';
 part 'transaction_details_controller.g.dart';
 
 class TransactionDetailsController = _TransacionDetailsControllerBase
     with _$TransactionDetailsController;
 
 abstract class _TransacionDetailsControllerBase with Store {
-  final ITransactionRepository _transactionRepository =
-      Modular.get<ITransactionRepository>();
+  final TransactionRepositoryAbstract transactionService =
+      Modular.get<TransactionRepositoryAbstract>();
   final TransactionStore _transactionStore;
 
   @observable
@@ -34,11 +33,6 @@ abstract class _TransacionDetailsControllerBase with Store {
     editMode = !editMode;
   }
 
-  // _TransacionDetailsControllerBase(
-  //     this._transactionRepository, this._transactionStore) {
-  //   enableEdit = false;
-  // }
-
   _TransacionDetailsControllerBase(this._transactionStore) {
     editMode = false;
   }
@@ -46,7 +40,8 @@ abstract class _TransacionDetailsControllerBase with Store {
   @action
   addTransaction(TransactionModel model) {
     _transactionStore.transaction = model;
-    _transactionRepository.addTransaction(model);
+    // TODO: Add logic to proper add transaction
+    // transactionService.addTransaction();
   }
   
 
@@ -55,6 +50,7 @@ abstract class _TransacionDetailsControllerBase with Store {
 
   set transaction(TransactionModel model) {
     _transactionStore.transaction = model;
-    _transactionRepository.updateTransaction(model);
+    // TODO: Add logic to proper update transaction
+    // transactionService.updateTransaction(model);
   }
 }
