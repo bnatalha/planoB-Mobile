@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:plano_b/app/modules/account/pages/account_details_controller.dart';
+import 'package:plano_b/app/modules/account/pages/account_details/account_details_controller.dart';
 
 class AccountDetailsPage extends StatefulWidget {
   @override
