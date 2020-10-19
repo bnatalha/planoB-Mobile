@@ -17,20 +17,58 @@ mixin _$TransactionsController on _TransactionsControllerBase, Store {
           name: '_TransactionsControllerBase.transactionsLength'))
       .value;
 
+  final _$isLoadingAtom = Atom(name: '_TransactionsControllerBase.isLoading');
+
+  @override
+  Observable<bool> get isLoading {
+    _$isLoadingAtom.reportRead();
+    return super.isLoading;
+  }
+
+  @override
+  set isLoading(Observable<bool> value) {
+    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
+      super.isLoading = value;
+    });
+  }
+
+  final _$hasErrorAtom = Atom(name: '_TransactionsControllerBase.hasError');
+
+  @override
+  Observable<bool> get hasError {
+    _$hasErrorAtom.reportRead();
+    return super.hasError;
+  }
+
+  @override
+  set hasError(Observable<bool> value) {
+    _$hasErrorAtom.reportWrite(value, super.hasError, () {
+      super.hasError = value;
+    });
+  }
+
   final _$transactionsAtom =
       Atom(name: '_TransactionsControllerBase.transactions');
 
   @override
-  ObservableFuture<List<TransactionModel>> get transactions {
+  ObservableList<TransactionModel> get transactions {
     _$transactionsAtom.reportRead();
     return super.transactions;
   }
 
   @override
-  set transactions(ObservableFuture<List<TransactionModel>> value) {
+  set transactions(ObservableList<TransactionModel> value) {
     _$transactionsAtom.reportWrite(value, super.transactions, () {
       super.transactions = value;
     });
+  }
+
+  final _$fetchTransactionsAsyncAction =
+      AsyncAction('_TransactionsControllerBase.fetchTransactions');
+
+  @override
+  Future<void> fetchTransactions() {
+    return _$fetchTransactionsAsyncAction.run(() => super.fetchTransactions());
   }
 
   final _$_TransactionsControllerBaseActionController =
@@ -70,19 +108,10 @@ mixin _$TransactionsController on _TransactionsControllerBase, Store {
   }
 
   @override
-  dynamic fetchTransactions() {
-    final _$actionInfo = _$_TransactionsControllerBaseActionController
-        .startAction(name: '_TransactionsControllerBase.fetchTransactions');
-    try {
-      return super.fetchTransactions();
-    } finally {
-      _$_TransactionsControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
+isLoading: ${isLoading},
+hasError: ${hasError},
 transactions: ${transactions},
 transactionsLength: ${transactionsLength}
     ''';

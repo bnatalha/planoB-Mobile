@@ -1,7 +1,9 @@
 // import 'package:plano_b/app/shared/models/transaction_model.dart';
 
+import 'package:plano_b/app/shared/models/account_model.dart';
 import 'package:plano_b/app/shared/models/category_model.dart';
 import 'package:plano_b/app/shared/models/transaction_model.dart';
+import 'package:plano_b/app/shared/models/user_model.dart';
 import 'package:plano_b/app/shared/repositories/mock/mock_models.dart';
 
 import '../abstract/transaction_repository_abstract.dart';
@@ -44,28 +46,29 @@ class TransactionRepositoryMock implements TransactionRepositoryAbstract {
   }
 
   @override
-  Future<bool> addTransaction(
-      {int userId,
-      int toUserId,
-      int accountId,
-      double value,
-      String description,
-      List<String> tags,
-      CategoryModel category}) {
+  Future<bool> addTransaction({
+    UserModel user,
+    AccountModel source,
+    AccountModel destination,
+    double value,
+    String description,
+    List<String> tags,
+    CategoryModel category,
+    DateTime date,
+  }) {
     final t = TransactionModel(
       id: _idCount++,
       user: userMock1,
       source: accMock1,
       destination: accMock2,
       category: category,
-      date: DateTime.now(),
+      date: date,
       value: value,
       description: description,
     );
 
     transMockList.add(t);
     return Future.delayed(_duration).then((value) => true);
-
   }
 
   @override

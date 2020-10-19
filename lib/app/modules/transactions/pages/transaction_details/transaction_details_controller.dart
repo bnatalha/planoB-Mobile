@@ -13,6 +13,7 @@ class TransactionDetailsController = _TransacionDetailsControllerBase
 abstract class _TransacionDetailsControllerBase with Store {
   final TransactionService _transactionService =
       Modular.get<TransactionService>();
+
   final TransactionStore _transactionStore;
 
   @observable
@@ -43,12 +44,12 @@ abstract class _TransacionDetailsControllerBase with Store {
   addTransaction(TransactionModel model) {
     _transactionStore.transaction = model;
     _transactionService.addTransaction(
-      userId: int.parse(model.user.name),
-      toUserId: 123123,
-      accountId: 2,
+      // user: int.parse(model.user.name),
+      // destination: 123123,
+      // source: 2,
       value: model.value,
       description: model.description,
-      tags: ['tag1, tag2'],
+      // tags: ['tag1, tag2'],
       category: model.category,
     );
   }
@@ -62,12 +63,12 @@ abstract class _TransacionDetailsControllerBase with Store {
     _transactionStore.transaction = model;
 
     _transactionService.updateTransaction(
-      userId: int.parse(model.user.name),
-      toUserId: 123123,
-      accountId: 2,
+      // userId: int.parse(model.user.name),
+      // toUserId: 123123,
+      // accountId: 2,
       value: model.value,
       description: model.description,
-      tags: ['tag1, tag2'],
+      // tags: ['tag1, tag2'],
       category: model.category,
     );
   }

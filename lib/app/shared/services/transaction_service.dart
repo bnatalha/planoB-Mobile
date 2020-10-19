@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
+import 'package:plano_b/app/shared/models/account_model.dart';
 import 'package:plano_b/app/shared/models/category_model.dart';
 import 'package:plano_b/app/shared/models/transaction_model.dart';
+import 'package:plano_b/app/shared/models/user_model.dart';
 import 'package:plano_b/app/shared/repositories/abstract/transaction_repository_abstract.dart';
 
 class TransactionService {
@@ -23,21 +25,21 @@ class TransactionService {
   }
 
   Future<bool> addTransaction({
-    int userId,
-    int toUserId,
-    int accountId,
+    UserModel user,
+    AccountModel source,
+    AccountModel destination,
     double value,
     String description,
-    List<String> tags,
+    // List<String> tags,
     CategoryModel category,
   }) async {
     return transactionRepository.addTransaction(
-      userId: userId,
-      toUserId: toUserId,
-      accountId: accountId,
+      user: user,
+      source: source,
+      destination: destination,
       value: value,
       description: description,
-      tags: tags,
+      // tags: tags,
       category: category,
     );
   }
@@ -47,12 +49,12 @@ class TransactionService {
   }
 
   Future<bool> updateTransaction({
-    int userId,
-    int toUserId,
-    int accountId,
+    UserModel user,
+    AccountModel source,
+    AccountModel destination,
     double value,
     String description,
-    List<String> tags,
+    // List<String> tags,
     CategoryModel category,
   }) async {
     throw UnimplementedError();

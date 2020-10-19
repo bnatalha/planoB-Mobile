@@ -1,4 +1,6 @@
+import 'package:plano_b/app/shared/models/account_model.dart';
 import 'package:plano_b/app/shared/models/category_model.dart';
+import 'package:plano_b/app/shared/models/user_model.dart';
 // import 'package:plano_b/app/shared/models/transaction_model.dart';
 
 import '../repository.dart';
@@ -19,12 +21,13 @@ abstract class TransactionRepositoryAbstract extends Repository {
   );
 
   Future<bool> addTransaction({
-    int userId,
-    int toUserId,
-    int accountId,
+    UserModel user,
+    AccountModel source,
+    AccountModel destination,
     double value,
     String description,
-    List<String> tags,
+    DateTime date,
+    // List<String> tags,
     CategoryModel category,
   });
 

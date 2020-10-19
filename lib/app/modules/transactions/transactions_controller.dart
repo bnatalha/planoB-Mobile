@@ -18,11 +18,17 @@ abstract class _TransactionsControllerBase with Store {
       Modular.get<TransactionService>();
   final TransactionStore _transactionStore;
 
+  @observable 
+  Observable<bool> isLoading = Observable(false);
+
+  @observable 
+  Observable<bool> hasError = Observable(false);
+
   @observable
-  ObservableFuture<List<TransactionModel>> transactions;
+  ObservableList<TransactionModel> transactions;
 
   @computed
-  int get transactionsLength => transactions.value.length;
+  int get transactionsLength => transactions.length;
 
   // _TransactionsControllerBase(
   //     this._sessionRepository, this._transactionRepository, this._transactionStore) {
@@ -55,10 +61,15 @@ abstract class _TransactionsControllerBase with Store {
   }
 
   @action
-  fetchTransactions() {
-    // TODO: Adapt to new model
-    transactions =
-        _transactionService.getTransactionsFromAccount().asObservable();
+  Future<void> fetchTransactions() async {
+    isLoading.value = true;
+    try {
+      transactions = await _transactionService.getTransactionsFromAccount();
+      hasError.value = false;
+    } catch (e) {
+      hasError.value = true;
+    }
+    isLoading.value = false;
   }
 
   // @computed

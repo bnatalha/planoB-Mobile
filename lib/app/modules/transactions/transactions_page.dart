@@ -7,7 +7,6 @@ import 'transactions_controller.dart';
 import '../../shared/widgets/transaction_card.dart';
 import 'package:plano_b/app/shared/models/category_model.dart';
 
-
 class TransactionsPage extends StatefulWidget {
   final String title;
   const TransactionsPage({Key key, this.title = "Home"}) : super(key: key);
@@ -37,28 +36,45 @@ class _TransactionsPageState
       body: Center(
         child: Observer(
           builder: (_) {
-            if (controller.transactions.value == null) {
+            if (controller.isLoading.value) {
               return CircularProgressIndicator();
+            } else if (controller.transactions.isEmpty) {
+              return Container(
+                child: Text('Nenhuma transação cadastrada.'),
+              );
             }
-            return ListView.separated(
-              itemCount: controller.transactionsLength,
-              separatorBuilder: (_, i) => const SizedBox(height: 4),
-              itemBuilder: (_, i) {
-                final t = controller.transactions.value[i];
-                return TransactionCard(
-                  key: ValueKey(t.id),
-                  description: t.description,
-                  category: t.category.asString(),
-                  value: t.value,
-                  date: null, // TODO: Adapt to new model :: t.date,
-                  onTap: () {
-                    controller.selectTransaction(t);
-                    Modular.link.pushNamed(RouteNamesUtils.DETAIL_ROUTE);
-                  },
-                  onDismissed: (_) => controller.removeTransaction(t),
-                );
-              },
-            );
+
+            try {
+              return ListView.separated(
+                itemCount: controller.transactionsLength,
+                separatorBuilder: (_, i) => const SizedBox(height: 4),
+                itemBuilder: (_, i) {
+                  final t = controller.transactions[i];
+                  return TransactionCard(
+                    key: ValueKey(t.id),
+                    description: t.description,
+                    category: t.category.asString(),
+                    value: t.value,
+                    date: t.date, // TODO: Adapt to new model :: t.date,
+                    onTap: () {
+                      controller.selectTransaction(t);
+                      Modular.link.pushNamed(RouteNamesUtils.DETAIL_ROUTE);
+                    },
+                    onDismissed: (_) => controller.removeTransaction(t),
+                  );
+                },
+              );
+            } catch (e) {
+              return Container(
+                  child: Column(
+                children: <Widget>[
+                  Icon(Icons.error_outline),
+                  Text('Ops! Algo de errado ocorreu.')
+                ],
+              ));
+            }
+
+            return Container();
           },
         ),
       ),

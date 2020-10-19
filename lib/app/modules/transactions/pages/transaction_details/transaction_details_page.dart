@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
+import 'package:plano_b/app/modules/login/login_controller.dart';
 import 'package:plano_b/app/shared/models/category_model.dart';
 import 'package:plano_b/app/shared/models/user_model.dart';
 
@@ -76,7 +77,7 @@ class _TransactionDetailsPageState
                 onPressed: _addTransaction,
                 icon: Icon(
                   Icons.save,
-                  color: Colors.lightBlueAccent[200],
+                  color: Colors.white,
                 ),
               );
             }
@@ -88,9 +89,9 @@ class _TransactionDetailsPageState
                   color: Colors.amber[200],
                 ),
                 SizedBox(width: 5),
-                Text(controller.editMode
-                    ? ''
-                    : 'Modo Edição'), // TODO animar in-out
+                Text(
+                  controller.editMode ? '' : 'Modo Edição',
+                ), // TODO animar in-out
                 Switch(
                   value: controller.editMode,
                   activeColor: Colors.amber[200],
@@ -118,8 +119,10 @@ class _TransactionDetailsPageState
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(formattedDate(),
-                        style: Theme.of(context).textTheme.subtitle1),
+                    child: Text(
+                      formattedDate(),
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -127,21 +130,22 @@ class _TransactionDetailsPageState
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                            controller.addTransactionMode
-                                ? ""
-                                : "#${idString()}",
-                            style: Theme.of(context).textTheme.headline4),
+                          controller.addTransactionMode ? "" : "#${idString()}",
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
                         Spacer(),
                         Expanded(
                           child: Observer(
                             builder: (_) => TextField(
                               style: TextStyle(
-                                  color: Colors.indigo,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold),
+                                color: Colors.indigo,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
                               enabled: controller.editMode,
                               keyboardType: TextInputType.numberWithOptions(
-                                  decimal: true),
+                                decimal: true,
+                              ),
                               controller: _valueController,
                               decoration: InputDecoration(
                                 prefixText: 'R\$',
@@ -154,14 +158,16 @@ class _TransactionDetailsPageState
                   ),
                   SizedBox(height: 10),
                   buildaAccDescription(
-                    acc: null, // TODO: Change to new model :: controller.transaction.source,
+                    acc: controller.transaction
+                        .source, // TODO: Change to new model :: controller.transaction.source,
                     lead: 'Origem',
                     userController: _srcUserController,
                     bankController: _srcBankController,
                   ),
                   SizedBox(height: 10),
                   buildaAccDescription(
-                    acc: null, // TODO: Change to new model :: controller.transaction.destination,
+                    acc: controller.transaction
+                        .destination, // TODO: Change to new model :: controller.transaction.destination,
                     lead: 'Destino',
                     userController: _destUserController,
                     bankController: _destBankController,
@@ -182,14 +188,14 @@ class _TransactionDetailsPageState
 
   String formattedDate() {
     // TODO: Change to new format
-    return 'NULL';
-    /*
+    // return 'NULL';
+    // /*
     if (controller.transaction.date != null) {
       return ' Realizada em ${DateFormat('yMd').format(controller.transaction.date)}';
     }
 
     return ' Nova transação (${DateFormat('yMd').format(DateTime.now())})';
-    */
+    // */
   }
 
   // TODO show account balance
@@ -221,7 +227,9 @@ class _TransactionDetailsPageState
               style: inputTextStyle,
               controller: userController,
               decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.person), labelText: 'Usuário'),
+                prefixIcon: Icon(Icons.person),
+                labelText: 'Usuário',
+              ),
             ),
           ),
           Observer(
@@ -230,7 +238,9 @@ class _TransactionDetailsPageState
               style: inputTextStyle,
               controller: bankController,
               decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.local_atm), labelText: 'Banco'),
+                prefixIcon: Icon(Icons.local_atm),
+                labelText: 'Banco',
+              ),
             ),
           ),
         ],
@@ -239,23 +249,26 @@ class _TransactionDetailsPageState
   }
 
   void _addTransaction() {
-    /*
-    UserModel muser = UserModel(
-      name: _srcUserController.value.text,
-      login: 'qlqr coisa',
-      password: 'meudeus',
-    );
+    final LoginController loginController = Modular.get();
+    // UserModel muser = UserModel(
+    // name: _srcUserController.value.text,
+    // login: 'qlqr coisa',
+    // password: 'meudeus',
+    // );
+    UserModel muser = loginController.userModel.value;
 
     AccountModel srcAcc = AccountModel(
       name: _srcBankController.value.text,
       user: muser,
-      balance: 2000,
+      balance: 3000, // TODO: Put real balance
     );
 
     AccountModel destAcc = AccountModel(
       name: _destBankController.value.text,
-      user:
-          UserModel(login: 'outra coisa', name: _destUserController.value.text),
+      user: UserModel(
+        login: 'outra coisa',
+        name: _destUserController.value.text,
+      ),
       balance: 2000,
     );
 
@@ -270,7 +283,6 @@ class _TransactionDetailsPageState
     ));
 
     Modular.link.pop();
-    */
   }
 
   void _saveTransaction() {
