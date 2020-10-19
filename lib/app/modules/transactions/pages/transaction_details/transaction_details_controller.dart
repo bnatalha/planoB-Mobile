@@ -25,16 +25,22 @@ abstract class _TransacionDetailsControllerBase with Store {
   final TransactionStore _transactionStore;
 
   @observable
-  bool editMode;
-
-  @observable
-  bool addTransactionMode;
-
-  @observable
   ObservableList<AccountModel> accounts = <AccountModel>[].asObservable();
 
   @observable
   AccountModel srcSelectedAccount = AccountModel();
+
+  @observable
+  AccountModel destSelectedAccount = AccountModel();
+
+  @computed 
+  bool get isCreateTransactionMode => _transactionStore.pageMode == TransactionMode.create;
+
+  @computed 
+  bool get isViewTransactionMode => _transactionStore.pageMode == TransactionMode.view;
+
+  @computed 
+  bool get isEditTransactionMode => _transactionStore.pageMode == TransactionMode.edit;
 
   @action
   setSrcAccount(AccountModel acc) {
@@ -42,35 +48,49 @@ abstract class _TransacionDetailsControllerBase with Store {
   }
 
   @action
+  setDestAccount(AccountModel acc) {
+    destSelectedAccount = acc;
+  }
+
+  @action
   UserModel getCurrentLoggedUser() {
     return _loggedUserStore.currentUser.value;
   }
 
+  // @action
+  // verifyMode() {
+
+  // }
+
   @action
-  verifyMode() {
-    addTransactionMode = _transactionStore.isAddingNewTransaction;
-    if (addTransactionMode) {
-      editMode = true;
+  toggleEditMode() {
+    final mode = _transactionStore.pageMode.index;
+    if (mode == TransactionMode.edit.index) {
+      _transactionStore.pageMode = TransactionMode.view;
+    } else {
+      _transactionStore.pageMode = TransactionMode.edit;
     }
   }
 
   @action
-  toggleEditMode() {
-    editMode = !editMode;
-  }
-
-  @action
-  updateAccounts() async {
+  fetchAccounts() async {
     final user = _loggedUserStore.currentUser.value;
     final currentId = user.id;
+
+    // fetch user account list
     accounts = (await _accountService.getAccountsOfUser(userId: currentId))
         .asObservable();
-    srcSelectedAccount = accounts.first;
+
+    // populate select accounts
+    srcSelectedAccount =
+        _transactionStore?.transaction?.source ?? accounts.first;
+    destSelectedAccount =
+        _transactionStore?.transaction?.destination ?? accounts.last;
   }
 
   _TransacionDetailsControllerBase(this._transactionStore) {
-    editMode = false;
-    updateAccounts();
+    // editMode = false;
+    fetchAccounts();
   }
 
   // TODO: corrigir
@@ -78,9 +98,9 @@ abstract class _TransacionDetailsControllerBase with Store {
   addTransaction(TransactionModel model) {
     _transactionStore.transaction = model;
     _transactionService.addTransaction(
-      // user: int.parse(model.user.name),
-      // destination: 123123,
-      // source: 2,
+      user: model.user,
+      destination: model.destination,
+      source: model.source,
       value: model.value,
       description: model.description,
       // tags: ['tag1, tag2'],
@@ -91,18 +111,16 @@ abstract class _TransacionDetailsControllerBase with Store {
   @computed
   TransactionModel get transaction => _transactionStore.transaction;
 
-  // TODO: corrigir
-  // @action
-  set transaction(TransactionModel model) {
+  @action
+  updateTransaction(TransactionModel model) {
     _transactionStore.transaction = model;
-
     _transactionService.updateTransaction(
-      // userId: int.parse(model.user.name),
-      // toUserId: 123123,
-      // accountId: 2,
+      id: model.id,
+      user: model.user,
+      source: model.source,
+      destination: model.destination,
       value: model.value,
       description: model.description,
-      // tags: ['tag1, tag2'],
       category: model.category,
     );
   }

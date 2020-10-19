@@ -45,10 +45,12 @@ class TransactionService {
   }
 
   Future<bool> removeTransaction({int transactionId}) async {
-    return transactionRepository.removeTransaction(transactionId: transactionId);
+    return transactionRepository.removeTransaction(
+        transactionId: transactionId);
   }
 
   Future<bool> updateTransaction({
+    @required int id,
     UserModel user,
     AccountModel source,
     AccountModel destination,
@@ -57,6 +59,14 @@ class TransactionService {
     // List<String> tags,
     CategoryModel category,
   }) async {
-    throw UnimplementedError();
+    return await transactionRepository.updateTransaction(
+      id: id,
+      user: user,
+      source: source,
+      destination: destination,
+      value: value,
+      description: description,
+      category: category,
+    );
   }
 }

@@ -24,20 +24,18 @@ mixin _$TransactionStore on _TransactionStoreBase, Store {
     });
   }
 
-  final _$isAddingNewTransactionAtom =
-      Atom(name: '_TransactionStoreBase.isAddingNewTransaction');
+  final _$pageModeAtom = Atom(name: '_TransactionStoreBase.pageMode');
 
   @override
-  bool get isAddingNewTransaction {
-    _$isAddingNewTransactionAtom.reportRead();
-    return super.isAddingNewTransaction;
+  TransactionMode get pageMode {
+    _$pageModeAtom.reportRead();
+    return super.pageMode;
   }
 
   @override
-  set isAddingNewTransaction(bool value) {
-    _$isAddingNewTransactionAtom
-        .reportWrite(value, super.isAddingNewTransaction, () {
-      super.isAddingNewTransaction = value;
+  set pageMode(TransactionMode value) {
+    _$pageModeAtom.reportWrite(value, super.pageMode, () {
+      super.pageMode = value;
     });
   }
 
@@ -59,7 +57,7 @@ mixin _$TransactionStore on _TransactionStoreBase, Store {
   String toString() {
     return '''
 transaction: ${transaction},
-isAddingNewTransaction: ${isAddingNewTransaction}
+pageMode: ${pageMode}
     ''';
   }
 }

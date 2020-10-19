@@ -10,6 +10,27 @@ part of 'transaction_details_controller.dart';
 
 mixin _$TransactionDetailsController
     on _TransacionDetailsControllerBase, Store {
+  Computed<bool> _$isCreateTransactionModeComputed;
+
+  @override
+  bool get isCreateTransactionMode => (_$isCreateTransactionModeComputed ??=
+          Computed<bool>(() => super.isCreateTransactionMode,
+              name: '_TransacionDetailsControllerBase.isCreateTransactionMode'))
+      .value;
+  Computed<bool> _$isViewTransactionModeComputed;
+
+  @override
+  bool get isViewTransactionMode => (_$isViewTransactionModeComputed ??=
+          Computed<bool>(() => super.isViewTransactionMode,
+              name: '_TransacionDetailsControllerBase.isViewTransactionMode'))
+      .value;
+  Computed<bool> _$isEditTransactionModeComputed;
+
+  @override
+  bool get isEditTransactionMode => (_$isEditTransactionModeComputed ??=
+          Computed<bool>(() => super.isEditTransactionMode,
+              name: '_TransacionDetailsControllerBase.isEditTransactionMode'))
+      .value;
   Computed<TransactionModel> _$transactionComputed;
 
   @override
@@ -17,38 +38,6 @@ mixin _$TransactionDetailsController
           Computed<TransactionModel>(() => super.transaction,
               name: '_TransacionDetailsControllerBase.transaction'))
       .value;
-
-  final _$editModeAtom =
-      Atom(name: '_TransacionDetailsControllerBase.editMode');
-
-  @override
-  bool get editMode {
-    _$editModeAtom.reportRead();
-    return super.editMode;
-  }
-
-  @override
-  set editMode(bool value) {
-    _$editModeAtom.reportWrite(value, super.editMode, () {
-      super.editMode = value;
-    });
-  }
-
-  final _$addTransactionModeAtom =
-      Atom(name: '_TransacionDetailsControllerBase.addTransactionMode');
-
-  @override
-  bool get addTransactionMode {
-    _$addTransactionModeAtom.reportRead();
-    return super.addTransactionMode;
-  }
-
-  @override
-  set addTransactionMode(bool value) {
-    _$addTransactionModeAtom.reportWrite(value, super.addTransactionMode, () {
-      super.addTransactionMode = value;
-    });
-  }
 
   final _$accountsAtom =
       Atom(name: '_TransacionDetailsControllerBase.accounts');
@@ -82,12 +71,28 @@ mixin _$TransactionDetailsController
     });
   }
 
-  final _$updateAccountsAsyncAction =
-      AsyncAction('_TransacionDetailsControllerBase.updateAccounts');
+  final _$destSelectedAccountAtom =
+      Atom(name: '_TransacionDetailsControllerBase.destSelectedAccount');
 
   @override
-  Future updateAccounts() {
-    return _$updateAccountsAsyncAction.run(() => super.updateAccounts());
+  AccountModel get destSelectedAccount {
+    _$destSelectedAccountAtom.reportRead();
+    return super.destSelectedAccount;
+  }
+
+  @override
+  set destSelectedAccount(AccountModel value) {
+    _$destSelectedAccountAtom.reportWrite(value, super.destSelectedAccount, () {
+      super.destSelectedAccount = value;
+    });
+  }
+
+  final _$fetchAccountsAsyncAction =
+      AsyncAction('_TransacionDetailsControllerBase.fetchAccounts');
+
+  @override
+  Future fetchAccounts() {
+    return _$fetchAccountsAsyncAction.run(() => super.fetchAccounts());
   }
 
   final _$_TransacionDetailsControllerBaseActionController =
@@ -106,12 +111,11 @@ mixin _$TransactionDetailsController
   }
 
   @override
-  UserModel getCurrentLoggedUser() {
-    final _$actionInfo =
-        _$_TransacionDetailsControllerBaseActionController.startAction(
-            name: '_TransacionDetailsControllerBase.getCurrentLoggedUser');
+  dynamic setDestAccount(AccountModel acc) {
+    final _$actionInfo = _$_TransacionDetailsControllerBaseActionController
+        .startAction(name: '_TransacionDetailsControllerBase.setDestAccount');
     try {
-      return super.getCurrentLoggedUser();
+      return super.setDestAccount(acc);
     } finally {
       _$_TransacionDetailsControllerBaseActionController
           .endAction(_$actionInfo);
@@ -119,11 +123,12 @@ mixin _$TransactionDetailsController
   }
 
   @override
-  dynamic verifyMode() {
-    final _$actionInfo = _$_TransacionDetailsControllerBaseActionController
-        .startAction(name: '_TransacionDetailsControllerBase.verifyMode');
+  UserModel getCurrentLoggedUser() {
+    final _$actionInfo =
+        _$_TransacionDetailsControllerBaseActionController.startAction(
+            name: '_TransacionDetailsControllerBase.getCurrentLoggedUser');
     try {
-      return super.verifyMode();
+      return super.getCurrentLoggedUser();
     } finally {
       _$_TransacionDetailsControllerBaseActionController
           .endAction(_$actionInfo);
@@ -155,12 +160,27 @@ mixin _$TransactionDetailsController
   }
 
   @override
+  dynamic updateTransaction(TransactionModel model) {
+    final _$actionInfo =
+        _$_TransacionDetailsControllerBaseActionController.startAction(
+            name: '_TransacionDetailsControllerBase.updateTransaction');
+    try {
+      return super.updateTransaction(model);
+    } finally {
+      _$_TransacionDetailsControllerBaseActionController
+          .endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-editMode: ${editMode},
-addTransactionMode: ${addTransactionMode},
 accounts: ${accounts},
 srcSelectedAccount: ${srcSelectedAccount},
+destSelectedAccount: ${destSelectedAccount},
+isCreateTransactionMode: ${isCreateTransactionMode},
+isViewTransactionMode: ${isViewTransactionMode},
+isEditTransactionMode: ${isEditTransactionMode},
 transaction: ${transaction}
     ''';
   }

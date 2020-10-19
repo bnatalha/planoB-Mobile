@@ -10,6 +10,8 @@ import '../../../../shared/models/account_model.dart';
 import '../../../../shared/models/transaction_model.dart';
 import 'transaction_details_controller.dart';
 
+// TODO edit date
+
 class TransactionDetailsPage extends StatefulWidget {
   static const namedRoute = '/transaction';
   const TransactionDetailsPage();
@@ -20,19 +22,13 @@ class TransactionDetailsPage extends StatefulWidget {
 class _TransactionDetailsPageState
     extends ModularState<TransactionDetailsPage, TransactionDetailsController> {
   TextEditingController _valueController;
-  TextEditingController _srcUserController;
-  TextEditingController _srcBankController;
-  TextEditingController _destUserController;
-  TextEditingController _destBankController;
+
+  final Padding _downArrow =
+      Padding(padding: EdgeInsets.all(4), child: Icon(Icons.south, size: 40));
 
   @override
   void initState() {
     _valueController = TextEditingController();
-    _srcUserController = TextEditingController();
-    _srcBankController = TextEditingController();
-    _destUserController = TextEditingController();
-    _destBankController = TextEditingController();
-
     // TODO: Adapt to consume from new model
     /*
     if (controller.transaction.id != null) {
@@ -49,7 +45,7 @@ class _TransactionDetailsPageState
     }
     */
 
-    controller.verifyMode();
+    // controller.verifyMode();
 
     super.initState();
   }
@@ -58,10 +54,6 @@ class _TransactionDetailsPageState
   void dispose() {
     _valueController.dispose();
 
-    _srcUserController.dispose();
-    _srcBankController.dispose();
-    _destUserController.dispose();
-    _destBankController.dispose();
     super.dispose();
   }
 
@@ -72,316 +64,246 @@ class _TransactionDetailsPageState
         title: Text("${idString()}"),
         actions: [
           Observer(builder: (_) {
-            if (controller.addTransactionMode) {
-              return IconButton(
-                onPressed: _addTransaction,
-                icon: Icon(
-                  Icons.save,
-                  color: Colors.white,
-                ),
-              );
+            if (controller.isCreateTransactionMode) {
+              return _saveButton;
             }
-
-            return Row(
-              children: [
-                Icon(
-                  Icons.mode_edit,
-                  color: Colors.amber[200],
-                ),
-                SizedBox(width: 5),
-                Text(
-                  controller.editMode ? '' : 'Modo Edição',
-                ), // TODO animar in-out
-                Switch(
-                  value: controller.editMode,
-                  activeColor: Colors.amber[200],
-                  onChanged: (isExitingEditMode) {
-                    controller.toggleEditMode();
-                    print('edit_mode: ${controller.editMode}');
-                    if (!controller.editMode) {
-                      _saveTransaction();
-                    }
-                  },
-                ),
-              ],
-            );
+            return _editSwitch;
           })
         ],
       ),
-      body: Container(
+      body: _body,
+    );
+  }
+
+  Widget get _editSwitch => Row(
+        children: [
+          Icon(
+            Icons.mode_edit,
+            color: Colors.amber[200],
+          ),
+          SizedBox(width: 5),
+          Text(controller.isEditTransactionMode
+              ? ''
+              : 'Modo Edição'), // TODO animar in-out
+          Switch(
+            value: controller.isEditTransactionMode,
+            activeColor: Colors.amber[200],
+            onChanged: (isExitingEditMode) {
+              controller.toggleEditMode();
+              print('edit_mode: ${controller.isEditTransactionMode}');
+              if (!controller.isEditTransactionMode) {
+                _saveTransaction();
+              }
+            },
+          ),
+        ],
+      );
+
+  Widget get _saveButton => IconButton(
+        onPressed: _createTransaction,
+        icon: Icon(
+          Icons.save,
+          color: Colors.white,
+        ),
+      );
+
+  Widget get _body => Container(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(
+              color: Colors.blueGrey.shade300,
               elevation: 12,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
+                  _header,
+                  SizedBox(height: 10),
+                  _srcAccArea,
+                  _downArrow,
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      formattedDate(),
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
+                    child: _valueField,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          controller.addTransactionMode ? "" : "#${idString()}",
-                          style: Theme.of(context).textTheme.headline4,
-                        ),
-                        Spacer(),
-                        Expanded(
-                          child: Observer(
-                            builder: (_) => TextField(
-                              style: TextStyle(
-                                color: Colors.indigo,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              enabled: controller.editMode,
-                              keyboardType: TextInputType.numberWithOptions(
-                                decimal: true,
-                              ),
-                              controller: _valueController,
-                              decoration: InputDecoration(
-                                prefixText: 'R\$',
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  // buildaAccDescription(
-                  //   acc: controller.transaction
-                  //       .source, // TODO: Change to new model :: controller.transaction.source,
-                  //   lead: 'Origem',
-                  //   userController: _srcUserController,
-                  //   bankController: _srcBankController,
-                  // ),
-                  buildAccTile(lead: 'Origem'),
-                  SizedBox(height: 10),
-                  // buildaAccDescription(
-                  //   acc: controller.transaction
-                  //       .destination, // TODO: Change to new model :: controller.transaction.destination,
-                  //   lead: 'Destino',
-                  //   userController: _destUserController,
-                  //   bankController: _destBankController,
-                  // ),
-                  SizedBox(height: 20),
+                  _downArrow,
+                  _destAccArea
                   // buildButtons()
                 ],
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
-  String idString() =>
-      "${!controller.addTransactionMode ? controller.transaction.id : "Nova Transação"}";
+  Widget get _header => Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(3)),
+          color: Colors.blueGrey.shade700,
+        ),
+        child: Row(
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                controller.isCreateTransactionMode ? "" : "#${idString()}",
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    .copyWith(color: Colors.white),
+              ),
+            ),
+            Spacer(),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              child: Text(
+                formattedDate(),
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle1
+                    .copyWith(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Widget get _destAccArea => Observer(builder: (_) {
+        if (controller.accounts != null && controller.accounts.isNotEmpty) {
+          return buildAccArea(
+            leadText: 'Destino:',
+            onChanged: controller.setDestAccount,
+            account: controller.destSelectedAccount,
+          );
+        }
+        return Text('placeholder');
+      });
+
+  Widget get _srcAccArea => Observer(builder: (_) {
+        if (controller.accounts != null && controller.accounts.isNotEmpty) {
+          return buildAccArea(
+            leadText: 'Origem:',
+            onChanged: controller.setSrcAccount,
+            account: controller.srcSelectedAccount,
+          );
+        }
+        return Text('placeholder');
+      });
+
+  // TODO checar se valor > balanço na conta
+  Widget get _valueField => Observer(
+        builder: (_) => Row(
+          children: [
+            Icon(Icons.monetization_on),
+            SizedBox(width: 4),
+            Text('Valor: '),
+            SizedBox(width: 10),
+            Expanded(
+              child: TextField(
+                style: TextStyle(
+                  color: Colors.blueGrey.shade500,
+                  fontWeight: FontWeight.bold,
+                ),
+                enabled: !controller.isViewTransactionMode,
+                keyboardType: TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                controller: _valueController,
+                decoration: InputDecoration(
+                  prefixText: 'R\$ ',
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  String idString() {
+    return "${!controller.isCreateTransactionMode ? controller.transaction.id : "Nova Transação"}";
+  }
 
   String formattedDate() {
-    // TODO: Change to new format
-    // return 'NULL';
-    // /*
     if (controller.transaction.date != null) {
-      return ' Realizada em ${DateFormat('yMd').format(controller.transaction.date)}';
+      // return 'Realizada em ${DateFormat('yMd HH:MM').format(controller.transaction.date)}';
+      return '${DateFormat('d/M/y HH:MM').format(controller.transaction.date)}';
     }
-
-    return ' Nova transação (${DateFormat('yMd').format(DateTime.now())})';
-    // */
+    return '${DateFormat('d/M/y HH:MM').format(DateTime.now())}';
   }
 
-  // TODO show account balance
-  Widget buildaAccDescription({
-    String lead,
-    AccountModel acc,
-    TextEditingController userController,
-    TextEditingController bankController,
+  Widget buildAccArea({
+    String leadText,
+    Function onChanged,
+    AccountModel account,
   }) {
-    TextStyle inputTextStyle = TextStyle(
-      color: Colors.blue,
-      fontSize: 18,
+    final DropdownButton<AccountModel> dropdownButton = DropdownButton(
+      isExpanded: true,
+      disabledHint: Text(account.name),
+      value: controller.isViewTransactionMode ? null : account,
+      items: controller.accounts
+          .map((e) => DropdownMenuItem(child: Text(e.name), value: e))
+          .toList(),
+      onChanged: (AccountModel value) {
+        onChanged(value);
+      },
     );
 
-    return Container(
-      padding: const EdgeInsets.all(16),
+    final selectionField = Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Text(
+          leadText,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        SizedBox(width: 10),
+        Expanded(child: dropdownButton),
+      ],
+    );
+
+    final accInfo = Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(4),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Text(
-            '$lead',
-            style: Theme.of(context).textTheme.headline5,
-          ),
-          Divider(),
-          // SizedBox(width: 5),
-          Observer(
-            builder: (_) => TextField(
-              enabled: controller.editMode,
-              style: inputTextStyle,
-              controller: userController,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.person),
-                labelText: 'Usuário',
-              ),
-            ),
-          ),
-          Observer(
-            builder: (_) => TextField(
-              enabled: controller.editMode,
-              style: inputTextStyle,
-              controller: bankController,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.local_atm),
-                labelText: 'Banco',
-              ),
-            ),
-          ),
+          // Text('Usuário: ${account.user.name}'),
+          Text('Saldo: ${account.balance}'),
         ],
       ),
     );
-  }
 
-  Widget buildAccTile({
-    String lead,
-  }) {
-    TextStyle inputTextStyle = TextStyle(
-      color: Colors.blue,
-      fontSize: 18,
-    );
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '$lead',
-            style: Theme.of(context).textTheme.headline5,
-          ),
-          Divider(),
-          // SizedBox(width: 5),
-          // Observer(
-          //   builder: (_) => TextField(
-          //     enabled: controller.editMode,
-          //     style: inputTextStyle,
-          //     decoration: InputDecoration(
-          //       prefixIcon: Icon(Icons.person),
-          //       labelText: 'Usuário',
-          //     ),
-          //   ),
-          // ),
-          Observer(
-            builder: (_) => TextField(
-              enabled: false,
-              style: inputTextStyle,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.person),
-                // labelText: 'Usuário',
-                hintText: controller.getCurrentLoggedUser().name
-              ),
-            ),
-          ),
-          Observer(builder: (_) {
-            if (controller.accounts != null &&
-                controller.accounts.isNotEmpty) {
-              return DropdownButton(
-                value: controller.srcSelectedAccount,
-                  items: controller.accounts
-                      .map(
-                        (e) => DropdownMenuItem(
-                          child: Text(e.name),
-                          value: e,
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (AccountModel value) {
-                    controller.setSrcAccount(value);
-                  });
-            }
-
-            return Text('placeholder');
-
-            // final tf = TextField(
-            //   enabled: controller.editMode,
-            //   style: inputTextStyle,
-            //   decoration: InputDecoration(
-            //     prefixIcon: Icon(Icons.local_atm),
-            //     labelText: 'Banco',
-            //   ),
-            // );
-          }),
-        ],
+    return Card(
+      elevation: 2,
+      child: Padding(
+        padding: EdgeInsets.all(4),
+        child: Column(
+          children: [
+            selectionField,
+            accInfo,
+          ],
+        ),
       ),
     );
   }
 
-  void _addTransaction() {
-    final LoginController loginController = Modular.get();
-    // UserModel muser = UserModel(
-    // name: _srcUserController.value.text,
-    // login: 'qlqr coisa',
-    // password: 'meudeus',
-    // );
-    UserModel muser = loginController.currentUser;
-
-    AccountModel srcAcc = AccountModel(
-      name: _srcBankController.value.text,
-      user: muser,
-      balance: 3000, // TODO: Put real balance
-    );
-
-    AccountModel destAcc = AccountModel(
-      name: _destBankController.value.text,
-      user: UserModel(
-        login: 'outra coisa',
-        name: _destUserController.value.text,
-      ),
-      balance: 2000,
-    );
-
-    controller.addTransaction(TransactionModel(
-      user: muser,
-      source: srcAcc,
-      destination: destAcc,
-      category: CategoryModel.deposit,
+  void _createTransaction() {
+    controller.addTransaction(controller.transaction.copyWith(
       date: controller.transaction.date ?? DateTime.now(),
       value: double.parse(_valueController.value.text),
-      description: "Nova transacao",
+      source: controller.srcSelectedAccount,
+      destination: controller.destSelectedAccount,
     ));
 
     Modular.link.pop();
   }
 
   void _saveTransaction() {
-    controller.transaction = _buildNewTransaction();
-  }
-
-  TransactionModel _buildNewTransaction() {
-    /*
-    return controller.transaction.copyWith(
+    controller.updateTransaction(controller.transaction.copyWith(
       date: controller.transaction.date ?? DateTime.now(),
       value: double.parse(_valueController.value.text),
-      source: controller.transaction.source.copyWith(
-        name: _srcBankController.value.text,
-        user: controller.transaction.source.user.copyWith(
-          name: _srcUserController.value.text,
-        ),
-      ),
-      destination: controller.transaction.destination.copyWith(
-        name: _destBankController.value.text,
-        user: controller.transaction.destination.user.copyWith(
-          name: _destUserController.value.text,
-        ),
-      ),
-    );
-    */
+      source: controller.srcSelectedAccount,
+      destination: controller.destSelectedAccount,
+    ));
   }
 }

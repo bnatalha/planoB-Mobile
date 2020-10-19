@@ -97,4 +97,10 @@ class TransactionRepositoryHive implements TransactionRepositoryAbstract {
       return false;
     }
   }
+
+  @override
+  Future<bool> updateTransaction({int id, UserModel user, AccountModel source, AccountModel destination, double value, String description, DateTime date, CategoryModel category}) {
+    // TODO: implement updateTransaction
+    throw UnimplementedError();
+  }
 }

@@ -1,5 +1,6 @@
 // import 'package:plano_b/app/shared/models/transaction_model.dart';
 
+import 'package:flutter/foundation.dart';
 import 'package:plano_b/app/shared/models/account_model.dart';
 import 'package:plano_b/app/shared/models/category_model.dart';
 import 'package:plano_b/app/shared/models/transaction_model.dart';
@@ -58,13 +59,13 @@ class TransactionRepositoryMock implements TransactionRepositoryAbstract {
   }) {
     final t = TransactionModel(
       id: _idCount++,
-      user: userMock1,
-      source: accMock1,
-      destination: accMock2,
-      category: category,
-      date: date,
-      value: value,
-      description: description,
+      user: user ?? userMock1,
+      source: source ?? accMock1,
+      destination: destination ?? accMock2,
+      category: category ?? CategoryModel.deposit,
+      date: date ?? DateTime.now(),
+      value: value ?? 0.0,
+      description: description ?? "Sem descrição",
     );
 
     transMockList.add(t);
@@ -74,6 +75,33 @@ class TransactionRepositoryMock implements TransactionRepositoryAbstract {
   @override
   Future<bool> removeTransaction({int transactionId}) {
     transMockList.removeWhere((e) => e.id == transactionId);
+    return Future.delayed(_duration).then((value) => true);
+  }
+
+  @override
+  Future<bool> updateTransaction(
+      {@required int id,
+      UserModel user,
+      AccountModel source,
+      AccountModel destination,
+      double value,
+      String description,
+      DateTime date,
+      CategoryModel category}) {
+    // TODO: implement updateTransaction
+    final t = TransactionModel(
+      id: id,
+      user: user ?? userMock1,
+      source: source ?? accMock1,
+      destination: destination ?? accMock2,
+      category: category ?? CategoryModel.deposit,
+      date: date ?? DateTime.now(),
+      value: value ?? 0.0,
+      description: description ?? "Sem descrição",
+    );
+
+    int idx = transMockList.indexWhere((e) => e.id == id);
+    transMockList[idx] = t;
     return Future.delayed(_duration).then((value) => true);
   }
 }

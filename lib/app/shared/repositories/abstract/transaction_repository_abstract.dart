@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:plano_b/app/shared/models/account_model.dart';
 import 'package:plano_b/app/shared/models/category_model.dart';
 import 'package:plano_b/app/shared/models/user_model.dart';
@@ -21,6 +22,18 @@ abstract class TransactionRepositoryAbstract extends Repository {
   );
 
   Future<bool> addTransaction({
+    UserModel user,
+    AccountModel source,
+    AccountModel destination,
+    double value,
+    String description,
+    DateTime date,
+    // List<String> tags,
+    CategoryModel category,
+  });
+
+  Future<bool> updateTransaction({
+    @required int id,
     UserModel user,
     AccountModel source,
     AccountModel destination,

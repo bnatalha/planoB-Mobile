@@ -3,6 +3,12 @@ import 'package:plano_b/app/shared/models/transaction_model.dart';
 
 part 'transaction_store.g.dart';
 
+enum TransactionMode {
+  edit,
+  view,
+  create,
+}
+
 class TransactionStore = _TransactionStoreBase with _$TransactionStore;
 
 abstract class _TransactionStoreBase with Store {
@@ -10,15 +16,15 @@ abstract class _TransactionStoreBase with Store {
   TransactionModel transaction = TransactionModel();
 
   @observable
-  bool isAddingNewTransaction = false;
+  TransactionMode pageMode = TransactionMode.view;
 
   @action
   setAddTransactionMode() {
-    isAddingNewTransaction = true;
+    pageMode = TransactionMode.create;
   }
 
   setViewTransactionMode() {
-    isAddingNewTransaction = false;
+    pageMode = TransactionMode.view;
   }
 
   // @action
