@@ -11,25 +11,34 @@ abstract class _LoginControllerBase with Store {
   final UserService service = Modular.get();
 
   @observable
+  Observable<UserModel> userModel = Observable<UserModel>(null);
+
+  @observable
   Observable<bool> isLogged = Observable<bool>(false);
 
   @observable
   Observable<bool> isLoading = Observable<bool>(false);
 
   @action
-  Future<bool> login({String username, String password}) async {
-
-    service.createUser(username: username, password: password, displayName: 'null');
+  Future<bool> login({
+    String username,
+    String password,
+    bool create = false,
+  }) async {
+    if (create) {
+      service.createUser(
+        username: username,
+        password: password,
+        displayName: 'null',
+      );
+      return true;
+    }
 
     isLoading.value = true;
-    final UserModel model = await service.login(username: username, password: password);
+    userModel.value =
+        await service.login(username: username, password: password);
 
-    // TODO: Take advantage of [UserModel] here
     isLoading.value = false;
-    if(model != null) {
-      return true;
-    } else {
-      return false;
-    }
+    return userModel.value != null;
   }
 }

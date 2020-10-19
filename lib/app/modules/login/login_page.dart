@@ -15,6 +15,13 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends ModularState<LoginPage, LoginController> {
   TextEditingController _loginController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  bool createUserState;
+
+  @override
+  void initState() {
+    createUserState = false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +46,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
       child: Container(
         constraints: BoxConstraints.tightFor(
           width: _size.width * 0.7,
-          height: 150,
+          // height: ,
         ),
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -51,6 +58,20 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
           children: [
             _loginFormField,
             _passFormField,
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Switch(
+                  value: createUserState,
+                  onChanged: (bool value) {
+                    setState(() {
+                      createUserState = value;
+                    });
+                  },
+                ),
+                Text('Create user'),
+              ],
+            ),
           ],
         ),
       ),
@@ -122,6 +143,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
     final bool result = await controller.login(
       username: _loginController.text,
       password: _passwordController.text,
+      create: createUserState,
     );
 
     if (result) {

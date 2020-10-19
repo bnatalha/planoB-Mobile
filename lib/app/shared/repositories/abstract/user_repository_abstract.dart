@@ -20,4 +20,6 @@ abstract class UserRepositoryAbstract extends Repository {
   Future<bool> deleteUser(int id);
 
   Future<bool> createUser(String username, String password, String displayName);
+
+  Future<bool> authenticateUser(String username, String password);
 }
