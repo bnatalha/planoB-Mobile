@@ -274,6 +274,7 @@ class _TransactionDetailsPageState
     );
 
     return Card(
+      color: Colors.blueGrey.shade100,
       elevation: 2,
       child: Padding(
         padding: EdgeInsets.all(4),
