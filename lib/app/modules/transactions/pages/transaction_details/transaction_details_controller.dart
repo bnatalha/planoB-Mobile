@@ -1,9 +1,13 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:plano_b/app/modules/transactions/stores/transaction_store.dart';
+import 'package:plano_b/app/shared/models/account_model.dart';
 import 'package:plano_b/app/shared/models/transaction_model.dart';
+import 'package:plano_b/app/shared/models/user_model.dart';
 import 'package:plano_b/app/shared/repositories/abstract/transaction_repository_abstract.dart';
+import 'package:plano_b/app/shared/services/account_service.dart';
 import 'package:plano_b/app/shared/services/transaction_service.dart';
+import 'package:plano_b/app/shared/stores/logged_user_store.dart';
 
 part 'transaction_details_controller.g.dart';
 
@@ -14,6 +18,10 @@ abstract class _TransacionDetailsControllerBase with Store {
   final TransactionService _transactionService =
       Modular.get<TransactionService>();
 
+  final AccountService _accountService = Modular.get<AccountService>();
+
+  final LoggedUserStore _loggedUserStore = Modular.get();
+
   final TransactionStore _transactionStore;
 
   @observable
@@ -21,6 +29,22 @@ abstract class _TransacionDetailsControllerBase with Store {
 
   @observable
   bool addTransactionMode;
+
+  @observable
+  ObservableList<AccountModel> accounts = <AccountModel>[].asObservable();
+
+  @observable
+  AccountModel srcSelectedAccount = AccountModel();
+
+  @action
+  setSrcAccount(AccountModel acc) {
+    srcSelectedAccount = acc;
+  }
+
+  @action
+  UserModel getCurrentLoggedUser() {
+    return _loggedUserStore.currentUser.value;
+  }
 
   @action
   verifyMode() {
@@ -35,8 +59,18 @@ abstract class _TransacionDetailsControllerBase with Store {
     editMode = !editMode;
   }
 
+  @action
+  updateAccounts() async {
+    final user = _loggedUserStore.currentUser.value;
+    final currentId = user.id;
+    accounts = (await _accountService.getAccountsOfUser(userId: currentId))
+        .asObservable();
+    srcSelectedAccount = accounts.first;
+  }
+
   _TransacionDetailsControllerBase(this._transactionStore) {
     editMode = false;
+    updateAccounts();
   }
 
   // TODO: corrigir

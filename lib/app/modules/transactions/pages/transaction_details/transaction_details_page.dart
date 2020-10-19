@@ -157,21 +157,22 @@ class _TransactionDetailsPageState
                     ),
                   ),
                   SizedBox(height: 10),
-                  buildaAccDescription(
-                    acc: controller.transaction
-                        .source, // TODO: Change to new model :: controller.transaction.source,
-                    lead: 'Origem',
-                    userController: _srcUserController,
-                    bankController: _srcBankController,
-                  ),
+                  // buildaAccDescription(
+                  //   acc: controller.transaction
+                  //       .source, // TODO: Change to new model :: controller.transaction.source,
+                  //   lead: 'Origem',
+                  //   userController: _srcUserController,
+                  //   bankController: _srcBankController,
+                  // ),
+                  buildAccTile(lead: 'Origem'),
                   SizedBox(height: 10),
-                  buildaAccDescription(
-                    acc: controller.transaction
-                        .destination, // TODO: Change to new model :: controller.transaction.destination,
-                    lead: 'Destino',
-                    userController: _destUserController,
-                    bankController: _destBankController,
-                  ),
+                  // buildaAccDescription(
+                  //   acc: controller.transaction
+                  //       .destination, // TODO: Change to new model :: controller.transaction.destination,
+                  //   lead: 'Destino',
+                  //   userController: _destUserController,
+                  //   bankController: _destBankController,
+                  // ),
                   SizedBox(height: 20),
                   // buildButtons()
                 ],
@@ -248,6 +249,80 @@ class _TransactionDetailsPageState
     );
   }
 
+  Widget buildAccTile({
+    String lead,
+  }) {
+    TextStyle inputTextStyle = TextStyle(
+      color: Colors.blue,
+      fontSize: 18,
+    );
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '$lead',
+            style: Theme.of(context).textTheme.headline5,
+          ),
+          Divider(),
+          // SizedBox(width: 5),
+          // Observer(
+          //   builder: (_) => TextField(
+          //     enabled: controller.editMode,
+          //     style: inputTextStyle,
+          //     decoration: InputDecoration(
+          //       prefixIcon: Icon(Icons.person),
+          //       labelText: 'Usuário',
+          //     ),
+          //   ),
+          // ),
+          Observer(
+            builder: (_) => TextField(
+              enabled: false,
+              style: inputTextStyle,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.person),
+                // labelText: 'Usuário',
+                hintText: controller.getCurrentLoggedUser().name
+              ),
+            ),
+          ),
+          Observer(builder: (_) {
+            if (controller.accounts != null &&
+                controller.accounts.isNotEmpty) {
+              return DropdownButton(
+                value: controller.srcSelectedAccount,
+                  items: controller.accounts
+                      .map(
+                        (e) => DropdownMenuItem(
+                          child: Text(e.name),
+                          value: e,
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (AccountModel value) {
+                    controller.setSrcAccount(value);
+                  });
+            }
+
+            return Text('placeholder');
+
+            // final tf = TextField(
+            //   enabled: controller.editMode,
+            //   style: inputTextStyle,
+            //   decoration: InputDecoration(
+            //     prefixIcon: Icon(Icons.local_atm),
+            //     labelText: 'Banco',
+            //   ),
+            // );
+          }),
+        ],
+      ),
+    );
+  }
+
   void _addTransaction() {
     final LoginController loginController = Modular.get();
     // UserModel muser = UserModel(
@@ -255,7 +330,7 @@ class _TransactionDetailsPageState
     // login: 'qlqr coisa',
     // password: 'meudeus',
     // );
-    UserModel muser = loginController.userModel.value;
+    UserModel muser = loginController.currentUser;
 
     AccountModel srcAcc = AccountModel(
       name: _srcBankController.value.text,

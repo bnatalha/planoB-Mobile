@@ -2,6 +2,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:plano_b/app/shared/models/user_model.dart';
 import 'package:plano_b/app/shared/services/user_service.dart';
+import 'package:plano_b/app/shared/stores/logged_user_store.dart';
 
 part 'login_controller.g.dart';
 
@@ -9,9 +10,10 @@ class LoginController = _LoginControllerBase with _$LoginController;
 
 abstract class _LoginControllerBase with Store {
   final UserService service = Modular.get();
+  final LoggedUserStore _loggedUserStore = Modular.get();
 
-  @observable
-  Observable<UserModel> userModel = Observable<UserModel>(null);
+  @computed
+  UserModel get currentUser => _loggedUserStore.currentUser.value;
 
   @observable
   Observable<bool> isLogged = Observable<bool>(false);
@@ -26,21 +28,23 @@ abstract class _LoginControllerBase with Store {
     bool create = false,
   }) async {
     if (create) {
-      service.createUser(
+      final result = await service.createUser(
         username: username,
         password: password,
-        displayName: 'null',
+        displayName: username,
       );
-      return true;
+      if (!result) {
+        return false;
+      }
     }
 
     isLoading.value = true;
-    userModel.value = await service.login(
+    _loggedUserStore.currentUser.value = await service.login(
       username: username,
       password: password,
     );
 
     isLoading.value = false;
-    return userModel.value != null;
+    return _loggedUserStore.currentUser.value != null;
   }
 }

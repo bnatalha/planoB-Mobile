@@ -50,8 +50,73 @@ mixin _$TransactionDetailsController
     });
   }
 
+  final _$accountsAtom =
+      Atom(name: '_TransacionDetailsControllerBase.accounts');
+
+  @override
+  ObservableList<AccountModel> get accounts {
+    _$accountsAtom.reportRead();
+    return super.accounts;
+  }
+
+  @override
+  set accounts(ObservableList<AccountModel> value) {
+    _$accountsAtom.reportWrite(value, super.accounts, () {
+      super.accounts = value;
+    });
+  }
+
+  final _$srcSelectedAccountAtom =
+      Atom(name: '_TransacionDetailsControllerBase.srcSelectedAccount');
+
+  @override
+  AccountModel get srcSelectedAccount {
+    _$srcSelectedAccountAtom.reportRead();
+    return super.srcSelectedAccount;
+  }
+
+  @override
+  set srcSelectedAccount(AccountModel value) {
+    _$srcSelectedAccountAtom.reportWrite(value, super.srcSelectedAccount, () {
+      super.srcSelectedAccount = value;
+    });
+  }
+
+  final _$updateAccountsAsyncAction =
+      AsyncAction('_TransacionDetailsControllerBase.updateAccounts');
+
+  @override
+  Future updateAccounts() {
+    return _$updateAccountsAsyncAction.run(() => super.updateAccounts());
+  }
+
   final _$_TransacionDetailsControllerBaseActionController =
       ActionController(name: '_TransacionDetailsControllerBase');
+
+  @override
+  dynamic setSrcAccount(AccountModel acc) {
+    final _$actionInfo = _$_TransacionDetailsControllerBaseActionController
+        .startAction(name: '_TransacionDetailsControllerBase.setSrcAccount');
+    try {
+      return super.setSrcAccount(acc);
+    } finally {
+      _$_TransacionDetailsControllerBaseActionController
+          .endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  UserModel getCurrentLoggedUser() {
+    final _$actionInfo =
+        _$_TransacionDetailsControllerBaseActionController.startAction(
+            name: '_TransacionDetailsControllerBase.getCurrentLoggedUser');
+    try {
+      return super.getCurrentLoggedUser();
+    } finally {
+      _$_TransacionDetailsControllerBaseActionController
+          .endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic verifyMode() {
@@ -94,6 +159,8 @@ mixin _$TransactionDetailsController
     return '''
 editMode: ${editMode},
 addTransactionMode: ${addTransactionMode},
+accounts: ${accounts},
+srcSelectedAccount: ${srcSelectedAccount},
 transaction: ${transaction}
     ''';
   }
