@@ -1,6 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plano_b/app/modules/transactions/pages/transaction_details/transaction_details_controller.dart';
 import 'package:plano_b/app/modules/transactions/stores/transaction_store.dart';
+import 'package:plano_b/app/shared/services/transaction_service.dart';
 // import 'package:plano_b/app/shared/repositories/session/session_repository_interface.dart';
 // import 'package:plano_b/app/shared/repositories/transaction/transaction_repository_interface.dart';
 import 'package:plano_b/app/shared/utils/routes_names_utils.dart';
@@ -47,6 +48,9 @@ import 'transactions_page.dart';
 class TransactionsModule extends ChildModule {
   @override
   List<Bind> get binds => [
+        // Bind<TransactionService>(
+        //   (i) => TransactionService(),
+        // ),
         // Store
         Bind<TransactionStore>(
           (i) => TransactionStore(),

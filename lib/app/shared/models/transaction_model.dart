@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 import 'user_model.dart';
 import 'account_model.dart';
 import 'category_model.dart';
@@ -28,6 +26,32 @@ class TransactionModel {
     this.description = "",
     // this.tags,
   });
+
+  factory TransactionModel.fromJson(Map<String, dynamic> json) {
+    return TransactionModel(
+      id: json['id'] as int,
+      user: json['user'] as UserModel,
+      source: json['source'] as AccountModel,
+      destination: json['destination'] as AccountModel,
+      category: json['category'] as CategoryModel,
+      date: json['date'] as DateTime,
+      value: json['value'] ?? 0.0,
+      description: json['description'] ?? "",
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'id': id,
+      'user': user,
+      'source': source,
+      'destination': destination,
+      'category': category,
+      'date': date,
+      'value': value,
+      'description': description,
+    };
+  }
 
   copyWith({
     int id,
