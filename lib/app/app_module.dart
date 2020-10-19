@@ -6,10 +6,9 @@ import 'app_widget.dart';
 import 'modules/account/account_module.dart';
 import 'modules/login/login_module.dart';
 import 'modules/transactions/transactions_module.dart';
-import 'shared/repositories/abstract/transaction_repository_abstract.dart';
-import 'shared/repositories/abstract/user_repository_abstract.dart';
 import 'shared/repositories/hive/transaction_repository_hive.dart';
 import 'shared/repositories/hive/user_repository_hive.dart';
+import 'shared/services/transaction_service.dart';
 import 'shared/services/user_service.dart';
 import 'shared/utils/routes_names_utils.dart';
 // import 'modules/login/login_module.dart';
@@ -21,9 +20,9 @@ class AppModule extends MainModule {
         // Bind<UserRepositoryAbstract>(
         // (Inject<dynamic> i) => UserRepositoryHive(),
         // ),
-        // Bind<TransactionRepositoryAbstract>(
-        // (i) => TransactionRepositoryHive(),
-        // ),
+        Bind<TransactionService>(
+          (i) => TransactionService(transactionRepository: TransactionRepositoryHive()),
+        ),
         Bind<UserService>(
           (i) => UserService(userRepository: UserRepositoryHive()),
         ),
