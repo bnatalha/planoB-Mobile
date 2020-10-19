@@ -5,6 +5,7 @@ import 'package:plano_b/app/shared/models/transaction_model.dart';
 import 'package:plano_b/app/shared/repositories/abstract/transaction_repository_abstract.dart';
 // import 'package:plano_b/app/shared/repositories/session/session_repository_interface.dart';
 // import 'package:plano_b/app/shared/repositories/transaction/transaction_repository_interface.dart';
+import 'package:plano_b/app/shared/services/transaction_service.dart';
 
 part 'transactions_controller.g.dart';
 
@@ -12,8 +13,9 @@ class TransactionsController = _TransactionsControllerBase
     with _$TransactionsController;
 
 abstract class _TransactionsControllerBase with Store {
-  final TransactionRepositoryAbstract transactionService =
-      Modular.get<TransactionRepositoryAbstract>();
+  // final ISessionRepository _sessionRepository;
+  final TransactionService _transactionService =
+      Modular.get<TransactionService>();
   final TransactionStore _transactionStore;
 
   @observable
@@ -27,6 +29,7 @@ abstract class _TransactionsControllerBase with Store {
   //   fetchTransactions();
   // }
 
+  // _TransactionsControllerBase(this._sessionRepository, this._transactionStore) {
   _TransactionsControllerBase(this._transactionStore) {
     fetchTransactions();
   }
@@ -35,7 +38,6 @@ abstract class _TransactionsControllerBase with Store {
   selectTransaction(TransactionModel model) {
     _transactionStore.transaction = model;
     _transactionStore.setViewTransactionMode();
-
   }
 
   @action
@@ -43,11 +45,10 @@ abstract class _TransactionsControllerBase with Store {
     _transactionStore.transaction = TransactionModel();
     _transactionStore.setAddTransactionMode();
   }
-  
+
   @action
   removeTransaction(TransactionModel model) {
-    // TODO: Adapt to new model
-    // transactionService.removeTransaction(model);
+    _transactionService.removeTransaction(transactionId: model.id);
     // fetchTransactions();
     // transactions =
     //     _transactionRepository.fetchTransactionsForCurrentUser().asObservable();
@@ -56,15 +57,13 @@ abstract class _TransactionsControllerBase with Store {
   @action
   fetchTransactions() {
     // TODO: Adapt to new model
-    /*
     transactions =
-        transactionService.fetchTransactionsForCurrentUser().asObservable();
-        */
+        _transactionService.getTransactionsFromAccount().asObservable();
   }
 
-  @computed
-  String get firstName => null; // TODO: ADAPT to new model _sessionRepository.currentLoggedUser.name;
+  // @computed
+  // String get firstName => _sessionRepository.currentLoggedUser.name;
 
-  @computed
-  String get lastName => null; // TODO: Adapt to new model _sessionRepository.currentLoggedUser.name;
+  // @computed
+  // String get lastName => _sessionRepository.currentLoggedUser.name;
 }

@@ -27,7 +27,7 @@ class LoginModule extends ChildModule {
   @override
   List<ModularRouter> get routers => [
         ModularRouter<LoginPage>(
-          RouteNamesUtils.LOGIN,
+          Modular.initialRoute,
           child: (_, __) => const LoginPage(),
         ),
       ];

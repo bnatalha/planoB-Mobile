@@ -15,7 +15,7 @@ class UserService {
           await userRepository.authenticateUser(username, password);
 
       if (correctCredentials) {
-        return await userRepository.getUserFromUsername(username);
+        return UserModel.fromJson(await userRepository.getUserFromUsername(username));
       } else {
         return null;
       }
@@ -26,7 +26,7 @@ class UserService {
 
   /// Will perform a logout from the user [userId]
   Future<void> logout({int userId}) async {
-    // TODO
+    throw UnimplementedError();
   }
 
   /// Will delete the user with [userId]

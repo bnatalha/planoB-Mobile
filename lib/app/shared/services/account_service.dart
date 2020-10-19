@@ -8,11 +8,19 @@ class AccountService {
   AccountService({@required this.accountRepository})
       : assert(accountRepository != null);
 
-  Future<AccountModel> createAccount({int userId, String bankName}) {}
+  Future<AccountModel> createAccount({int userId, String bankName}) {
+    throw UnimplementedError();
+  }
 
-  Future<bool> deleteAccount({int accountId}) {}
+  Future<bool> deleteAccount({int accountId}) {
+    throw UnimplementedError();
+  }
 
-  Future<List<AccountModel>> getAccountsOfUser({int userId}) {}
+  Future<List<AccountModel>> getAccountsOfUser({int userId}) {
+    throw UnimplementedError();
+  }
 
-  Future<AccountModel> getAccount({int accountId}) {}
+  Future<AccountModel> getAccount({int accountId}) {
+    throw UnimplementedError();
+  }
 }

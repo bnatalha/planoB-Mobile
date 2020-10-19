@@ -8,7 +8,9 @@ class TransactionService {
 
   final TransactionRepositoryAbstract transactionRepository;
 
-  Future<List<TransactionModel>> getTransactionsFromAccount({int accountId}) {}
+  Future<List<TransactionModel>> getTransactionsFromAccount({int accountId}) {
+    throw UnimplementedError();
+  }
 
   Future<bool> addTransaction({
     int userId,
@@ -18,7 +20,23 @@ class TransactionService {
     String description,
     List<String> tags,
     CategoryModel category,
-  }) async {}
+  }) async {
+    throw UnimplementedError();
+  }
 
-  Future<bool> removeTransaction({int transactionId}) async {}
+  Future<bool> removeTransaction({int transactionId}) async {
+    throw UnimplementedError();
+  }
+
+  Future<bool> updateTransaction({
+    int userId,
+    int toUserId,
+    int accountId,
+    double value,
+    String description,
+    List<String> tags,
+    CategoryModel category,
+  }) async {
+    throw UnimplementedError();
+  }
 }

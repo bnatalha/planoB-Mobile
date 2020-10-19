@@ -1,19 +1,19 @@
 import 'package:plano_b/app/shared/models/category_model.dart';
-import 'package:plano_b/app/shared/models/transaction_model.dart';
+// import 'package:plano_b/app/shared/models/transaction_model.dart';
 
 import '../repository.dart';
 
 abstract class TransactionRepositoryAbstract extends Repository {
-  Future<TransactionModel> getTransactionFromId(int id);
+  Future<Map<String,dynamic>> getTransactionFromId(int id);
 
-  Future<List<TransactionModel>> getTransactionsFromAccountId(int accountId);
+  Future<List<Map<String,dynamic>>> getTransactionsFromAccountId(int accountId);
 
-  Future<List<TransactionModel>> getTransactionsFromAccountWithTag(
+  Future<List<Map<String,dynamic>>> getTransactionsFromAccountWithTag(
     int accountId,
     String tag,
   );
 
-  Future<List<TransactionModel>> getTransactionsFromAccountWithCategory(
+  Future<List<Map<String,dynamic>>> getTransactionsFromAccountWithCategory(
     int accountId,
     CategoryModel category,
   );

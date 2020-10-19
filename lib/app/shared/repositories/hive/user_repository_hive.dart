@@ -30,9 +30,9 @@ class UserRepositoryHive implements UserRepositoryAbstract {
   ) async {
     final UserModel user = UserModel(
       id: username.hashCode,
-      username: username,
+      login: username,
       password: password,
-      displayName: displayName,
+      name: displayName,
     );
 
     hive.put(user.id, jsonEncode(user.toJson()));
@@ -48,19 +48,20 @@ class UserRepositoryHive implements UserRepositoryAbstract {
   }
 
   @override
-  Future<UserModel> getUserFromDisplayName(String displayName) {
-    // TODO: implement getUserFromId
+  Future<Map<String,dynamic>> getUserFromDisplayName(String displayName) {
+    // TODO: implement getUserFromDisplayName
     throw UnimplementedError();
   }
 
   @override
-  Future<UserModel> getUserFromId(int id) async {
-    return UserModel.fromJson(jsonDecode(hive.get(id)));
+  Future<Map<String,dynamic>> getUserFromId(int id) async {
+    return jsonDecode(hive.get(id));
   }
 
   @override
-  Future<UserModel> getUserFromUsername(String username) async {
-    return UserModel.fromJson(jsonDecode(hive.get(username.hashCode)));
+  Future<Map<String,dynamic>> getUserFromUsername(String username) async {
+    return jsonDecode(hive.get(username.hashCode));
+
   }
 
   @override
@@ -74,9 +75,9 @@ class UserRepositoryHive implements UserRepositoryAbstract {
 
       final UserModel newModel = UserModel(
         id: model.id,
-        username: model.username,
+        login: model.login,
         password: model.password,
-        displayName: newDisplayName,
+        name: newDisplayName,
       );
 
       hive.put(model.id, jsonEncode(newModel.toJson()));
@@ -92,9 +93,9 @@ class UserRepositoryHive implements UserRepositoryAbstract {
       final UserModel model = UserModel.fromJson(jsonDecode(hive.get(id)));
       final UserModel newModel = UserModel(
         id: model.id,
-        username: model.username,
+        login: model.name,
         password: newPassword,
-        displayName: model.displayName,
+        name: model.name,
       );
 
       hive.put(model.id, jsonEncode(newModel.toJson()));
@@ -121,7 +122,7 @@ class UserRepositoryHive implements UserRepositoryAbstract {
           UserModel.fromJson(jsonDecode(hive.get(username.hashCode)));
 
       if (userModel != null &&
-          userModel.username == username &&
+          userModel.login == username &&
           userModel.password == userModel.password) {
         return true;
       } else {

@@ -35,8 +35,10 @@ abstract class _LoginControllerBase with Store {
     }
 
     isLoading.value = true;
-    userModel.value =
-        await service.login(username: username, password: password);
+    userModel.value = await service.login(
+      username: username,
+      password: password,
+    );
 
     isLoading.value = false;
     return userModel.value != null;

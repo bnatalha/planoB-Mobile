@@ -1,5 +1,3 @@
-import 'package:plano_b/app/shared/models/account_model.dart';
-
 import '../abstract/account_repository_abstract.dart';
 
 class AccountRepositoryHive implements AccountRepositoryAbstract {
@@ -21,13 +19,13 @@ class AccountRepositoryHive implements AccountRepositoryAbstract {
   }
 
   @override
-  Future<AccountModel> getAccountFromId(int id) {
+  Future<Map<String,dynamic>> getAccountFromId(int id) {
     // TODO: implement getAccountFromId
     throw UnimplementedError();
   }
 
   @override
-  Future<List<AccountModel>> getAccountsFromUserId(int userId) {
+  Future<List<Map<String,dynamic>>> getAccountsFromUserId(int userId) {
     // TODO: implement getAccountsFromUserId
     throw UnimplementedError();
   }

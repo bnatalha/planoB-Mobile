@@ -3,6 +3,7 @@ import 'package:mobx/mobx.dart';
 import 'package:plano_b/app/modules/transactions/stores/transaction_store.dart';
 import 'package:plano_b/app/shared/models/transaction_model.dart';
 import 'package:plano_b/app/shared/repositories/abstract/transaction_repository_abstract.dart';
+import 'package:plano_b/app/shared/services/transaction_service.dart';
 
 part 'transaction_details_controller.g.dart';
 
@@ -10,8 +11,8 @@ class TransactionDetailsController = _TransacionDetailsControllerBase
     with _$TransactionDetailsController;
 
 abstract class _TransacionDetailsControllerBase with Store {
-  final TransactionRepositoryAbstract transactionService =
-      Modular.get<TransactionRepositoryAbstract>();
+  final TransactionService _transactionService =
+      Modular.get<TransactionService>();
   final TransactionStore _transactionStore;
 
   @observable
@@ -21,9 +22,9 @@ abstract class _TransacionDetailsControllerBase with Store {
   bool addTransactionMode;
 
   @action
-  verifyMode(){
+  verifyMode() {
     addTransactionMode = _transactionStore.isAddingNewTransaction;
-    if(addTransactionMode) {
+    if (addTransactionMode) {
       editMode = true;
     }
   }
@@ -37,20 +38,37 @@ abstract class _TransacionDetailsControllerBase with Store {
     editMode = false;
   }
 
+  // TODO: corrigir
   @action
   addTransaction(TransactionModel model) {
     _transactionStore.transaction = model;
-    // TODO: Add logic to proper add transaction
-    // transactionService.addTransaction();
+    _transactionService.addTransaction(
+      userId: int.parse(model.user.name),
+      toUserId: 123123,
+      accountId: 2,
+      value: model.value,
+      description: model.description,
+      tags: ['tag1, tag2'],
+      category: model.category,
+    );
   }
-  
 
   @computed
   TransactionModel get transaction => _transactionStore.transaction;
 
+  // TODO: corrigir
+  // @action
   set transaction(TransactionModel model) {
     _transactionStore.transaction = model;
-    // TODO: Add logic to proper update transaction
-    // transactionService.updateTransaction(model);
+
+    _transactionService.updateTransaction(
+      userId: int.parse(model.user.name),
+      toUserId: 123123,
+      accountId: 2,
+      value: model.value,
+      description: model.description,
+      tags: ['tag1, tag2'],
+      category: model.category,
+    );
   }
 }

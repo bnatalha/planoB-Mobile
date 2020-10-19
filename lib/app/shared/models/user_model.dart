@@ -1,39 +1,60 @@
-import 'package:hive/hive.dart';
+import 'package:flutter/foundation.dart';
+// import 'package:equatable/equatable.dart';
 
-import 'model.dart';
-
-class UserModel extends Model with HiveObject {
-  final int id;
-
-  final String username;
-
-  final String password;
-
-  final String displayName;
-
+class UserModel {
   UserModel({
     this.id,
-    this.username,
+    @required this.login,
+    this.name,
     this.password,
-    this.displayName,
   });
 
-  UserModel.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        username = json['username'],
-        password = json['password'],
-        displayName = json['displayName'];
+  int id;
+  final String login;
+  String name;
+  String password;
 
-  @override
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'username': username,
-        'password': password,
-        'displayName': displayName,
-      };
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['id'] as int,
+      login: json['login'] as String,
+      name: json['name'] as String,
+      password: json['password'] as String,
+    );
+  }
 
-  @override
-  String toString() {
-    return '($id, $username)';
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'id': id,
+      'login': login,
+      'name': name,
+      'password': password,
+    };
+  }
+
+  /// Will only update password if is a match
+  Future<bool> updatePass({
+    @required String oldPass,
+    @required String newPass,
+  }) async {
+    if (oldPass == password) {
+      password = newPass;
+      return true;
+    }
+    return false;
+  }
+
+  copyWith({
+    int id,
+    String login,
+    String name,
+    String password,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      login: login ?? this.login,
+      name: name ?? this.name,
+      password: password ?? this.password,
+    );
   }
 }

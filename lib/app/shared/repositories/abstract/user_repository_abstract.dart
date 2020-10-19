@@ -5,11 +5,11 @@ import '../repository.dart';
 abstract class UserRepositoryAbstract extends Repository {
 
   /// Fuzzy search maybe (?)
-  Future<UserModel> getUserFromDisplayName(String displayName);
+  Future<Map<String,dynamic>> getUserFromDisplayName(String displayName);
 
-  Future<UserModel> getUserFromId(int id);
+  Future<Map<String,dynamic>> getUserFromId(int id);
 
-  Future<UserModel> getUserFromUsername(String username);
+  Future<Map<String,dynamic>> getUserFromUsername(String username);
 
   Future<bool> updateUserPassword(int id, String newPassword);
 
