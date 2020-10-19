@@ -8,8 +8,18 @@ class TransactionService {
 
   final TransactionRepositoryAbstract transactionRepository;
 
-  Future<List<TransactionModel>> getTransactionsFromAccount({int accountId}) {
-    throw UnimplementedError();
+  Future<List<TransactionModel>> getTransactionsFromAccount({
+    int accountId,
+  }) async {
+    final List<Map<String, dynamic>> rawTransactions =
+        await transactionRepository.getTransactionsFromAccountId(accountId);
+
+    final List<TransactionModel> transactions = rawTransactions.map(
+      (Map<String, dynamic> transaction) =>
+          TransactionModel.fromJson(transaction),
+    );
+
+    return transactions;
   }
 
   Future<bool> addTransaction({
@@ -21,11 +31,19 @@ class TransactionService {
     List<String> tags,
     CategoryModel category,
   }) async {
-    throw UnimplementedError();
+    return transactionRepository.addTransaction(
+      userId: userId,
+      toUserId: toUserId,
+      accountId: accountId,
+      value: value,
+      description: description,
+      tags: tags,
+      category: category,
+    );
   }
 
   Future<bool> removeTransaction({int transactionId}) async {
-    throw UnimplementedError();
+    return transactionRepository.removeTransaction(transactionId: transactionId);
   }
 
   Future<bool> updateTransaction({

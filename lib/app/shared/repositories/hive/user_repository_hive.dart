@@ -7,7 +7,7 @@ import 'package:plano_b/app/shared/utils/box_names.dart';
 import '../abstract/user_repository_abstract.dart';
 
 class UserRepositoryHive implements UserRepositoryAbstract {
-  Box hive;
+  Box<String> hive;
 
   UserRepositoryHive() {
     _initBox();

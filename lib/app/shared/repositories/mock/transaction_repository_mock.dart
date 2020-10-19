@@ -54,9 +54,9 @@ class TransactionRepositoryMock implements TransactionRepositoryAbstract {
       CategoryModel category}) {
     final t = TransactionModel(
       id: _idCount++,
-      user: userMock1,
-      source: accMock1,
-      destination: accMock2,
+      userId: userMock1,
+      sourceAccountId: accMock1,
+      destinationAccountId: accMock2,
       category: category,
       date: DateTime.now(),
       value: value,
