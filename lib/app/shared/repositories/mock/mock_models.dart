@@ -34,8 +34,8 @@ final List<AccountModel> accMockList = <AccountModel>[accMock1, accMock2];
 final TransactionModel transMock1 = TransactionModel(
   id: 1,
   user: userMock1,
-  sourceAccountId: accMock1,
-  destinationAccountId: accMock2,
+  source: accMock1,
+  destination: accMock2,
   category: CategoryModel.transaction,
   date: DateTime.now(),
   value: 110.0,
@@ -45,8 +45,8 @@ final TransactionModel transMock1 = TransactionModel(
 final TransactionModel transMock2 = TransactionModel(
   id: 2,
   user: userMock1,
-  sourceAccountId: accMock2,
-  destinationAccountId: accMock1,
+  source: accMock2,
+  destination: accMock1,
   category: CategoryModel.transaction,
   date: DateTime.now(),
   value: 451.0,
@@ -56,8 +56,8 @@ final TransactionModel transMock2 = TransactionModel(
 final TransactionModel transMock3 = TransactionModel(
   id: 3,
   user: userMock1,
-  sourceAccountId: accMock2,
-  destinationAccountId: accMock1,
+  source: accMock2,
+  destination: accMock1,
   category: CategoryModel.transaction,
   date: DateTime.now(),
   value: 22.0,
