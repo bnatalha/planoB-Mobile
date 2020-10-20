@@ -1,8 +1,9 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 import 'package:plano_b/app/shared/models/user_model.dart';
 
-class AccountModel {
+class AccountModel extends Equatable{
   final int id;
   final UserModel user;
   final String name;
@@ -46,4 +47,8 @@ class AccountModel {
       balance: balance ?? this.balance,
     );
   }
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [id,user,name,balance];
 }

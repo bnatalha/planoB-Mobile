@@ -33,14 +33,17 @@ abstract class _TransacionDetailsControllerBase with Store {
   @observable
   AccountModel destSelectedAccount = AccountModel();
 
-  @computed 
-  bool get isCreateTransactionMode => _transactionStore.pageMode == TransactionMode.create;
+  @computed
+  bool get isCreateTransactionMode =>
+      _transactionStore.pageMode == TransactionMode.create;
 
-  @computed 
-  bool get isViewTransactionMode => _transactionStore.pageMode == TransactionMode.view;
+  @computed
+  bool get isViewTransactionMode =>
+      _transactionStore.pageMode == TransactionMode.view;
 
-  @computed 
-  bool get isEditTransactionMode => _transactionStore.pageMode == TransactionMode.edit;
+  @computed
+  bool get isEditTransactionMode =>
+      _transactionStore.pageMode == TransactionMode.edit;
 
   @action
   setSrcAccount(AccountModel acc) {
@@ -82,10 +85,15 @@ abstract class _TransacionDetailsControllerBase with Store {
         .asObservable();
 
     // populate select accounts
-    srcSelectedAccount =
-        _transactionStore?.transaction?.source ?? accounts.first;
-    destSelectedAccount =
-        _transactionStore?.transaction?.destination ?? accounts.last;
+    if (isViewTransactionMode) {
+      srcSelectedAccount =
+          _transactionStore?.transaction?.source ?? accounts.first;
+      destSelectedAccount =
+          _transactionStore?.transaction?.destination ?? accounts.last;
+    } else if (isCreateTransactionMode) {
+      srcSelectedAccount = accounts.first;
+      destSelectedAccount = accounts.last;
+    }
   }
 
   _TransacionDetailsControllerBase(this._transactionStore) {

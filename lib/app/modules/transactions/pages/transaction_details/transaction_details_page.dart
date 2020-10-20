@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:plano_b/app/modules/login/login_controller.dart';
 import 'package:plano_b/app/shared/models/category_model.dart';
 import 'package:plano_b/app/shared/models/user_model.dart';
+import 'package:plano_b/app/shared/repositories/mock/mock_models.dart';
 
 import '../../../../shared/models/account_model.dart';
 import '../../../../shared/models/transaction_model.dart';
@@ -32,7 +33,14 @@ class _TransactionDetailsPageState
     _valueController = TextEditingController();
     _descriptionController = TextEditingController();
 
-    // controller.verifyMode();
+    if (controller.isCreateTransactionMode) {
+      _valueController.value = TextEditingValue(text: '0.0');
+    } else if (controller.isViewTransactionMode) {
+      _valueController.value =
+          TextEditingValue(text: '${controller.transaction.value}');
+      _descriptionController.value =
+          TextEditingValue(text: '${controller.transaction.description}');
+    }
 
     super.initState();
   }
@@ -95,27 +103,38 @@ class _TransactionDetailsPageState
         ),
       );
 
-  Widget get _body => Container(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              color: Colors.blueGrey.shade300,
-              elevation: 12,
+  Widget get _body => GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Container(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  _header,
-                  SizedBox(height: 10),
-                  _srcAccArea,
-                  _downArrow,
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: _valueField,
+                children: [
+                  _descriptionField,
+                  Card(
+                    color: Colors.blueGrey.shade300,
+                    elevation: 12,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        _header,
+                        SizedBox(height: 10),
+                        // _descriptionField,
+                        _srcAccArea,
+                        _downArrow,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: _valueField,
+                        ),
+                        _downArrow,
+                        _destAccArea
+                        // buildButtons()
+                      ],
+                    ),
                   ),
-                  _downArrow,
-                  _destAccArea
-                  // buildButtons()
                 ],
               ),
             ),
@@ -183,10 +202,10 @@ class _TransactionDetailsPageState
   Widget get _valueField => Observer(
         builder: (_) => Row(
           children: [
-            Icon(Icons.monetization_on),
+            Icon(Icons.monetization_on_outlined),
             SizedBox(width: 4),
-            Text('Valor: '),
-            SizedBox(width: 10),
+            // Text('Valor: '),
+            // SizedBox(width: 10),
             Expanded(
               child: TextField(
                 style: TextStyle(
@@ -208,27 +227,32 @@ class _TransactionDetailsPageState
       );
 
   Widget get _descriptionField => Observer(
-        builder: (_) => Row(
-          children: [
-            Icon(Icons.comment_bank_outlined),
-            SizedBox(width: 4),
-            Text('Descrição: '),
-            SizedBox(width: 10),
-            Expanded(
-              child: TextField(
-                maxLines: 5,
-                style: TextStyle(
-                  color: Colors.blueGrey.shade500,
-                  fontWeight: FontWeight.bold,
-                ),
-                enabled: !controller.isViewTransactionMode,
-                controller: _valueController,
-                decoration: InputDecoration(
-                  hintText: 'Descrição aqui',
+        builder: (_) => Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 4.0),
+                child: Icon(Icons.description_outlined),
+              ),
+              SizedBox(width: 4),
+              // Text('Descrição: '),
+              // SizedBox(width: 10),
+              Expanded(
+                child: TextField(
+                  style: TextStyle(
+                    color: Colors.blueGrey.shade500,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  enabled: !controller.isViewTransactionMode,
+                  controller: _descriptionController,
+                  decoration: InputDecoration(
+                    hintText: 'Insira a Descrição',
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
 
@@ -249,17 +273,28 @@ class _TransactionDetailsPageState
     Function onChanged,
     AccountModel account,
   }) {
+    final accounts = controller.accounts;
+    accounts.forEach((element) {
+      print('${element.id}, ${element.name}, ${element.balance}');
+    });
+
     final DropdownButton<AccountModel> dropdownButton = DropdownButton(
       isExpanded: true,
       disabledHint: Text(account.name),
-      value: controller.isViewTransactionMode ? null : account,
-      items: controller.accounts
+      value: account,
+      items: accounts
           .map((e) => DropdownMenuItem(child: Text(e.name), value: e))
           .toList(),
       onChanged: (AccountModel value) {
         onChanged(value);
       },
     );
+
+    // onChanged: controller.isViewTransactionMode
+    //     ? null
+    //     : (AccountModel value) {
+    //         onChanged(value);
+    //       },
 
     final selectionField = Row(
       mainAxisSize: MainAxisSize.max,
@@ -307,7 +342,7 @@ class _TransactionDetailsPageState
       value: double.parse(_valueController.value.text),
       source: controller.srcSelectedAccount,
       destination: controller.destSelectedAccount,
-      description: "Sem Descrição",
+      description: _descriptionController.value.text ?? "Sem Descrição",
     ));
 
     Modular.link.pop();
@@ -319,6 +354,7 @@ class _TransactionDetailsPageState
       value: double.parse(_valueController.value.text),
       source: controller.srcSelectedAccount,
       destination: controller.destSelectedAccount,
+      description: _descriptionController.value.text ?? "Sem Descrição",
     ));
   }
 }
