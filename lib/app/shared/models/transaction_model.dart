@@ -1,20 +1,22 @@
+import 'dart:convert';
+
 import 'user_model.dart';
 import 'account_model.dart';
 import 'category_model.dart';
 
 class TransactionModel {
-  final int id;
-  final UserModel user;
-  final AccountModel source;
-  final AccountModel destination;
+  int id;
+  UserModel user;
+  AccountModel source;
+  AccountModel destination;
   // final String paymentType;
-  final CategoryModel category;
-  final double value;
-  final String description;
-  final DateTime date;
-  // final List<String> tags;   // TODO pra q?
+  CategoryModel category;
+  double value;
+  String description;
+  DateTime date;
+  final List<String> tags;   // TODO pra q?
 
-  const TransactionModel({
+  TransactionModel({
     this.id,
     this.user,
     this.source,
@@ -24,7 +26,7 @@ class TransactionModel {
     this.date,
     this.value = 0.0,
     this.description = "",
-    // this.tags,
+    this.tags,
   });
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class TransactionModel {
       date: json['date'] as DateTime,
       value: json['value'] ?? 0.0,
       description: json['description'] ?? "",
+      tags: jsonDecode(json['tags']) ?? <String>[],
     );
   }
 
@@ -50,6 +53,7 @@ class TransactionModel {
       'date': date,
       'value': value,
       'description': description,
+      'tags': jsonEncode(tags),
     };
   }
 
@@ -63,7 +67,7 @@ class TransactionModel {
     double value,
     String description,
     DateTime date,
-    // final List<String> tags;,
+    List<String> tags,
   }) {
     return TransactionModel(
       id: id ?? this.id,
@@ -75,7 +79,7 @@ class TransactionModel {
       date: date ?? this.date,
       value: value ?? this.value,
       description: description ?? this.description,
-      // this: this ?? // this.tags,
+      tags: tags ?? this.tags
     );
   }
 }

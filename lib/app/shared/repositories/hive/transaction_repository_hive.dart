@@ -29,8 +29,11 @@ class TransactionRepositoryHive implements TransactionRepositoryAbstract {
 
   @override
   Future<Map<String, dynamic>> getTransactionFromId(int id) {
-    // TODO: implement getTransactionFromId
-    throw UnimplementedError();
+    try {
+      return jsonDecode(hive.get(id));
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
@@ -50,22 +53,46 @@ class TransactionRepositoryHive implements TransactionRepositoryAbstract {
 
   @override
   Future<List<Map<String, dynamic>>> getTransactionsFromAccountWithCategory(
-      int accountId, CategoryModel category) {
-    // TODO: implement getTransactionsFromAccountWithCategory
-    throw UnimplementedError();
+    int accountId,
+    CategoryModel category,
+  ) async {
+    try {
+      final List<TransactionModel> transactions = hive.values
+          .map((String value) => TransactionModel.fromJson(jsonDecode(value)));
+      return transactions
+          .where((TransactionModel model) => model.category == category)
+          .map((TransactionModel m) => m.toJson())
+          .toList();
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
   Future<List<Map<String, dynamic>>> getTransactionsFromAccountWithTag(
-      int accountId, String tag) {
-    // TODO: implement getTransactionsFromAccountWithTag
-    throw UnimplementedError();
+    int accountId,
+    String tag,
+  ) async {
+    try {
+      final List<TransactionModel> transactions = hive.values
+          .map((String t) => TransactionModel.fromJson(jsonDecode(t)));
+      return transactions
+          .where((TransactionModel model) => model.tags.contains(tag))
+          .map((TransactionModel model) => model.toJson())
+          .toList();
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
-  Future<bool> removeTransaction({int transactionId}) {
-    // TODO: implement removeTransaction
-    throw UnimplementedError();
+  Future<bool> removeTransaction({int transactionId}) async {
+    try {
+      hive.delete(transactionId);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   @override
@@ -99,8 +126,32 @@ class TransactionRepositoryHive implements TransactionRepositoryAbstract {
   }
 
   @override
-  Future<bool> updateTransaction({int id, UserModel user, AccountModel source, AccountModel destination, double value, String description, DateTime date, CategoryModel category}) {
-    // TODO: implement updateTransaction
-    throw UnimplementedError();
+  Future<bool> updateTransaction({
+    int id,
+    UserModel user,
+    AccountModel source,
+    AccountModel destination,
+    double value,
+    String description,
+    DateTime date,
+    CategoryModel category,
+  }) async {
+    try {
+      TransactionModel model =
+          TransactionModel.fromJson(jsonDecode(hive.get(id)));
+      if (model != null) {
+        if (user != null) model.user = user;
+        if (source != null) model.source = source;
+        if (destination != null) model.destination = destination;
+        if (value != null) model.value = value;
+        if (description != null) model.description = description;
+        if (category != null) model.category = category;
+        if (date != null) model.date = date;
+      }
+      hive.put(model.id, jsonEncode(model.toJson()));
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
