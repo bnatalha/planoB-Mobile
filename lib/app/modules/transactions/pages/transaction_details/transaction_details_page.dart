@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
-import 'package:plano_b/app/modules/login/login_controller.dart';
-import 'package:plano_b/app/shared/models/category_model.dart';
-import 'package:plano_b/app/shared/models/user_model.dart';
-import 'package:plano_b/app/shared/repositories/mock/mock_models.dart';
+import 'package:plano_b/app/shared/stores/logged_user_store.dart';
 
 import '../../../../shared/models/account_model.dart';
-import '../../../../shared/models/transaction_model.dart';
 import 'transaction_details_controller.dart';
 
 // TODO edit date
@@ -338,6 +334,7 @@ class _TransactionDetailsPageState
 
   void _createTransaction() {
     controller.addTransaction(controller.transaction.copyWith(
+      user: Modular.get<LoggedUserStore>().currentUser.value,
       date: controller.transaction.date ?? DateTime.now(),
       value: double.parse(_valueController.value.text),
       source: controller.srcSelectedAccount,
@@ -350,6 +347,7 @@ class _TransactionDetailsPageState
 
   void _saveTransaction() {
     controller.updateTransaction(controller.transaction.copyWith(
+      user: Modular.get<LoggedUserStore>().currentUser.value,
       date: controller.transaction.date ?? DateTime.now(),
       value: double.parse(_valueController.value.text),
       source: controller.srcSelectedAccount,

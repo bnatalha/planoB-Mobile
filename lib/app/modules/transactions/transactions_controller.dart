@@ -6,6 +6,7 @@ import 'package:plano_b/app/shared/repositories/abstract/transaction_repository_
 // import 'package:plano_b/app/shared/repositories/session/session_repository_interface.dart';
 // import 'package:plano_b/app/shared/repositories/transaction/transaction_repository_interface.dart';
 import 'package:plano_b/app/shared/services/transaction_service.dart';
+import 'package:plano_b/app/shared/stores/logged_user_store.dart';
 
 part 'transactions_controller.g.dart';
 
