@@ -24,12 +24,12 @@ mixin _$AccountController on _AccountControllerBase, Store {
     });
   }
 
-  final _$updateAccountsAsyncAction =
-      AsyncAction('_AccountControllerBase.updateAccounts');
+  final _$fetchAccountsAsyncAction =
+      AsyncAction('_AccountControllerBase.fetchAccounts');
 
   @override
-  Future<void> updateAccounts() {
-    return _$updateAccountsAsyncAction.run(() => super.updateAccounts());
+  Future<void> fetchAccounts() {
+    return _$fetchAccountsAsyncAction.run(() => super.fetchAccounts());
   }
 
   @override

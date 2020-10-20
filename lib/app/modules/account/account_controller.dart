@@ -13,10 +13,12 @@ abstract class _AccountControllerBase with Store {
   @observable
   ObservableList<AccountModel> accountsList = <AccountModel>[].asObservable();
 
-  _AccountControllerBase(this.account);
+  _AccountControllerBase(this.account) {
+    fetchAccounts();
+  }
 
   @action
-  Future<void> updateAccounts() async {
+  Future<void> fetchAccounts() async {
     final user = UserModel(
       login: 'loginDummy',
       name: 'Foolano',

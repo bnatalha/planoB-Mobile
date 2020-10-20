@@ -8,8 +8,7 @@ import '../../shared/widgets/transaction_card.dart';
 import 'package:plano_b/app/shared/models/category_model.dart';
 
 class TransactionsPage extends StatefulWidget {
-  final String title;
-  const TransactionsPage({Key key, this.title = "Home"}) : super(key: key);
+  const TransactionsPage({Key key}) : super(key: key);
 
   @override
   _TransactionsPageState createState() => _TransactionsPageState();
