@@ -3,13 +3,13 @@ import 'package:flutter/foundation.dart';
 
 class UserModel {
   UserModel({
-    this.id,
+    int id,
     @required this.login,
     this.name,
     this.password,
-  });
+  }) : id = id ?? '$login,$name,$password'.hashCode;
 
-  int id;
+  final int id;
   final String login;
   String name;
   String password;

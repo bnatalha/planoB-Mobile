@@ -24,6 +24,20 @@ mixin _$LoggedUserStore on _LoggedUserStoreBase, Store {
     });
   }
 
+  final _$_LoggedUserStoreBaseActionController =
+      ActionController(name: '_LoggedUserStoreBase');
+
+  @override
+  void setCurrentUser(UserModel user) {
+    final _$actionInfo = _$_LoggedUserStoreBaseActionController.startAction(
+        name: '_LoggedUserStoreBase.setCurrentUser');
+    try {
+      return super.setCurrentUser(user);
+    } finally {
+      _$_LoggedUserStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''

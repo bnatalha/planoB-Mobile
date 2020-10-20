@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:hive/hive.dart';
 import 'package:plano_b/app/shared/models/user_model.dart';
+import 'package:plano_b/app/shared/stores/logged_user_store.dart';
 import 'package:plano_b/app/shared/utils/box_names.dart';
 
 import '../abstract/user_repository_abstract.dart';
@@ -35,6 +37,8 @@ class UserRepositoryHive implements UserRepositoryAbstract {
       name: displayName,
     );
 
+    print('Created user with info: ${user.id}, ${user.login}, ${user.name}');
+
     hive.put(user.id, jsonEncode(user.toJson()));
     return true;
   }
@@ -55,7 +59,9 @@ class UserRepositoryHive implements UserRepositoryAbstract {
 
   @override
   Future<Map<String,dynamic>> getUserFromId(int id) async {
-    return jsonDecode(hive.get(id));
+    Map<String, dynamic> user = jsonDecode(hive.get(id));
+    print(user);
+    return user;
   }
 
   @override
@@ -114,12 +120,15 @@ class UserRepositoryHive implements UserRepositoryAbstract {
 
   @override
   Future<bool> authenticateUser(String username, String password) async {
-    print('Tentando autenticar:');
     try {
       hive.values.toList().map((value) => print(value));
 
       final UserModel userModel =
           UserModel.fromJson(jsonDecode(hive.get(username.hashCode)));
+
+      print('UserModel authenticated: ' + userModel.toJson().toString());
+      final LoggedUserStore store = Modular.get<LoggedUserStore>();
+      store.setCurrentUser(userModel);
 
       if (userModel != null &&
           userModel.login == username &&

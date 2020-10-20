@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plano_b/app/shared/repositories/hive/account_repository_hive.dart';
+import 'package:plano_b/app/shared/repositories/hive/transaction_repository_hive.dart';
 import 'package:plano_b/app/shared/repositories/mock/account_repository_mock.dart';
 import 'package:plano_b/app/shared/services/account_service.dart';
 import 'package:plano_b/app/shared/stores/logged_user_store.dart';
@@ -26,8 +27,8 @@ class AppModule extends MainModule {
         // (Inject<dynamic> i) => UserRepositoryHive(),
         // ),
         Bind<TransactionService>(
-          (i) => TransactionService(transactionRepository: TransactionRepositoryMock()),
-          // (i) => TransactionService(transactionRepository: TransactionRepositoryHive()),
+          // (i) => TransactionService(transactionRepository: TransactionRepositoryMock()),
+          (i) => TransactionService(transactionRepository: TransactionRepositoryHive()),
         ),
         Bind<AccountService>(
           (i) => AccountService(accountRepository: AccountRepositoryMock()),

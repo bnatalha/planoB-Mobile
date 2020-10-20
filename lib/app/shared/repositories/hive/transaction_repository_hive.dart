@@ -119,8 +119,11 @@ class TransactionRepositoryHive implements TransactionRepositoryAbstract {
       );
 
       hive.put(transaction.id, jsonEncode(transaction.toJson()));
+      // print('Adding transaction: ${transaction.id}');
+      print('>>> ${jsonEncode(transaction.toJson())}');
       return true;
     } catch (e) {
+      print('Has error! $e');
       return false;
     }
   }

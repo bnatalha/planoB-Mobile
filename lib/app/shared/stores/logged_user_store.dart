@@ -7,4 +7,9 @@ class LoggedUserStore = _LoggedUserStoreBase with _$LoggedUserStore;
 abstract class _LoggedUserStoreBase with Store {
   @observable
   Observable<UserModel> currentUser = Observable<UserModel>(null);
+
+  @action
+  void setCurrentUser(UserModel user) {
+    currentUser.value = user;
+  }
 }
