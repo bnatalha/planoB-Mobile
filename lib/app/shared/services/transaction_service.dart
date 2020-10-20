@@ -19,7 +19,7 @@ class TransactionService {
     final List<TransactionModel> transactions = rawTransactions.map(
       (Map<String, dynamic> transaction) =>
           TransactionModel.fromJson(transaction),
-    );
+    ).toList();
 
     return transactions;
   }

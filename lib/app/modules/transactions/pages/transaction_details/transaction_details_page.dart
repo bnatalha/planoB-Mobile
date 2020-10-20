@@ -22,6 +22,7 @@ class TransactionDetailsPage extends StatefulWidget {
 class _TransactionDetailsPageState
     extends ModularState<TransactionDetailsPage, TransactionDetailsController> {
   TextEditingController _valueController;
+  TextEditingController _descriptionController;
 
   final Padding _downArrow =
       Padding(padding: EdgeInsets.all(4), child: Icon(Icons.south, size: 40));
@@ -29,21 +30,7 @@ class _TransactionDetailsPageState
   @override
   void initState() {
     _valueController = TextEditingController();
-    // TODO: Adapt to consume from new model
-    /*
-    if (controller.transaction.id != null) {
-      _valueController.value =
-          TextEditingValue(text: controller.transaction.value.toString());
-      _srcUserController.value = TextEditingValue(
-          text: controller.transaction.source.user.name.toString());
-      _srcBankController.value =
-          TextEditingValue(text: controller.transaction.source.name.toString());
-      _destUserController.value = TextEditingValue(
-          text: controller.transaction.destination.user.name.toString());
-      _destBankController.value = TextEditingValue(
-          text: controller.transaction.destination.name.toString());
-    }
-    */
+    _descriptionController = TextEditingController();
 
     // controller.verifyMode();
 
@@ -53,6 +40,7 @@ class _TransactionDetailsPageState
   @override
   void dispose() {
     _valueController.dispose();
+    _descriptionController.dispose();
 
     super.dispose();
   }
@@ -219,6 +207,31 @@ class _TransactionDetailsPageState
         ),
       );
 
+  Widget get _descriptionField => Observer(
+        builder: (_) => Row(
+          children: [
+            Icon(Icons.comment_bank_outlined),
+            SizedBox(width: 4),
+            Text('Descrição: '),
+            SizedBox(width: 10),
+            Expanded(
+              child: TextField(
+                maxLines: 5,
+                style: TextStyle(
+                  color: Colors.blueGrey.shade500,
+                  fontWeight: FontWeight.bold,
+                ),
+                enabled: !controller.isViewTransactionMode,
+                controller: _valueController,
+                decoration: InputDecoration(
+                  hintText: 'Descrição aqui',
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
   String idString() {
     return "${!controller.isCreateTransactionMode ? controller.transaction.id : "Nova Transação"}";
   }
@@ -294,6 +307,7 @@ class _TransactionDetailsPageState
       value: double.parse(_valueController.value.text),
       source: controller.srcSelectedAccount,
       destination: controller.destSelectedAccount,
+      description: "Sem Descrição",
     ));
 
     Modular.link.pop();

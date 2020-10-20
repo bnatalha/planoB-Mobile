@@ -64,7 +64,7 @@ abstract class _TransactionsControllerBase with Store {
   Future<void> fetchTransactions() async {
     isLoading.value = true;
     try {
-      transactions = await _transactionService.getTransactionsFromAccount();
+      transactions = (await _transactionService.getTransactionsFromAccount()).asObservable();
       hasError.value = false;
     } catch (e) {
       hasError.value = true;
