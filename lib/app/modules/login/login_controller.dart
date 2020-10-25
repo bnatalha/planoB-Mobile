@@ -12,6 +12,9 @@ abstract class _LoginControllerBase with Store {
   final UserService service = Modular.get();
   final LoggedUserStore _loggedUserStore = Modular.get();
 
+  // For debugging only (in ms)
+  final int awaitTime = 900;
+
   @computed
   UserModel get currentUser => _loggedUserStore.currentUser.value;
 
@@ -39,9 +42,13 @@ abstract class _LoginControllerBase with Store {
     }
 
     isLoading.value = true;
-    _loggedUserStore.currentUser.value = await service.login(
-      username: username,
-      password: password,
+
+    _loggedUserStore.currentUser.value = await Future.delayed(
+      Duration(milliseconds: awaitTime),
+      () => service.login(
+        username: username,
+        password: password,
+      ),
     );
 
     isLoading.value = false;

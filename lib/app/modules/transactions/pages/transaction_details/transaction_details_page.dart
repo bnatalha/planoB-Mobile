@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:plano_b/app/shared/stores/logged_user_store.dart';
 
@@ -26,7 +28,7 @@ class _TransactionDetailsPageState
 
   @override
   void initState() {
-    _valueController = TextEditingController();
+    _valueController = MoneyMaskedTextController();
     _descriptionController = TextEditingController();
 
     if (controller.isCreateTransactionMode) {
@@ -196,29 +198,40 @@ class _TransactionDetailsPageState
 
   // TODO checar se valor > balanço na conta
   Widget get _valueField => Observer(
-        builder: (_) => Row(
-          children: [
-            Icon(Icons.monetization_on_outlined),
-            SizedBox(width: 4),
-            // Text('Valor: '),
-            // SizedBox(width: 10),
-            Expanded(
-              child: TextField(
-                style: TextStyle(
-                  color: Colors.blueGrey.shade500,
-                  fontWeight: FontWeight.bold,
-                ),
-                enabled: !controller.isViewTransactionMode,
-                keyboardType: TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-                controller: _valueController,
-                decoration: InputDecoration(
-                  prefixText: 'R\$ ',
+        builder: (_) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            children: [
+              // Icon(Icons.monetization_on_outlined),
+              // SizedBox(width: 4),
+              // Text('Valor: '),
+              // SizedBox(width: 10),
+              Expanded(
+                child: TextField(
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.9),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 40,
+                  ),
+                  textAlign: TextAlign.right,
+                  enabled: !controller.isViewTransactionMode,
+                  keyboardType: TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  controller: _valueController,
+                  decoration: InputDecoration(
+                    prefixText: 'R\$ ',
+                    prefixStyle: GoogleFonts.openSans(
+                      color: Colors.black.withOpacity(0.5),
+                      fontSize: 30,
+                      fontWeight: FontWeight.w300,
+                    ),
+                    alignLabelWithHint: false,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
 

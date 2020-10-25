@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:plano_b/app/shared/utils/routes_names_utils.dart';
 import 'login_controller.dart';
 
@@ -15,6 +16,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends ModularState<LoginPage, LoginController> {
   TextEditingController _loginController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+
+  FocusNode _loginFocusNode = FocusNode();
+  FocusNode _passwordFocusNode = FocusNode();
+
   bool createUserState;
 
   @override
@@ -31,6 +36,16 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text(
+              'PLANOB',
+              style: GoogleFonts.roboto(
+                color: Colors.white,
+                fontSize: 64,
+                letterSpacing: 1,
+                fontWeight: FontWeight.w100,
+              ),
+            ),
+            const SizedBox(height: 8),
             _loginBox,
             _actionButtonFields,
           ],
@@ -53,26 +68,28 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(8)),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _loginFormField,
-            _passFormField,
-            Row(
+        child: Form(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _loginFormField,
+              _passFormField,
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Switch(
-                  value: createUserState,
-                  onChanged: (bool value) {
-                    setState(() {
-                      createUserState = value;
-                    });
-                  },
-                ),
-                Text('Create user'),
-              ],
-            ),
-          ],
+                children: <Widget>[
+                  Switch(
+                    value: createUserState,
+                    onChanged: (bool value) {
+                      if (!controller.isLoading.value) {
+                        setState(() => createUserState = value);
+                      }
+                    },
+                  ),
+                  Text('Create user'),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -82,6 +99,10 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
     return Observer(
       builder: (context) {
         return TextFormField(
+          focusNode: _loginFocusNode,
+          textInputAction: TextInputAction.next,
+          autocorrect: false,
+          onEditingComplete: _loginFocusNode.nextFocus,
           controller: _loginController,
           decoration: InputDecoration(
             hintText: "Login",
@@ -98,6 +119,8 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
     return Observer(builder: (context) {
       return TextFormField(
         controller: _passwordController,
+        textInputAction: TextInputAction.done,
+        onFieldSubmitted: (String value) => login,
         obscureText: true,
         decoration: InputDecoration(
           hintText: "Senha",

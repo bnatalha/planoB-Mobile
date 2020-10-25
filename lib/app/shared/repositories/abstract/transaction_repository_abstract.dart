@@ -7,6 +7,8 @@ import 'package:plano_b/app/shared/models/user_model.dart';
 import '../repository.dart';
 
 abstract class TransactionRepositoryAbstract extends Repository {
+
+  /// Get transaction that [transaction.id] == [id]
   Future<Map<String,dynamic>> getTransactionFromId(int id);
 
   Future<List<Map<String,dynamic>>> getTransactionsFromAccountId(int accountId);
