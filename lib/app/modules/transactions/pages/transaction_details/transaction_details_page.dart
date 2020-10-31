@@ -349,7 +349,8 @@ class _TransactionDetailsPageState
     controller.addTransaction(controller.transaction.copyWith(
       user: Modular.get<LoggedUserStore>().currentUser.value,
       date: controller.transaction.date ?? DateTime.now(),
-      value: double.parse(_valueController.value.text),
+      value: double.parse(
+          _valueController.value.text.replaceAll(RegExp(r','), '.')),
       source: controller.srcSelectedAccount,
       destination: controller.destSelectedAccount,
       description: _descriptionController.value.text ?? "Sem Descrição",
@@ -362,7 +363,8 @@ class _TransactionDetailsPageState
     controller.updateTransaction(controller.transaction.copyWith(
       user: Modular.get<LoggedUserStore>().currentUser.value,
       date: controller.transaction.date ?? DateTime.now(),
-      value: double.parse(_valueController.value.text),
+      value: double.parse(
+          _valueController.value.text.replaceAll(RegExp(r','), '.')),
       source: controller.srcSelectedAccount,
       destination: controller.destSelectedAccount,
       description: _descriptionController.value.text ?? "Sem Descrição",

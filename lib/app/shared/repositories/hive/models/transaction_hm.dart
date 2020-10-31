@@ -10,13 +10,13 @@ class TransactionHM extends Model {
   final int id;
 
   @HiveField(1)
-  final int fromUserId;
+  final int userId;
 
   @HiveField(2)
-  final int toUserId;
+  final int srcAccountId;
 
   @HiveField(3)
-  final int accountId;
+  final int destAccountId;
 
   @HiveField(4)
   final double value;
@@ -33,31 +33,31 @@ class TransactionHM extends Model {
   @HiveField(8)
   final DateTime date;
 
-  const TransactionHM({
+  const TransactionHM(
     this.id,
-    this.accountId,
-    this.fromUserId,
-    this.toUserId,
+    this.userId,
+    this.srcAccountId,
+    this.destAccountId,
     this.value,
     this.description,
     this.tags,
     this.category,
-    this.date, 
-  });
+    this.date,
+  );
 
   @override
   // TODO( ): retornar um user_hm no lugar do userId
   Map<String, dynamic> toJson() {
-    return <String,dynamic>{
+    return <String, dynamic>{
       'id': id,
-      'accountId': accountId,
-      'fromUserId': fromUserId,
-      'toUserId': toUserId,
+      'userId': userId,
+      'srcAccountId': srcAccountId,
+      'destAccountId': destAccountId,
       'value': value,
       'description': description,
       'tags': tags,
       'category': category,
-      'date': date, 
+      'date': date,
     };
   }
 }

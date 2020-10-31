@@ -17,15 +17,15 @@ class TransactionHMAdapter extends TypeAdapter<TransactionHM> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TransactionHM(
-      id: fields[0] as int,
-      accountId: fields[3] as int,
-      fromUserId: fields[1] as int,
-      toUserId: fields[2] as int,
-      value: fields[4] as double,
-      description: fields[5] as String,
-      tags: (fields[6] as List)?.cast<String>(),
-      category: fields[7] as CategoryModel,
-      date: fields[8] as DateTime,
+      fields[0] as int,
+      fields[1] as int,
+      fields[2] as int,
+      fields[3] as int,
+      fields[4] as double,
+      fields[5] as String,
+      (fields[6] as List)?.cast<String>(),
+      fields[7] as CategoryModel,
+      fields[8] as DateTime,
     );
   }
 
@@ -36,11 +36,11 @@ class TransactionHMAdapter extends TypeAdapter<TransactionHM> {
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.fromUserId)
+      ..write(obj.userId)
       ..writeByte(2)
-      ..write(obj.toUserId)
+      ..write(obj.srcAccountId)
       ..writeByte(3)
-      ..write(obj.accountId)
+      ..write(obj.destAccountId)
       ..writeByte(4)
       ..write(obj.value)
       ..writeByte(5)
