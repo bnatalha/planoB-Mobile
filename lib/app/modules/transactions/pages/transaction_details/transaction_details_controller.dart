@@ -111,6 +111,7 @@ abstract class _TransacionDetailsControllerBase with Store {
       source: model.source,
       value: model.value,
       description: model.description,
+      date: model.date,
       // tags: ['tag1, tag2'],
       category: model.category,
     );
@@ -130,6 +131,8 @@ abstract class _TransacionDetailsControllerBase with Store {
       value: model.value,
       description: model.description,
       category: model.category,
+      date: model.date,
+      // tags: ['tag1, tag2'],
     );
   }
 }

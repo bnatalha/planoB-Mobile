@@ -1,3 +1,4 @@
+import 'dart:developer' as dev;
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:plano_b/app/modules/transactions/stores/transaction_store.dart';
@@ -19,10 +20,12 @@ abstract class _TransactionsControllerBase with Store {
       Modular.get<TransactionService>();
   final TransactionStore _transactionStore;
 
-  @observable 
+  final LoggedUserStore _loggedUserStore = Modular.get();
+
+  @observable
   Observable<bool> isLoading = Observable(false);
 
-  @observable 
+  @observable
   Observable<bool> hasError = Observable(false);
 
   @observable
@@ -65,9 +68,15 @@ abstract class _TransactionsControllerBase with Store {
   Future<void> fetchTransactions() async {
     isLoading.value = true;
     try {
-      transactions = (await _transactionService.getTransactionsFromAccount()).asObservable();
+      transactions = (await _transactionService.getTransactionsFromUser(
+              userId: _loggedUserStore.currentUser.value.id))
+          ?.asObservable() ?? <TransactionModel>[].asObservable();
+
+      dev.log('transactions:', name: 'fetchTransactions', error: transactions);
       hasError.value = false;
     } catch (e) {
+      dev.log('error', name: 'fetchTransactions', error: e);
+
       hasError.value = true;
     }
     isLoading.value = false;

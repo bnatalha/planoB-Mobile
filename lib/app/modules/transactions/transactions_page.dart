@@ -52,7 +52,7 @@ class _TransactionsPageState
                   return TransactionCard(
                     key: ValueKey(t.id),
                     description: t.description,
-                    category: t.category.asString(),
+                    category: t.category?.asString(),
                     value: t.value,
                     date: t.date, // TODO: Adapt to new model :: t.date,
                     onTap: () {

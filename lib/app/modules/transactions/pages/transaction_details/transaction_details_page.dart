@@ -1,3 +1,5 @@
+import 'dart:developer' as dev;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:plano_b/app/shared/stores/logged_user_store.dart';
+import 'package:plano_b/app/shared/utils/aux.dart';
 
 import '../../../../shared/models/account_model.dart';
 import 'transaction_details_controller.dart';
@@ -278,6 +281,7 @@ class _TransactionDetailsPageState
   }
 
   Widget buildAccArea({
+    Icon icon,
     String leadText,
     Function onChanged,
     AccountModel account,
@@ -287,23 +291,37 @@ class _TransactionDetailsPageState
       print('${element.id}, ${element.name}, ${element.balance}');
     });
 
-    final DropdownButton<AccountModel> dropdownButton = DropdownButton(
+    final List<DropdownMenuItem<AccountModel>> menuItems = accounts
+        .map((e) =>
+            DropdownMenuItem<AccountModel>(child: Text(e.name), value: e))
+        .toList();
+
+    Widget accountName;
+    // if (controller.isViewTransactionMode) {
+    //   accountName = Text(account.name);
+    // } else {
+    //   accountName = DropdownButton<AccountModel>(
+    //     isExpanded: true,
+    //     disabledHint: Text(account.name),
+    //     value: account,
+    //     items: menuItems,
+    //     onChanged: (AccountModel value) {
+    //       onChanged(value);
+    //     },
+    //   );
+    // }
+
+    accountName = DropdownButton<AccountModel>(
       isExpanded: true,
       disabledHint: Text(account.name),
       value: account,
-      items: accounts
-          .map((e) => DropdownMenuItem(child: Text(e.name), value: e))
-          .toList(),
-      onChanged: (AccountModel value) {
-        onChanged(value);
-      },
+      items: menuItems,
+      onChanged: controller.isViewTransactionMode
+          ? null
+          : (AccountModel value) {
+              onChanged(value);
+            },
     );
-
-    // onChanged: controller.isViewTransactionMode
-    //     ? null
-    //     : (AccountModel value) {
-    //         onChanged(value);
-    //       },
 
     final selectionField = Row(
       mainAxisSize: MainAxisSize.max,
@@ -314,7 +332,7 @@ class _TransactionDetailsPageState
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         SizedBox(width: 10),
-        Expanded(child: dropdownButton),
+        Expanded(child: accountName),
       ],
     );
 
@@ -349,8 +367,7 @@ class _TransactionDetailsPageState
     controller.addTransaction(controller.transaction.copyWith(
       user: Modular.get<LoggedUserStore>().currentUser.value,
       date: controller.transaction.date ?? DateTime.now(),
-      value: double.parse(
-          _valueController.value.text.replaceAll(RegExp(r','), '.')),
+      value: double.parse(treatValue(_valueController.value.text)),
       source: controller.srcSelectedAccount,
       destination: controller.destSelectedAccount,
       description: _descriptionController.value.text ?? "Sem Descrição",
@@ -363,8 +380,7 @@ class _TransactionDetailsPageState
     controller.updateTransaction(controller.transaction.copyWith(
       user: Modular.get<LoggedUserStore>().currentUser.value,
       date: controller.transaction.date ?? DateTime.now(),
-      value: double.parse(
-          _valueController.value.text.replaceAll(RegExp(r','), '.')),
+      value: double.parse(treatValue(_valueController.value.text)),
       source: controller.srcSelectedAccount,
       destination: controller.destSelectedAccount,
       description: _descriptionController.value.text ?? "Sem Descrição",

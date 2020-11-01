@@ -45,7 +45,8 @@ class TransactionRepositoryHive implements TransactionRepositoryAbstract {
     );
 
     allTransactions.retainWhere(
-      (TransactionModel t) => t.source.id == accountId,
+      (TransactionModel t) =>
+          t.source.id == accountId || t.destination.id == accountId,
     );
 
     return allTransactions.map((TransactionModel t) => t.toJson()).toList();
@@ -60,7 +61,9 @@ class TransactionRepositoryHive implements TransactionRepositoryAbstract {
       final List<TransactionModel> transactions = hive.values
           .map((String value) => TransactionModel.fromJson(jsonDecode(value)));
       return transactions
-          .where((TransactionModel model) => model.category == category)
+          .where((TransactionModel t) =>
+              t.category == category &&
+              (accountId == t.destination.id || accountId == t.source.id))
           .map((TransactionModel m) => m.toJson())
           .toList();
     } catch (e) {
@@ -155,6 +158,23 @@ class TransactionRepositoryHive implements TransactionRepositoryAbstract {
       return true;
     } catch (e) {
       return false;
+    }
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getTransactionsFromUserId(
+      int userId) async {
+    try {
+      final List<TransactionModel> transactions = hive.values
+          .map((String t) => TransactionModel.fromJson(jsonDecode(t)))
+          .toList();
+
+      return transactions
+          .where((TransactionModel t) => t.user.id == userId)
+          .map((TransactionModel model) => model.toJson())
+          .toList();
+    } catch (e) {
+      return null;
     }
   }
 }

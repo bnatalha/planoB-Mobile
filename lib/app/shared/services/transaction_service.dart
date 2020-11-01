@@ -24,6 +24,20 @@ class TransactionService {
     return transactions;
   }
 
+  Future<List<TransactionModel>> getTransactionsFromUser({
+    int userId,
+  }) async {
+    final List<Map<String, dynamic>> rawTransactions =
+        await transactionRepository.getTransactionsFromUserId(userId);
+
+    final List<TransactionModel> transactions = rawTransactions?.map(
+      (Map<String, dynamic> transaction) =>
+          TransactionModel?.fromJson(transaction),
+    )?.toList();
+
+    return transactions;
+  }
+
   Future<bool> addTransaction({
     UserModel user,
     AccountModel source,
@@ -32,6 +46,7 @@ class TransactionService {
     String description,
     // List<String> tags,
     CategoryModel category,
+    DateTime date,
   }) async {
     return transactionRepository.addTransaction(
       user: user,
@@ -39,6 +54,7 @@ class TransactionService {
       destination: destination,
       value: value,
       description: description,
+      date: date,
       // tags: tags,
       category: category,
     );
@@ -51,6 +67,7 @@ class TransactionService {
 
   Future<bool> updateTransaction({
     @required int id,
+    DateTime date,
     UserModel user,
     AccountModel source,
     AccountModel destination,
@@ -67,6 +84,7 @@ class TransactionService {
       value: value,
       description: description,
       category: category,
+      date: date,
     );
   }
 }

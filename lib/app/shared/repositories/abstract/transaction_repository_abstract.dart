@@ -13,6 +13,8 @@ abstract class TransactionRepositoryAbstract extends Repository {
 
   Future<List<Map<String,dynamic>>> getTransactionsFromAccountId(int accountId);
 
+  Future<List<Map<String,dynamic>>> getTransactionsFromUserId(int userId);
+
   Future<List<Map<String,dynamic>>> getTransactionsFromAccountWithTag(
     int accountId,
     String tag,

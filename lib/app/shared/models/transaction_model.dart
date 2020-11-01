@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:developer' as dev;
+
+import 'package:flutter/material.dart';
 
 import 'user_model.dart';
 import 'account_model.dart';
@@ -9,19 +12,17 @@ class TransactionModel {
   UserModel user;
   AccountModel source;
   AccountModel destination;
-  // final String paymentType;
   CategoryModel category;
   double value;
   String description;
   DateTime date;
-  final List<String> tags;   // TODO pra q?
+  final List<String> tags; // TODO pra q?
 
   TransactionModel({
     this.id,
     this.user,
     this.source,
     this.destination,
-    // this.paymentType,
     this.category,
     this.date,
     this.value = 0.0,
@@ -30,27 +31,37 @@ class TransactionModel {
   });
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
-    return TransactionModel(
-      id: json['id'] as int,
-      user: json['user'] as UserModel,
-      source: json['source'] as AccountModel,
-      destination: json['destination'] as AccountModel,
-      category: json['category'] as CategoryModel,
-      date: json['date'] as DateTime,
-      value: json['value'] ?? 0.0,
-      description: json['description'] ?? "",
-      tags: jsonDecode(json['tags']) ?? <String>[],
-    );
+    try {
+      dev.log('$json', name: 'TransactionModel.fromJson');
+
+      return TransactionModel(
+        id: json['id'] as int,
+        user: UserModel?.fromJson(json['user']) ?? null,
+        source: AccountModel?.fromJson(json['source']) ?? null,
+        destination: AccountModel?.fromJson(json['destination']) ?? null,
+        category: json['category'] as CategoryModel ?? null,
+        date: DateTime.tryParse(json['date'] ?? '') ?? null,
+        value: json['value'] as double,
+        description: json['description'] ?? "",
+        tags: (jsonDecode(json['tags']) as List<dynamic>)
+                ?.map((e) => e?.toString())
+                ?.toList() ??
+            <String>[],
+      );
+    } catch (e) {
+      dev.log('error', name: 'TransactionModel.fromJson', error: e);
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
-      'user': user,
-      'source': source,
-      'destination': destination,
+      'user': user?.toJson(),
+      'source': source?.toJson(),
+      'destination': destination?.toJson(),
       'category': category,
-      'date': date,
+      'date': date?.toIso8601String(),
       'value': value,
       'description': description,
       'tags': jsonEncode(tags),
@@ -70,16 +81,14 @@ class TransactionModel {
     List<String> tags,
   }) {
     return TransactionModel(
-      id: id ?? this.id,
-      user: user ?? this.user,
-      source: source ?? this.source,
-      destination: destination ?? this.destination,
-      // this: this ?? // this.paymentType,
-      category: category ?? this.category,
-      date: date ?? this.date,
-      value: value ?? this.value,
-      description: description ?? this.description,
-      tags: tags ?? this.tags
-    );
+        id: id ?? this.id,
+        user: user ?? this.user,
+        source: source ?? this.source,
+        destination: destination ?? this.destination,
+        category: category ?? this.category,
+        date: date ?? this.date,
+        value: value ?? this.value,
+        description: description ?? this.description,
+        tags: tags ?? this.tags);
   }
 }

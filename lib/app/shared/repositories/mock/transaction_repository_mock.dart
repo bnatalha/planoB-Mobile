@@ -104,4 +104,10 @@ class TransactionRepositoryMock implements TransactionRepositoryAbstract {
     transMockList[idx] = t;
     return Future.delayed(_duration).then((value) => true);
   }
+
+  @override
+  Future<List<Map<String, dynamic>>> getTransactionsFromUserId(int userId) {
+    final result = transMockList.map((e) => e.toJson()).toList();
+    return Future.delayed(_duration).then((value) => result);
+  }
 }

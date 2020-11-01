@@ -60,8 +60,7 @@ class UserRepositoryMock implements UserRepositoryAbstract {
     UserModel u = userMockList.firstWhere((e) => e.id == id);
     int i = userMockList.indexOf(u);
 
-    u.name = newDisplayName;
-    userMockList[i] = u;
+    userMockList[i] = u.copyWith(name: newDisplayName);
 
     return Future.delayed(_duration).then((value) => true);
   }
@@ -71,8 +70,7 @@ class UserRepositoryMock implements UserRepositoryAbstract {
     UserModel u = userMockList.firstWhere((e) => e.id == id);
     int i = userMockList.indexOf(u);
 
-    u.password = newPassword;
-    userMockList[i] = u;
+    userMockList[i] = u.copyWith(password: newPassword);
 
     return Future.delayed(_duration).then((value) => true);
   }
