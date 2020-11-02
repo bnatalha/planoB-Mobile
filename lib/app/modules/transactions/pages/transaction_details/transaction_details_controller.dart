@@ -35,7 +35,7 @@ abstract class _TransacionDetailsControllerBase with Store {
   AccountModel destSelectedAccount = AccountModel();
 
   @observable
-  CategoryModel category = CategoryModel.deposit;
+  CategoryModel category = CategoryModel.transfer;
 
   @computed
   bool get isCreateTransactionMode =>
@@ -98,9 +98,9 @@ abstract class _TransacionDetailsControllerBase with Store {
   _TransacionDetailsControllerBase(this._transactionStore) {
     // editMode = false;
     fetchAccounts();
+    category = _transactionStore.transaction?.category ?? CategoryModel.transfer; 
   }
 
-  // TODO: corrigir
   @action
   addTransaction(TransactionModel model) {
     _transactionStore.transaction = model;

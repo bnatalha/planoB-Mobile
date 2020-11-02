@@ -1,6 +1,7 @@
 enum CategoryModel {
   deposit,
-  transaction,
+  transfer,
+  withdrawal,
   // ... TODO
 }
 
@@ -10,8 +11,11 @@ extension CategoryParsing on CategoryModel {
       case CategoryModel.deposit:
         return 'Depósito';
         break;
-      case CategoryModel.transaction:
-        return 'Transação';
+      case CategoryModel.transfer:
+        return 'Transferência';
+        break;
+      case CategoryModel.withdrawal:
+        return 'Retirada';
         break;
       default:
         return '';

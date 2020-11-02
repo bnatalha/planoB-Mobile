@@ -1,3 +1,3 @@
-String treatValue(String val) {
+String transformValueToDouble(String val) {
   return val.replaceAll(RegExp(r'\.'), '').replaceAll(RegExp(r'\,'), '.');
 }

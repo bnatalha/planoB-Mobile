@@ -1,12 +1,15 @@
+import 'dart:convert';
 import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:plano_b/app/shared/models/category_model.dart';
+import 'package:plano_b/app/shared/models/user_model.dart';
 import 'package:plano_b/app/shared/stores/logged_user_store.dart';
 import 'package:plano_b/app/shared/utils/aux.dart';
 
@@ -105,6 +108,8 @@ class _TransactionDetailsPageState
         ),
       );
 
+  final GlobalKey formKey = GlobalKey<FormState>();
+
   Widget get _body => GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -113,29 +118,39 @@ class _TransactionDetailsPageState
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  _header,
-                  _descriptionField,
-                  _categoryField,
-                  Card(
-                    color: Colors.blueGrey.shade300,
-                    elevation: 12,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        _srcAccArea,
-                        _downArrow,
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: _valueField,
+              child: Form(
+                key: formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Column(
+                  children: [
+                    _header,
+                    _descriptionField,
+                    _categoryField,
+                    Observer(
+                      builder: (_) => Card(
+                        color: Colors.blueGrey.shade300,
+                        elevation: 12,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            if (controller.category != CategoryModel.deposit)
+                              _srcAccArea,
+                            if (controller.category != CategoryModel.deposit)
+                              _downArrow,
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: _valueField,
+                            ),
+                            if (controller.category != CategoryModel.withdrawal)
+                              _downArrow,
+                            if (controller.category != CategoryModel.withdrawal)
+                              _destAccArea
+                          ],
                         ),
-                        _downArrow,
-                        _destAccArea
-                      ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -145,7 +160,8 @@ class _TransactionDetailsPageState
   Widget get _header => Container(
         decoration: BoxDecoration(
           // borderRadius: BorderRadius.all(Radius.circular(3)),
-          border: Border(bottom: BorderSide(color: Colors.blueGrey.shade700, width: 2)),
+          border: Border(
+              bottom: BorderSide(color: Colors.blueGrey.shade700, width: 2)),
           // color: Colors.blueGrey.shade200,
         ),
         child: Row(
@@ -177,23 +193,23 @@ class _TransactionDetailsPageState
         ),
       );
 
-  Widget get _destAccArea => Observer(builder: (_) {
-        if (controller.accounts != null && controller.accounts.isNotEmpty) {
-          return buildAccArea(
-            leadText: 'Destino:',
-            onChanged: controller.setDestAccount,
-            account: controller.destSelectedAccount,
-          );
-        }
-        return Text('placeholder');
-      });
-
   Widget get _srcAccArea => Observer(builder: (_) {
         if (controller.accounts != null && controller.accounts.isNotEmpty) {
           return buildAccArea(
             leadText: 'Origem:',
             onChanged: controller.setSrcAccount,
             account: controller.srcSelectedAccount,
+          );
+        }
+        return Text('placeholder');
+      });
+
+  Widget get _destAccArea => Observer(builder: (_) {
+        if (controller.accounts != null && controller.accounts.isNotEmpty) {
+          return buildAccArea(
+            leadText: 'Destino:',
+            onChanged: controller.setDestAccount,
+            account: controller.destSelectedAccount,
           );
         }
         return Text('placeholder');
@@ -206,7 +222,14 @@ class _TransactionDetailsPageState
           child: Row(
             children: [
               Expanded(
-                child: TextField(
+                child: TextFormField(
+                  validator: (text) {
+                    if (double.tryParse(transformValueToDouble(text)) >
+                        controller.srcSelectedAccount.balance) {
+                      return 'Valor execedeu o total da conta';
+                    }
+                    return null;
+                  },
                   style: TextStyle(
                     color: Colors.black.withOpacity(0.9),
                     fontWeight: FontWeight.w500,
@@ -377,10 +400,16 @@ class _TransactionDetailsPageState
     controller.addTransaction(controller.transaction.copyWith(
       user: Modular.get<LoggedUserStore>().currentUser.value,
       date: controller.transaction.date ?? DateTime.now(),
-      value: double.parse(treatValue(_valueController.value.text)),
-      source: controller.srcSelectedAccount,
-      destination: controller.destSelectedAccount,
-      description: _descriptionController.value.text ?? "Sem Descrição",
+      value: double.parse(transformValueToDouble(_valueController.value.text)),
+      source: (controller.category == CategoryModel.deposit)
+          ? voidAccount
+          : controller.srcSelectedAccount,
+      destination: (controller.category == CategoryModel.withdrawal)
+          ? voidAccount
+          : controller.destSelectedAccount,
+      description: _descriptionController.value.text.isEmpty
+          ? "Sem Descrição"
+          : _descriptionController.value.text,
       category: controller.category,
     ));
 
@@ -391,11 +420,29 @@ class _TransactionDetailsPageState
     controller.updateTransaction(controller.transaction.copyWith(
       user: Modular.get<LoggedUserStore>().currentUser.value,
       date: controller.transaction.date ?? DateTime.now(),
-      value: double.parse(treatValue(_valueController.value.text)),
-      source: controller.srcSelectedAccount,
-      destination: controller.destSelectedAccount,
-      description: _descriptionController.value.text ?? "Sem Descrição",
+      value: double.parse(transformValueToDouble(_valueController.value.text)),
+      source: (controller.category == CategoryModel.deposit)
+          ? voidAccount
+          : controller.srcSelectedAccount,
+      destination: (controller.category == CategoryModel.withdrawal)
+          ? voidAccount
+          : controller.destSelectedAccount,
+      description: _descriptionController.value.text.isEmpty
+          ? "Sem Descrição"
+          : _descriptionController.value.text,
       category: controller.category,
     ));
   }
+
+  final voidAccount = AccountModel(
+    id: -1,
+    name: '',
+    balance: 0.0,
+    user: UserModel(
+      id: -1,
+      name: '',
+      login: '',
+      password: '',
+    ),
+  );
 }

@@ -33,7 +33,6 @@ class TransactionModel {
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
     try {
       dev.log('$json', name: 'TransactionModel.fromJson');
-      // dev.log('${json['category'] ?? CategoryModel.values[json['category']].asString()}', name: 'TransactionModel.fromJson');
 
       return TransactionModel(
         id: json['id'] as int,
