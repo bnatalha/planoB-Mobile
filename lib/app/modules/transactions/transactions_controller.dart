@@ -69,8 +69,9 @@ abstract class _TransactionsControllerBase with Store {
     isLoading.value = true;
     try {
       transactions = (await _transactionService.getTransactionsFromUser(
-              userId: _loggedUserStore.currentUser.value.id))
-          ?.asObservable() ?? <TransactionModel>[].asObservable();
+                  userId: _loggedUserStore.currentUser.value.id))
+              ?.asObservable() ??
+          <TransactionModel>[].asObservable();
 
       dev.log('transactions:', name: 'fetchTransactions', error: transactions);
       hasError.value = false;

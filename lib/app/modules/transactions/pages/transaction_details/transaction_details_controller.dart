@@ -2,6 +2,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:plano_b/app/modules/transactions/stores/transaction_store.dart';
 import 'package:plano_b/app/shared/models/account_model.dart';
+import 'package:plano_b/app/shared/models/category_model.dart';
 import 'package:plano_b/app/shared/models/transaction_model.dart';
 import 'package:plano_b/app/shared/models/user_model.dart';
 import 'package:plano_b/app/shared/repositories/abstract/transaction_repository_abstract.dart';
@@ -33,6 +34,9 @@ abstract class _TransacionDetailsControllerBase with Store {
   @observable
   AccountModel destSelectedAccount = AccountModel();
 
+  @observable
+  CategoryModel category = CategoryModel.deposit;
+
   @computed
   bool get isCreateTransactionMode =>
       _transactionStore.pageMode == TransactionMode.create;
@@ -59,11 +63,6 @@ abstract class _TransacionDetailsControllerBase with Store {
   UserModel getCurrentLoggedUser() {
     return _loggedUserStore.currentUser.value;
   }
-
-  // @action
-  // verifyMode() {
-
-  // }
 
   @action
   toggleEditMode() {

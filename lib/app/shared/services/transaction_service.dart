@@ -1,3 +1,5 @@
+import 'dart:developer' as dev;
+
 import 'package:flutter/foundation.dart';
 import 'package:plano_b/app/shared/models/account_model.dart';
 import 'package:plano_b/app/shared/models/category_model.dart';
@@ -35,6 +37,7 @@ class TransactionService {
           TransactionModel?.fromJson(transaction),
     )?.toList();
 
+    dev.log('$rawTransactions', name: 'TransactionService.getTransactionsFromUser');
     return transactions;
   }
 

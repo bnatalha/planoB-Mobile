@@ -87,6 +87,22 @@ mixin _$TransactionDetailsController
     });
   }
 
+  final _$categoryAtom =
+      Atom(name: '_TransacionDetailsControllerBase.category');
+
+  @override
+  CategoryModel get category {
+    _$categoryAtom.reportRead();
+    return super.category;
+  }
+
+  @override
+  set category(CategoryModel value) {
+    _$categoryAtom.reportWrite(value, super.category, () {
+      super.category = value;
+    });
+  }
+
   final _$fetchAccountsAsyncAction =
       AsyncAction('_TransacionDetailsControllerBase.fetchAccounts');
 
@@ -178,6 +194,7 @@ mixin _$TransactionDetailsController
 accounts: ${accounts},
 srcSelectedAccount: ${srcSelectedAccount},
 destSelectedAccount: ${destSelectedAccount},
+category: ${category},
 isCreateTransactionMode: ${isCreateTransactionMode},
 isViewTransactionMode: ${isViewTransactionMode},
 isEditTransactionMode: ${isEditTransactionMode},

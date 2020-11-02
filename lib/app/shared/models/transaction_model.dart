@@ -33,13 +33,16 @@ class TransactionModel {
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
     try {
       dev.log('$json', name: 'TransactionModel.fromJson');
+      // dev.log('${json['category'] ?? CategoryModel.values[json['category']].asString()}', name: 'TransactionModel.fromJson');
 
       return TransactionModel(
         id: json['id'] as int,
         user: UserModel?.fromJson(json['user']) ?? null,
         source: AccountModel?.fromJson(json['source']) ?? null,
         destination: AccountModel?.fromJson(json['destination']) ?? null,
-        category: json['category'] as CategoryModel ?? null,
+        category: json['category'] != null
+            ? CategoryModel?.values[json['category']]
+            : null,
         date: DateTime.tryParse(json['date'] ?? '') ?? null,
         value: json['value'] as double,
         description: json['description'] ?? "",
@@ -55,17 +58,21 @@ class TransactionModel {
   }
 
   Map<String, dynamic> toJson() {
-    return <String, dynamic>{
+    final map = <String, dynamic>{
       'id': id,
       'user': user?.toJson(),
       'source': source?.toJson(),
       'destination': destination?.toJson(),
-      'category': category,
+      'category': category?.index,
       'date': date?.toIso8601String(),
       'value': value,
       'description': description,
       'tags': jsonEncode(tags),
     };
+
+    dev.log('$map', name: 'TransactionModel.toJson');
+
+    return map;
   }
 
   copyWith({

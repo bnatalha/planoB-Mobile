@@ -1,6 +1,5 @@
-// import 'package:plano_b/app/shared/models/transaction_model.dart';
-
 import 'dart:convert';
+import 'dart:developer' as dev;
 
 import 'package:hive/hive.dart';
 import 'package:plano_b/app/shared/models/account_model.dart';
@@ -122,8 +121,8 @@ class TransactionRepositoryHive implements TransactionRepositoryAbstract {
       );
 
       hive.put(transaction.id, jsonEncode(transaction.toJson()));
-      // print('Adding transaction: ${transaction.id}');
-      print('>>> ${jsonEncode(transaction.toJson())}');
+      dev.log('${jsonEncode(transaction.toJson())}',
+          name: 'transactionRepositoryHive.addTransaction');
       return true;
     } catch (e) {
       print('Has error! $e');
@@ -155,8 +154,12 @@ class TransactionRepositoryHive implements TransactionRepositoryAbstract {
         if (date != null) model.date = date;
       }
       hive.put(model.id, jsonEncode(model.toJson()));
+      dev.log('${jsonEncode(model.toJson())}',
+          name: 'transactionRepositoryHive.updateTransaction');
       return true;
     } catch (e) {
+      dev.log('error',
+          name: 'transactionRepositoryHive.updateTransaction', error: e);
       return false;
     }
   }
@@ -174,6 +177,7 @@ class TransactionRepositoryHive implements TransactionRepositoryAbstract {
           .map((TransactionModel model) => model.toJson())
           .toList();
     } catch (e) {
+      
       return null;
     }
   }

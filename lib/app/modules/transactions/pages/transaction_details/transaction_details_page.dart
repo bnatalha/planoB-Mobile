@@ -6,6 +6,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:plano_b/app/shared/models/category_model.dart';
 import 'package:plano_b/app/shared/stores/logged_user_store.dart';
 import 'package:plano_b/app/shared/utils/aux.dart';
 
@@ -58,7 +59,7 @@ class _TransactionDetailsPageState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("${idString()}"),
+        title: Text("Detalhamento"),
         actions: [
           Observer(builder: (_) {
             if (controller.isCreateTransactionMode) {
@@ -81,7 +82,7 @@ class _TransactionDetailsPageState
           SizedBox(width: 5),
           Text(controller.isEditTransactionMode
               ? ''
-              : 'Modo Edição'), // TODO animar in-out
+              : 'Editar'), // TODO animar in-out
           Switch(
             value: controller.isEditTransactionMode,
             activeColor: Colors.amber[200],
@@ -114,16 +115,15 @@ class _TransactionDetailsPageState
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
+                  _header,
                   _descriptionField,
+                  _categoryField,
                   Card(
                     color: Colors.blueGrey.shade300,
                     elevation: 12,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        _header,
-                        SizedBox(height: 10),
-                        // _descriptionField,
                         _srcAccArea,
                         _downArrow,
                         Padding(
@@ -132,7 +132,6 @@ class _TransactionDetailsPageState
                         ),
                         _downArrow,
                         _destAccArea
-                        // buildButtons()
                       ],
                     ),
                   ),
@@ -145,8 +144,9 @@ class _TransactionDetailsPageState
 
   Widget get _header => Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(3)),
-          color: Colors.blueGrey.shade700,
+          // borderRadius: BorderRadius.all(Radius.circular(3)),
+          border: Border(bottom: BorderSide(color: Colors.blueGrey.shade700, width: 2)),
+          // color: Colors.blueGrey.shade200,
         ),
         child: Row(
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -158,7 +158,7 @@ class _TransactionDetailsPageState
                 style: Theme.of(context)
                     .textTheme
                     .headline6
-                    .copyWith(color: Colors.white),
+                    .copyWith(color: Colors.blueGrey),
               ),
             ),
             Spacer(),
@@ -170,7 +170,7 @@ class _TransactionDetailsPageState
                 style: Theme.of(context)
                     .textTheme
                     .subtitle1
-                    .copyWith(color: Colors.white),
+                    .copyWith(color: Colors.black38),
               ),
             ),
           ],
@@ -205,10 +205,6 @@ class _TransactionDetailsPageState
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             children: [
-              // Icon(Icons.monetization_on_outlined),
-              // SizedBox(width: 4),
-              // Text('Valor: '),
-              // SizedBox(width: 10),
               Expanded(
                 child: TextField(
                   style: TextStyle(
@@ -238,6 +234,41 @@ class _TransactionDetailsPageState
         ),
       );
 
+  Widget get _categoryField => Observer(
+        builder: (_) => Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 4.0),
+                child: Icon(Icons.merge_type),
+              ),
+              SizedBox(width: 4),
+              Text('Categoria '),
+              SizedBox(width: 10),
+              Expanded(
+                child: DropdownButton<CategoryModel>(
+                  isExpanded: true,
+                  disabledHint: Text(controller.category.asString()),
+                  onChanged: controller.isViewTransactionMode
+                      ? null
+                      : (c) {
+                          controller.category = c;
+                        },
+                  value: controller.category,
+                  items: CategoryModel.values
+                      .map((c) => DropdownMenuItem<CategoryModel>(
+                            child: Text(c.asString()),
+                            value: c,
+                          ))
+                      .toList(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
   Widget get _descriptionField => Observer(
         builder: (_) => Padding(
           padding: const EdgeInsets.all(8.0),
@@ -245,11 +276,11 @@ class _TransactionDetailsPageState
             children: [
               Padding(
                 padding: const EdgeInsets.only(right: 4.0),
-                child: Icon(Icons.description_outlined),
+                child: Icon(Icons.description),
               ),
               SizedBox(width: 4),
-              // Text('Descrição: '),
-              // SizedBox(width: 10),
+              Text('Descrição '),
+              SizedBox(width: 10),
               Expanded(
                 child: TextField(
                   style: TextStyle(
@@ -286,36 +317,15 @@ class _TransactionDetailsPageState
     Function onChanged,
     AccountModel account,
   }) {
-    final accounts = controller.accounts;
-    accounts.forEach((element) {
-      print('${element.id}, ${element.name}, ${element.balance}');
-    });
-
-    final List<DropdownMenuItem<AccountModel>> menuItems = accounts
-        .map((e) =>
-            DropdownMenuItem<AccountModel>(child: Text(e.name), value: e))
-        .toList();
-
-    Widget accountName;
-    // if (controller.isViewTransactionMode) {
-    //   accountName = Text(account.name);
-    // } else {
-    //   accountName = DropdownButton<AccountModel>(
-    //     isExpanded: true,
-    //     disabledHint: Text(account.name),
-    //     value: account,
-    //     items: menuItems,
-    //     onChanged: (AccountModel value) {
-    //       onChanged(value);
-    //     },
-    //   );
-    // }
-
-    accountName = DropdownButton<AccountModel>(
+    final DropdownButton<AccountModel> accountName =
+        DropdownButton<AccountModel>(
       isExpanded: true,
       disabledHint: Text(account.name),
       value: account,
-      items: menuItems,
+      items: controller.accounts
+          .map((e) =>
+              DropdownMenuItem<AccountModel>(child: Text(e.name), value: e))
+          .toList(),
       onChanged: controller.isViewTransactionMode
           ? null
           : (AccountModel value) {
@@ -371,6 +381,7 @@ class _TransactionDetailsPageState
       source: controller.srcSelectedAccount,
       destination: controller.destSelectedAccount,
       description: _descriptionController.value.text ?? "Sem Descrição",
+      category: controller.category,
     ));
 
     Modular.link.pop();
@@ -384,6 +395,7 @@ class _TransactionDetailsPageState
       source: controller.srcSelectedAccount,
       destination: controller.destSelectedAccount,
       description: _descriptionController.value.text ?? "Sem Descrição",
+      category: controller.category,
     ));
   }
 }
