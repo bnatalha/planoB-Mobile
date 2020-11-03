@@ -83,4 +83,16 @@ class AccountRepositoryHive implements AccountRepositoryAbstract {
       return false;
     }
   }
+
+  @override
+  Future<bool> updateAccountBalance(int id, double offsetBalance) async {
+    try {
+      AccountModel model = AccountModel.fromJson(jsonDecode(hive.get(id)));
+      model.copyWith(balance: model.balance + offsetBalance);
+      hive.put(model.id, jsonEncode(model.toJson()));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }

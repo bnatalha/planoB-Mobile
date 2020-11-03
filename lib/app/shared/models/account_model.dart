@@ -21,7 +21,7 @@ class AccountModel extends Equatable{
       id: json['id'] as int,
       user: UserModel.fromJson(jsonDecode(json['user'])),
       name: json['name'] as String,
-      balance: json['balance'] as double,
+      balance: 0, // json['balance'] as double,
     );
   }
   
@@ -30,7 +30,7 @@ class AccountModel extends Equatable{
       'id': id,
       'user': jsonEncode(user.toJson()),
       'name': name,
-      'balance': balance,
+      'balance': 0,
     };
   }
 
