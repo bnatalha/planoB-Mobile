@@ -51,4 +51,10 @@ class AccountRepositoryMock implements AccountRepositoryAbstract {
 
     return Future.delayed(_duration).then((value) => true);
   }
+
+  @override
+  Future<bool> updateAccountBalance(int id, double offsetBalance) {
+    // TODO: implement updateAccountBalance
+    throw UnimplementedError();
+  }
 }

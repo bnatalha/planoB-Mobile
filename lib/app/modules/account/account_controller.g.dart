@@ -32,6 +32,15 @@ mixin _$AccountController on _AccountControllerBase, Store {
     return _$fetchAccountsAsyncAction.run(() => super.fetchAccounts());
   }
 
+  final _$deleteAccountAsyncAction =
+      AsyncAction('_AccountControllerBase.deleteAccount');
+
+  @override
+  Future<bool> deleteAccount({int accountId}) {
+    return _$deleteAccountAsyncAction
+        .run(() => super.deleteAccount(accountId: accountId));
+  }
+
   @override
   String toString() {
     return '''

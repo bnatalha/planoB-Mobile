@@ -31,7 +31,7 @@ class AppModule extends MainModule {
           (i) => TransactionService(transactionRepository: TransactionRepositoryHive()),
         ),
         Bind<AccountService>(
-          (i) => AccountService(accountRepository: AccountRepositoryMock()),
+          (i) => AccountService(accountRepository: AccountRepositoryMock(), transactionService: i.get<TransactionService>()),
           // (i) => AccountService(accountRepository: AccountRepositoryHive()),
         ),
         Bind<UserService>(

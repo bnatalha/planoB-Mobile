@@ -41,7 +41,7 @@ class TransactionRepositoryHive implements TransactionRepositoryAbstract {
   ) async {
     final List<TransactionModel> allTransactions = hive.values.map(
       (String value) => TransactionModel.fromJson(jsonDecode(value)),
-    );
+    ).toList();
 
     allTransactions.retainWhere(
       (TransactionModel t) =>

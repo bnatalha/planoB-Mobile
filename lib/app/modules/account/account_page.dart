@@ -25,10 +25,11 @@ class _AccountPageState extends ModularState<AccountPage, AccountController> {
         title: Text('Contas'),
         actions: [
           IconButton(
-              icon: Icon(Icons.sync),
-              onPressed: () {
-                controller.fetchAccounts();
-              })
+            icon: Icon(Icons.sync),
+            onPressed: () {
+              controller.fetchAccounts();
+            },
+          )
         ],
       ),
       drawer: AppMainDrawer(),
@@ -59,12 +60,20 @@ class _AccountPageState extends ModularState<AccountPage, AccountController> {
                       controller.account.setAccount(item);
                       Modular.to.pushNamed(RouteNamesUtils.ACCOUNT_DETAIL_PAGE);
                     },
+                    onDismissed: (_) =>
+                        controller.deleteAccount(accountId: item.id),
                   );
                 },
               );
             },
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // TODO: Go-to route of adding a new account
+          },
+        child: Icon(Icons.add),
       ),
     );
   }
