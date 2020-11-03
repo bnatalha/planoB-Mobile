@@ -25,10 +25,11 @@ class _AccountPageState extends ModularState<AccountPage, AccountController> {
         title: Text('Contas'),
         actions: [
           IconButton(
-              icon: Icon(Icons.sync),
-              onPressed: () {
-                controller.fetchAccounts();
-              })
+            icon: Icon(Icons.sync),
+            onPressed: () {
+              controller.fetchAccounts();
+            },
+          )
         ],
       ),
       drawer: AppMainDrawer(),

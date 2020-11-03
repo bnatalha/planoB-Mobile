@@ -1,5 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plano_b/app/modules/account/pages/account_details/account_details_page.dart';
+import 'package:plano_b/app/shared/services/account_service.dart';
+import 'package:plano_b/app/shared/stores/logged_user_store.dart';
 import 'package:plano_b/app/shared/utils/routes_names_utils.dart';
 
 import 'account_controller.dart';
@@ -16,6 +18,8 @@ class AccountModule extends ChildModule {
         Bind<AccountController>(
           (Inject<dynamic> i) => AccountController(
             i.get<AccountStore>(),
+            i.get<AccountService>(),
+            i.get<LoggedUserStore>(),
           ),
         ),
         Bind<AccountDetailsController>(
