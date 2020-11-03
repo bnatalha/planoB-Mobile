@@ -30,25 +30,16 @@ abstract class _AccountControllerBase with Store {
     final user = loggedUserStore.currentUser.value;
 
     accountsList = (await accountService.getAccountsOfUser(userId: user.id)).asObservable();
+  }
 
-    /*
-    accountsList = <AccountModel>[
-      AccountModel(
-        user: user,
-        name: 'nubank',
-        balance: 300.0,
-      ),
-      AccountModel(
-        user: user,
-        name: 'BB',
-        balance: 456.4,
-      ),
-      AccountModel(
-        user: user,
-        name: 'Caixa',
-        balance: 722.56,
-      ),
-    ].asObservable();
-    */
+  @action
+  Future<bool> deleteAccount({int accountId}) async {
+    print('Deleting accuont $accountId');
+    if(await accountService.deleteAccount(accountId: accountId)) {
+
+      print('Deleted!');
+      return true;
+    }
+    return false;
   }
 }

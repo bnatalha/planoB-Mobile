@@ -60,12 +60,20 @@ class _AccountPageState extends ModularState<AccountPage, AccountController> {
                       controller.account.setAccount(item);
                       Modular.to.pushNamed(RouteNamesUtils.ACCOUNT_DETAIL_PAGE);
                     },
+                    onDismissed: (_) =>
+                        controller.deleteAccount(accountId: item.id),
                   );
                 },
               );
             },
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // TODO: Go-to route of adding a new account
+          },
+        child: Icon(Icons.add),
       ),
     );
   }
