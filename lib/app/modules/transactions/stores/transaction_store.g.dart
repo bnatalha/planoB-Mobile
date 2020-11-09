@@ -43,11 +43,22 @@ mixin _$TransactionStore on _TransactionStoreBase, Store {
       ActionController(name: '_TransactionStoreBase');
 
   @override
-  dynamic setAddTransactionMode() {
+  void setAddTransactionMode() {
     final _$actionInfo = _$_TransactionStoreBaseActionController.startAction(
         name: '_TransactionStoreBase.setAddTransactionMode');
     try {
       return super.setAddTransactionMode();
+    } finally {
+      _$_TransactionStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setViewTransactionMode() {
+    final _$actionInfo = _$_TransactionStoreBaseActionController.startAction(
+        name: '_TransactionStoreBase.setViewTransactionMode');
+    try {
+      return super.setViewTransactionMode();
     } finally {
       _$_TransactionStoreBaseActionController.endAction(_$actionInfo);
     }

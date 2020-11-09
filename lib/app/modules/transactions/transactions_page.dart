@@ -54,7 +54,7 @@ class _TransactionsPageState
                     description: t.description,
                     category: t.category?.asString(),
                     value: t.value,
-                    date: t.date, // TODO: Adapt to new model :: t.date,
+                    date: t.date,
                     onTap: () {
                       controller.selectTransaction(t);
                       Modular.link.pushNamed(RouteNamesUtils.DETAIL_ROUTE);

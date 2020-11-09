@@ -27,11 +27,13 @@ class TransactionDetailsPage extends StatefulWidget {
 
 class _TransactionDetailsPageState
     extends ModularState<TransactionDetailsPage, TransactionDetailsController> {
-  TextEditingController _valueController;
+  MoneyMaskedTextController _valueController;
   TextEditingController _descriptionController;
 
-  final Padding _downArrow =
-      Padding(padding: EdgeInsets.all(4), child: Icon(Icons.south, size: 40));
+  final Padding _downArrow = Padding(
+    padding: EdgeInsets.all(4),
+    child: Icon(Icons.south, size: 40),
+  );
 
   @override
   void initState() {
@@ -115,10 +117,10 @@ class _TransactionDetailsPageState
           FocusScope.of(context).unfocus();
         },
         child: Container(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Form(
+          child: ListView(
+            padding: const EdgeInsets.all(8.0),
+            children: <Widget>[
+              Form(
                 key: formKey,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
@@ -130,29 +132,30 @@ class _TransactionDetailsPageState
                       builder: (_) => Card(
                         color: Colors.blueGrey.shade300,
                         elevation: 12,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            if (controller.category != CategoryModel.deposit)
-                              _srcAccArea,
-                            if (controller.category != CategoryModel.deposit)
-                              _downArrow,
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: _valueField,
-                            ),
-                            if (controller.category != CategoryModel.withdrawal)
-                              _downArrow,
-                            if (controller.category != CategoryModel.withdrawal)
-                              _destAccArea
-                          ],
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              _valueField,
+                              const SizedBox(height: 20),
+                              if (controller.isViewTransactionMode)
+                                Row(
+                                  children: <Widget>[
+                                    Expanded(child: _srcAccArea),
+                                    Icon(Icons.arrow_forward_ios_rounded),
+                                    Expanded(child: _destAccArea),
+                                  ],
+                                ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
+            ],
           ),
         ),
       );
@@ -179,8 +182,10 @@ class _TransactionDetailsPageState
             ),
             Spacer(),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 4.0,
+              ),
               child: Text(
                 formattedDate(),
                 style: Theme.of(context)
@@ -218,7 +223,7 @@ class _TransactionDetailsPageState
   // TODO checar se valor > balanço na conta
   Widget get _valueField => Observer(
         builder: (_) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.zero,
           child: Row(
             children: [
               Expanded(
@@ -346,25 +351,22 @@ class _TransactionDetailsPageState
       disabledHint: Text(account.name),
       value: account,
       items: controller.accounts
-          .map((e) =>
-              DropdownMenuItem<AccountModel>(child: Text(e.name), value: e))
+          .map(
+            (e) => DropdownMenuItem<AccountModel>(
+              child: Text(e.name),
+              value: e,
+            ),
+          )
           .toList(),
       onChanged: controller.isViewTransactionMode
           ? null
-          : (AccountModel value) {
-              onChanged(value);
-            },
+          : (AccountModel value) => onChanged(value),
     );
 
     final selectionField = Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text(
-          leadText,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        SizedBox(width: 10),
         Expanded(child: accountName),
       ],
     );
@@ -381,9 +383,11 @@ class _TransactionDetailsPageState
       ),
     );
 
-    return Card(
-      color: Colors.blueGrey.shade100,
-      elevation: 2,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.blueGrey.shade100,
+        borderRadius: BorderRadius.circular(4),
+      ),
       child: Padding(
         padding: EdgeInsets.all(4),
         child: Column(

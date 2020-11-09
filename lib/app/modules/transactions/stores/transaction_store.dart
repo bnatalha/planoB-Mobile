@@ -19,18 +19,12 @@ abstract class _TransactionStoreBase with Store {
   TransactionMode pageMode = TransactionMode.view;
 
   @action
-  setAddTransactionMode() {
+  void setAddTransactionMode() {
     pageMode = TransactionMode.create;
   }
 
-  setViewTransactionMode() {
+  @action
+  void setViewTransactionMode() {
     pageMode = TransactionMode.view;
   }
-
-  // @action
-  // updateTransaction(TransactionModel model){
-  //   transaction = model;
-  //   _transactionRepository.updateTransaction(model);
-  // }
-
 }
